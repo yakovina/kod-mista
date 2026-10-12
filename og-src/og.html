@@ -19,7 +19,7 @@ h1 { margin: 14px 0 0; font-size: 92px; font-weight: 800; line-height: .98; lett
 h1.lvl { font-size: 66px; line-height: 1.05; }
 p { margin: 22px 0 0; font-family: "Lora", serif; font-size: 28px; line-height: 1.4; color: #4F524C; max-width: 560px; }
 .foot { margin-top: auto; font-size: 22px; font-weight: 700; color: #4F524C; }
-.card { position: relative; flex: 0 0 470px; background: #fff; padding: 16px; transform: rotate(2deg); }
+.card { position: relative; flex: 0 0 470px; background: #FBF6EA; padding: 0; border: 3px solid #2E2E2B; }
 .card img { display: block; width: 100%; aspect-ratio: 3/2; object-fit: cover; }
 .card.lvl img { aspect-ratio: 1/1; }
 .card.map img { aspect-ratio: auto; }
@@ -59,8 +59,9 @@ p { margin: 22px 0 0; font-family: "Lora", serif; font-size: 28px; line-height: 
     t.textContent = lv.title;
     t.className = "lvl";
     document.getElementById("lead").textContent = "Листівка з маршруту вісьмома зупинками від Хмарочоса.";
-    document.getElementById("card").classList.add("lvl");
-    document.getElementById("pic").src = `../public/art/char-${slug}.svg`;
+    // поки нема персонажів рівнів — на картці обкладинка; з персонажами:
+    // document.getElementById("card").classList.add("lvl");
+    // document.getElementById("pic").src = `../public/art/char-${slug}.png`;
     document.getElementById("stamp").outerHTML = `<div class="mark"><b>${lv.range[0]}</b><small>${lv.range[1]}</small></div>`;
   }
 </script>

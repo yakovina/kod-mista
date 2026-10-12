@@ -8,7 +8,6 @@
     "build:partner": "NEXT_PUBLIC_BASE_PATH=/partner/kod-mista NEXT_PUBLIC_SITE_URL=https://hmarochos.kiev.ua/partner/kod-mista npm run build",
     "deploy": "bash scripts/deploy.sh",
     "og": "node scripts/render-og.mjs",
-    "art": "node scripts/placeholders.mjs",
     "lint": "eslint"
   },
   "dependencies": {

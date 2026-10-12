@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
-<rect width="800" height="450" fill="#F5D88C"/>
-<circle cx="660" cy="96" r="54" fill="#D66C46"/>
-<rect x="0" y="0" width="800" height="450" fill="#E9C150"/><rect x="200" y="150" width="400" height="140" fill="#2E2E2B"/><rect x="214" y="164" width="372" height="112" fill="none" stroke="#E9E5DC" stroke-width="4"/><text x="400" y="200" font-family="Open Sans, sans-serif" font-size="22" fill="#E9E5DC" text-anchor="middle">вулиця</text><text x="400" y="248" font-family="Open Sans, sans-serif" font-size="40" font-weight="800" fill="#E9E5DC" text-anchor="middle" opacity="0.55">• • • • •</text><path d="M210 290 L590 150" stroke="#D66C46" stroke-width="10"/>
-<rect x="24" y="398" width="752" height="32" fill="#2E2E2B"/>
-<text x="38" y="420" font-family="Open Sans, sans-serif" font-size="16" font-weight="700" fill="#E9E5DC">ЗАГЛУШКА · Вулична табличка</text>
-</svg>

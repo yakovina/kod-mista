@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { TOTAL, getLevelBySlug, levels } from "../../../data/quiz";
-import { ResultCard } from "../../skins";
+import { ResultCard, Topbar } from "../../skins";
 import ShareButtons from "../../ShareButtons";
 import { SITE_URL, resultShareUrl } from "../../share";
 
@@ -40,15 +40,23 @@ export default async function ResultSharePage({ params }: { params: Promise<{ le
   if (!lvl) notFound();
   return (
     <main className="route screen result">
-      <div className="kicker">Листівка з тесту «Код міста»</div>
-      <ResultCard level={lvl} total={TOTAL} />
-      <h1 className="title small">{lvl.title}</h1>
-      <p className="lead">{lvl.description}</p>
-      <div className="grow" />
-      <Link href="/" className="btn blue">
-        <span>Пройти маршрут</span>
-      </Link>
-      <ShareButtons url={resultShareUrl(lvl.slug)} text={lvl.shareText} title={lvl.title} label="Поділитися результатом" />
+      <Topbar right="Листівка з тесту" />
+      <div className="layout">
+        <div className="visual">
+          <ResultCard level={lvl} total={TOTAL} />
+        </div>
+        <div className="content">
+          <p className="kicker">Результат · {lvl.range}</p>
+          <h1 className="title mid">{lvl.title}</h1>
+          <p className="lead">{lvl.description}</p>
+          <div className="btnRow">
+            <Link href="/" className="btn primary">
+              <span>Пройти маршрут</span>
+            </Link>
+          </div>
+          <ShareButtons url={resultShareUrl(lvl.slug)} text={lvl.shareText} title={lvl.title} label="Поділитися результатом" />
+        </div>
+      </div>
     </main>
   );
 }

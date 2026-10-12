@@ -1,12 +1,12 @@
 "use client";
 
 import type { QuizApi } from "../../useQuiz";
-import { intro } from "../../../data/quiz";
+import { intro, questions } from "../../../data/quiz";
 import { asset } from "../../bp";
 import ShareButtons from "../../ShareButtons";
 import { SITE_URL, TEST_SHARE_TEXT, TEST_SHARE_TITLE, resultShareUrl } from "../../share";
-import RouteLine, { type StopState } from "./RouteLine";
-import { PostcardBack, PostcardFront, ResultPostcard } from "./Postcards";
+import Progress, { type StopState } from "./Progress";
+import { PostcardBack, PostcardFront, ResultPostcard, Stamp } from "./Postcards";
 import { ArrowIcon, CheckIcon, RetryIcon, SendIcon } from "./icons";
 
 function stopStates(history: boolean[], idx: number, total: number, onReveal: boolean): StopState[] {
@@ -17,17 +17,19 @@ function stopStates(history: boolean[], idx: number, total: number, onReveal: bo
   });
 }
 
-function Masthead() {
+export function Topbar({ right }: { right: string }) {
   return (
-    <div className="masthead">
+    <header className="topbar">
       <a href="https://hmarochos.kiev.ua/" target="_blank" rel="noopener noreferrer" aria-label="Хмарочос — відкрити сайт">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={asset("/hmarochos_logo_new.svg")} alt="Хмарочос" />
       </a>
-      <span>Тест · 8 зупинок</span>
-    </div>
+      <span>{right}</span>
+    </header>
   );
 }
+
+const CITIES = Array.from(new Set(questions.map((q) => q.place.city).filter((c) => c !== "Ваше місто")));
 
 export default function RouteSkin({ quiz }: { quiz: QuizApi }) {
   const { screen, q, idx, total, picked, history, score, level } = quiz;
@@ -35,27 +37,36 @@ export default function RouteSkin({ quiz }: { quiz: QuizApi }) {
   if (screen === "intro") {
     return (
       <main className="route screen intro">
-        <Masthead />
-        <div className="postcard coverCard">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={asset("/art/cover.jpg")} alt="Ілюстрація: місто з аркою, що тріснула, космонавт і супутник" />
-          <span className="stamp apricot big" aria-hidden>
-            <b>8</b>
-            <small>ЗУПИНОК</small>
-          </span>
+        <Topbar right="Тест · 8 зупинок" />
+        <div className="layout">
+          <div className="visual">
+            <figure className="coverCard">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={asset("/art/cover.jpg")} alt="Ілюстрація: місто з аркою, що тріснула, космонавт і супутник" />
+              <Stamp code="8" sub="ЗУПИНОК" />
+            </figure>
+          </div>
+          <div className="content">
+            <p className="kicker">Тест Хмарочоса</p>
+            <h1 className="title">{intro.title}</h1>
+            <p className="lead">{intro.lead}</p>
+            <ol className="cities" aria-label="Міста маршруту">
+              <li>Ваше місто</li>
+              {CITIES.map((c) => (
+                <li key={c}>{c}</li>
+              ))}
+            </ol>
+            <button className="btn primary" onClick={quiz.start}>
+              <span>В дорогу</span>
+              <ArrowIcon />
+            </button>
+            <div className="meta">
+              <span>{intro.minutes}</span>
+              <span>{intro.sourcesNote}</span>
+            </div>
+            <ShareButtons url={`${SITE_URL}/`} text={TEST_SHARE_TEXT} title={TEST_SHARE_TITLE} />
+          </div>
         </div>
-        <h1 className="title">{intro.title}</h1>
-        <p className="lead">{intro.lead}</p>
-        <div className="grow" />
-        <button className="btn blue" onClick={quiz.start}>
-          <span>В дорогу</span>
-          <ArrowIcon />
-        </button>
-        <div className="meta">
-          <span>{intro.minutes}</span>
-          <span>{intro.sourcesNote}</span>
-        </div>
-        <ShareButtons url={`${SITE_URL}/`} text={TEST_SHARE_TEXT} title={TEST_SHARE_TITLE} />
       </main>
     );
   }
@@ -63,23 +74,27 @@ export default function RouteSkin({ quiz }: { quiz: QuizApi }) {
   if (screen === "question") {
     return (
       <main className="route screen question">
-        <RouteLine states={stopStates(history, idx, total, false)} label={`Зупинка ${idx + 1} з ${total}`} />
-        <div className="stopLabel">
-          <span>{q.topic}</span>
-          <span>
-            Зупинка {idx + 1} · {q.place.city}
-          </span>
-        </div>
-        <PostcardFront q={q} />
-        {q.context && <p className="context">{q.context}</p>}
-        <h2 className="prompt">{q.prompt}</h2>
-        <div className="opts">
-          {q.options.map((o) => (
-            <button key={o.key} className="opt" onClick={() => quiz.answer(o.key)}>
-              <span className="k">{o.key}</span>
-              <span className="t">{o.text}</span>
-            </button>
-          ))}
+        <Topbar right={`Зупинка ${idx + 1} з ${total}`} />
+        <Progress states={stopStates(history, idx, total, false)} label={`Зупинка ${idx + 1} з ${total}`} />
+        <div className="layout">
+          <div className="visual">
+            <PostcardFront q={q} />
+          </div>
+          <div className="content">
+            <p className="kicker">
+              {q.topic} · {q.place.city}
+            </p>
+            {q.context && <p className="context">{q.context}</p>}
+            <h2 className="prompt">{q.prompt}</h2>
+            <div className="opts">
+              {q.options.map((o) => (
+                <button key={o.key} className="opt" onClick={() => quiz.answer(o.key)}>
+                  <span className="k">{o.key}</span>
+                  <span className="t">{o.text}</span>
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </main>
     );
@@ -91,40 +106,48 @@ export default function RouteSkin({ quiz }: { quiz: QuizApi }) {
     const mine = q.options.find((o) => o.key === picked);
     return (
       <main className="route screen reveal">
-        <RouteLine states={stopStates(history, idx, total, true)} label={`Зупинку ${idx + 1} пройдено`} />
-        <div className={ok ? "verdict ok" : "verdict miss"} role="status">
-          {ok ? <CheckIcon /> : <span className="verdictMark" aria-hidden>!</span>}
-          <div>
-            <div className="vTitle">{ok ? "Влучно — зупинку зараховано" : "Майже. Ось як було насправді"}</div>
-            <div className="vSub">
-              {ok ? `Правильна відповідь — ${q.correct}` : `Ваша відповідь — ${picked}. Правильна — ${q.correct}`}
+        <Topbar right={`Зупинка ${idx + 1} з ${total}`} />
+        <Progress states={stopStates(history, idx, total, true)} label={`Зупинку ${idx + 1} пройдено`} />
+        <div className="layout split">
+          <div className="content top">
+            <div className={ok ? "verdict ok" : "verdict miss"} role="status">
+              {ok ? <CheckIcon /> : <span className="verdictMark" aria-hidden>!</span>}
+              <div>
+                <div className="vTitle">{ok ? "Влучно — зупинку зараховано" : "Майже. Ось як було насправді"}</div>
+                <div className="vSub">
+                  {ok ? `Правильна відповідь — ${q.correct}` : `Ваша відповідь — ${picked}, правильна — ${q.correct}`}
+                </div>
+              </div>
             </div>
+            <div className="answerRecap">
+              <span className="k">{q.correct}</span>
+              <span>{right?.text}</span>
+            </div>
+            {!ok && mine && (
+              <div className="answerRecap mine">
+                <span className="k">{mine.key}</span>
+                <span>{mine.text}</span>
+              </div>
+            )}
+          </div>
+          <div className="visual">
+            <PostcardBack q={q} />
+          </div>
+          <div className="content bottom">
+            <div className="sources">
+              <span className="sTitle">{q.sources.length > 1 ? "Джерела" : "Джерело"}</span>
+              {q.sources.map((s) => (
+                <a key={s.url} href={s.url} target="_blank" rel="noopener noreferrer">
+                  {s.label}
+                </a>
+              ))}
+            </div>
+            <button className="btn accent" onClick={quiz.next}>
+              <span>{quiz.isLast ? "До фінальної листівки" : "Наступна зупинка"}</span>
+              <ArrowIcon />
+            </button>
           </div>
         </div>
-        <div className="answerRecap">
-          <span className="k">{q.correct}</span>
-          <span>{right?.text}</span>
-        </div>
-        {!ok && mine && (
-          <div className="answerRecap mine">
-            <span className="k">{mine.key}</span>
-            <span>{mine.text}</span>
-          </div>
-        )}
-        <PostcardBack q={q} />
-        <div className="sources">
-          <span className="sTitle">{q.sources.length > 1 ? "Джерела" : "Джерело"}</span>
-          {q.sources.map((s) => (
-            <a key={s.url} href={s.url} target="_blank" rel="noopener noreferrer">
-              {s.label}
-            </a>
-          ))}
-        </div>
-        <div className="grow" />
-        <button className="btn apricot" onClick={quiz.next}>
-          <span>{quiz.isLast ? "До фінальної листівки" : "Наступна зупинка"}</span>
-          <ArrowIcon />
-        </button>
       </main>
     );
   }
@@ -150,22 +173,28 @@ export default function RouteSkin({ quiz }: { quiz: QuizApi }) {
   };
   return (
     <main className="route screen result">
-      <Masthead />
-      <div className="kicker">Маршрут завершено · {total} зупинок</div>
-      <ResultPostcard level={level} score={score} total={total} />
-      <h1 className="title small">{level.title}</h1>
-      <p className="lead">{level.description}</p>
-      <div className="grow" />
-      <div className="btnRow">
-        <button className="btn apricot" onClick={sendCard}>
-          <span>Надіслати листівку</span>
-          <SendIcon />
-        </button>
-        <button className="btn square" onClick={quiz.restart} aria-label="Пройти ще раз">
-          <RetryIcon />
-        </button>
+      <Topbar right="Маршрут завершено" />
+      <Progress states={stopStates(history, total, total, true)} label={`Влучно: ${score} з ${total}`} />
+      <div className="layout">
+        <div className="visual">
+          <ResultPostcard level={level} score={score} total={total} />
+        </div>
+        <div className="content">
+          <p className="kicker">Ваш результат · {level.range}</p>
+          <h1 className="title mid">{level.title}</h1>
+          <p className="lead">{level.description}</p>
+          <div className="btnRow">
+            <button className="btn accent" onClick={sendCard}>
+              <span>Надіслати листівку</span>
+              <SendIcon />
+            </button>
+            <button className="btn square" onClick={quiz.restart} aria-label="Пройти ще раз" title="Пройти ще раз">
+              <RetryIcon />
+            </button>
+          </div>
+          <ShareButtons url={shareUrl} text={level.shareText} title={level.title} label="Поділитися результатом" />
+        </div>
       </div>
-      <ShareButtons url={shareUrl} text={level.shareText} title={level.title} label="Поділитися результатом" />
     </main>
   );
 }

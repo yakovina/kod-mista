@@ -1,2 +1,2 @@
-export { default as Skin } from "./RouteSkin";
+export { default as Skin, Topbar } from "./RouteSkin";
 export { ResultPostcard as ResultCard } from "./Postcards";

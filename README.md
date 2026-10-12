@@ -13,7 +13,7 @@ npm run dev            # локально, http://localhost:3000
 npm run build          # статична збірка в out/ під /kod-mista
 npm run build:partner  # збірка під hmarochos.kiev.ua/partner/kod-mista
 npm run deploy         # збірка + публікація в гілку gh-pages
-npm run art            # перегенерувати заглушки ілюстрацій
+
 npm run og             # перегенерувати OG-картинки (потрібен Google Chrome)
 ```
 
@@ -35,10 +35,11 @@ npm run og             # перегенерувати OG-картинки (по�
 
 ## Ілюстрації
 
-Зараз у `public/art/` заглушки. Справжні класти під тими самими іменами:
+Обкладинка — `public/art/cover.jpg`. Листівок і персонажів ще нема, тому лицьові боки
+листівок і фінальна листівка зараз типографічні («Привіт із …», бал на тлі арки).
+Щойно ілюстрації будуть — покласти їх у `public/art/` і прописати в `data/quiz.ts`:
 
-- `postcard-1.svg` … `postcard-8.svg` — лицьові боки листівок, 16:9, по одній на зупинку;
-- `char-tourist.svg`, `char-citizen.svg`, `char-keeper.svg` — персонажі результатів, 1:1.
+- `place.art` у кожного питання — лицьовий бік листівки, 16:10;
+- `character` у кожного рівня — персонаж результату, 1:1.
 
-Інший формат (png/jpg) — поміняти шляхи в `postcardArt` і `character` у `data/quiz.ts`.
 Після заміни — `npm run og`, щоб оновити картинки для соцмереж.

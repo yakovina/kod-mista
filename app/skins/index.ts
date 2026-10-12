@@ -15,4 +15,4 @@ export type SkinName = keyof typeof SKINS;
 const wanted = (process.env.NEXT_PUBLIC_SKIN ?? "route") as SkinName;
 
 export const skinName: SkinName = wanted in SKINS ? wanted : "route";
-export const { Skin, ResultCard } = SKINS[skinName];
+export const { Skin, ResultCard, Topbar } = SKINS[skinName];
