@@ -9,7 +9,7 @@ import type { QuizApi } from "../../useQuiz";
 import { intro, questions, type Level } from "../../../data/quiz";
 import { asset } from "../../bp";
 import { SITE_URL, TEST_SHARE_TEXT, resultShareUrl } from "../../share";
-import { COVER_ALT, glide, useKeys } from "../common";
+import { COVER_ALT, buzz, glide, useKeys } from "../common";
 
 const Arrow = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" aria-hidden>
@@ -74,6 +74,7 @@ function Share({ url, text, label, primary = false }: { url: string; text: strin
   const [copied, setCopied] = useState(false);
   const popup = (u: string) => window.open(u, "_blank", "noopener,noreferrer,width=620,height=560");
   const main = async () => {
+    buzz(8);
     if (window.matchMedia("(pointer: coarse)").matches && navigator.share) {
       try {
         await navigator.share({ text, url });
@@ -113,6 +114,27 @@ function Share({ url, text, label, primary = false }: { url: string; text: strin
       )}
     </div>
   );
+}
+
+/** Бал, що рахується від нуля. */
+function CountUp({ to }: { to: number }) {
+  const [n, setN] = useState(0);
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || to === 0) {
+      setN(to);
+      return;
+    }
+    const t0 = performance.now();
+    let raf = 0;
+    const step = (now: number) => {
+      const p = Math.min(1, (now - t0) / 700);
+      setN(Math.round(to * (1 - Math.pow(1 - p, 3))));
+      if (p < 1) raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [to]);
+  return <b>{n}</b>;
 }
 
 /** Зірка з галочкою — значок правильної відповіді. */
@@ -162,9 +184,9 @@ function Sheet({ quiz }: { quiz: QuizApi }) {
         el.focus({ preventScroll: true });
         const top = el.getBoundingClientRect().top + window.scrollY - 28;
         if (calm) window.scrollTo(0, top);
-        else glide(top, 600);
+        else glide(top, 550);
       },
-      calm ? 200 : 800,
+      60,
     );
     return () => window.clearTimeout(t);
   }, [screen, idx]);
@@ -206,7 +228,14 @@ function Sheet({ quiz }: { quiz: QuizApi }) {
                 {answered ? (
                   <div className={`opt ${state}`}>{inner}</div>
                 ) : (
-                  <button className="opt" onClick={() => quiz.answer(o.key)} aria-keyshortcuts={String(i + 1)}>
+                  <button
+                    className="opt"
+                    onClick={() => {
+                      buzz(o.key === q.correct ? 18 : [28, 45, 28]);
+                      quiz.answer(o.key);
+                    }}
+                    aria-keyshortcuts={String(i + 1)}
+                  >
                     {inner}
                   </button>
                 )}
@@ -243,7 +272,14 @@ function Sheet({ quiz }: { quiz: QuizApi }) {
         )}
 
         {answered && (
-          <button className="mbtn accent next" onClick={quiz.next} aria-keyshortcuts="Enter">
+          <button
+            className="mbtn accent next"
+            onClick={() => {
+              buzz(8);
+              quiz.next();
+            }}
+            aria-keyshortcuts="Enter"
+          >
             <span>{quiz.isLast ? "Мій результат" : "Наступне питання"}</span>
             <Arrow />
           </button>
@@ -265,13 +301,19 @@ function ResultBody({ level, score, onRestart, showMisses, history }: { level: L
         </div>
         <div className="right">
           <Logo />
-          <p className="score">{score !== undefined ? <><b>{score}</b> з {questions.length} правильних</> : `Результат · ${level.range}`}</p>
+          <p className="score">{score !== undefined ? <><CountUp to={score} /> з {questions.length} правильних</> : `Результат · ${level.range}`}</p>
           <h1 className="titleBlock mid">{level.title}</h1>
           <p className="lead">{level.description}</p>
           <div className="actions">
             <Share url={shareUrl} text={level.shareText} label="Поділитися результатом" primary />
             {onRestart ? (
-              <button className="mbtn plain" onClick={onRestart}>
+              <button
+                className="mbtn plain"
+                onClick={() => {
+                  buzz(8);
+                  onRestart();
+                }}
+              >
                 <span>Пройти ще раз</span>
               </button>
             ) : (
@@ -323,7 +365,13 @@ export default function MemphisSkin({ quiz }: { quiz: QuizApi }) {
             <p className="lead">{intro.lead}</p>
             <p className="meta">{intro.meta}</p>
             <div className="actions">
-              <button className="mbtn accent" onClick={quiz.start}>
+              <button
+                className="mbtn accent"
+                onClick={() => {
+                  buzz(8);
+                  quiz.start();
+                }}
+              >
                 <span>Почати тест</span>
                 <Arrow />
               </button>

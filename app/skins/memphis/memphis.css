@@ -493,14 +493,113 @@ body:has(.memphis) {
   width: 100%;
 }
 
-/* ——— рух: лише тихе проявлення ——— */
+/* ——— рух: короткий і легкий; усе вимикається з reduce motion ——— */
+.memphis .opt.isRight {
+  isolation: isolate;
+}
+.memphis .opt.isRight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--teal);
+}
+.memphis .opt.isRight {
+  background: var(--card);
+}
+.memphis .mbtn:active,
+.memphis button.opt:active {
+  transform: translate(2px, 2px);
+}
+.memphis .mbtn,
+.memphis button.opt {
+  transition: transform 0.08s ease, box-shadow 0.12s ease, background-color 0.15s ease;
+}
+
 @media (prefers-reduced-motion: no-preference) {
+  /* появи */
+  .memphis .qcard,
+  .memphis .opts:not(.done) > li,
+  .memphis .split .left,
+  .memphis .split .right > * {
+    animation: mRise 0.38s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .memphis .opts:not(.done) > li:nth-child(1) { animation-delay: 0.06s; }
+  .memphis .opts:not(.done) > li:nth-child(2) { animation-delay: 0.11s; }
+  .memphis .opts:not(.done) > li:nth-child(3) { animation-delay: 0.16s; }
+  .memphis .opts:not(.done) > li:nth-child(4) { animation-delay: 0.21s; }
+  .memphis .split .right > :nth-child(2) { animation-delay: 0.06s; }
+  .memphis .split .right > :nth-child(3) { animation-delay: 0.12s; }
+  .memphis .split .right > :nth-child(4) { animation-delay: 0.18s; }
+  .memphis .split .right > :nth-child(n + 5) { animation-delay: 0.24s; }
+
+  /* правильна: бірюза заливає зліва направо */
+  .memphis .opt.isRight::before {
+    transform-origin: left center;
+    animation: mSweep 0.42s cubic-bezier(0.3, 0.7, 0.2, 1) both;
+  }
+  /* хибна: коротко хитає головою */
+  .memphis .opt.isWrong {
+    animation: mShake 0.36s ease-in-out both;
+  }
+  /* зірка-галочка: штамп і промальована галочка */
   .memphis .starTick {
-    animation: mFade 0.3s 0.15s ease-out both;
+    animation: mStamp 0.32s 0.3s cubic-bezier(0.3, 1.3, 0.5, 1) both;
+  }
+  .memphis .starTick path {
+    stroke-dasharray: 40;
+    stroke-dashoffset: 40;
+    animation: mDraw 0.3s 0.55s ease-out forwards;
+  }
+  /* картка пояснення й стікер */
+  .memphis .acard {
+    animation: mRise 0.4s 0.08s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .memphis .sticker {
+    animation: mDrop 0.34s 0.45s cubic-bezier(0.3, 1.3, 0.5, 1) both;
+  }
+  /* прогрес */
+  .memphis .step {
+    transition: background-color 0.35s ease;
+  }
+  /* живий декор */
+  .memphis .d-sputnik {
+    animation: mFloat 7s ease-in-out infinite alternate;
+  }
+  .memphis .d-star1 {
+    animation: mTwinkle 5s ease-in-out infinite;
+  }
+  .memphis .d-star2 {
+    animation: mTwinkle 6s 1.5s ease-in-out infinite;
   }
 }
-@keyframes mFade {
-  from { opacity: 0; }
+@keyframes mRise {
+  from { opacity: 0; transform: translateY(10px); }
+}
+@keyframes mSweep {
+  from { transform: scaleX(0); }
+}
+@keyframes mShake {
+  20% { transform: translateX(-5px); }
+  45% { transform: translateX(4px); }
+  70% { transform: translateX(-2px); }
+}
+@keyframes mStamp {
+  from { opacity: 0; transform: scale(1.6) rotate(-18deg); }
+}
+@keyframes mDraw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes mDrop {
+  from { opacity: 0; transform: translateY(-10px) rotate(-2deg); }
+}
+@keyframes mFloat {
+  from { transform: translate(0, 0) rotate(0deg); }
+  to { transform: translate(-10px, 8px) rotate(4deg); }
+}
+@keyframes mTwinkle {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(14deg) scale(0.9); }
 }
 
 /* ——— десктоп ——— */

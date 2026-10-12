@@ -50,3 +50,13 @@ export function useKeys(quiz: QuizApi) {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 }
+
+/** Вібрація (Android). На iPhone сайтам недоступна — тихо пропускаємо. */
+export function buzz(pattern: number | number[]) {
+  try {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    navigator.vibrate?.(pattern);
+  } catch {
+    /* ignore */
+  }
+}
