@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import "./skins/route/route.css";
+import "./skins/book/book.css";
 import { SITE_URL, TEST_SHARE_TITLE } from "./share";
 
 const TITLE = "Код міста · Тест Хмарочоса";

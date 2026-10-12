@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getLevelBySlug, levels } from "../../../data/quiz";
-import { Cover, Topbar } from "../../skins";
-import ShareButtons from "../../ShareButtons";
+import { getLevelBySlug, intro, levels } from "../../../data/quiz";
+import { Asterism, Cover, Logo, ShareLinks } from "../../skins";
 import { SITE_URL, resultShareUrl } from "../../share";
 
 // Статично генеруємо лише три сторінки рівнів.
@@ -39,23 +38,23 @@ export default async function ResultSharePage({ params }: { params: Promise<{ le
   const lvl = getLevelBySlug(level);
   if (!lvl) notFound();
   return (
-    <main className="route screen result">
-      <Topbar />
-      <div className="layout">
-        <div className="visual">
-          <Cover />
+    <main className="book spread result">
+      <div className="leaf verso">
+        <Cover />
+      </div>
+      <div className="leaf recto">
+        <Logo />
+        <p className="score">Результат тесту «Код міста» · {lvl.range}</p>
+        <h1 className="title mid">{lvl.title}</h1>
+        <p className="lead">{lvl.description}</p>
+        <Asterism />
+        <div className="btnCol">
+          <Link href="/" className="btn primary">
+            <span>Пройти тест</span>
+          </Link>
         </div>
-        <div className="content">
-          <p className="score">Результат тесту «Код міста» · {lvl.range}</p>
-          <h1 className="title mid">{lvl.title}</h1>
-          <p className="lead">{lvl.description}</p>
-          <div className="btnRow">
-            <Link href="/" className="btn primary">
-              <span>Пройти тест</span>
-            </Link>
-          </div>
-          <ShareButtons url={resultShareUrl(lvl.slug)} text={lvl.shareText} title={lvl.title} label="Поділитися результатом" />
-        </div>
+        <ShareLinks url={resultShareUrl(lvl.slug)} text={lvl.shareText} label="Поділитися" />
+        <p className="colophon">{intro.colophon}</p>
       </div>
     </main>
   );

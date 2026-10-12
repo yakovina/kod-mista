@@ -3,36 +3,45 @@
 <head>
 <meta charset="utf-8">
 <title>OG</title>
-<!-- Шаблон OG-картинок 1200×630. Рендерить scripts/render-og.mjs:
+<!-- Шаблон OG-картинок 1200×630 у вигляді книжкового розвороту.
+     Рендерить scripts/render-og.mjs:
      og.html            → public/og-test.png
      og.html?l=<slug>   → public/og-<slug>.png -->
 <style>
 @font-face { font-family: "Open Sans"; src: url("../public/fonts/opensans.woff2") format("woff2"); font-weight: 300 800; }
-@font-face { font-family: "Lora"; src: url("../public/fonts/lora.woff2") format("woff2"); }
+@font-face { font-family: "Lora"; src: url("../public/fonts/lora.woff2") format("woff2"); font-weight: 400 700; }
 * { box-sizing: border-box; }
-body { margin: 0; width: 1200px; height: 630px; overflow: hidden; background: #F3E6C4; color: #2E2E2B; font-family: "Open Sans", sans-serif; }
-.wrap { width: 1200px; height: 630px; padding: 56px 64px; display: flex; gap: 56px; align-items: center; }
-.left { flex: 1 1 auto; display: flex; flex-direction: column; height: 100%; }
-.logo { height: 44px; width: auto; align-self: flex-start; }
-.kicker { margin-top: auto; font-size: 26px; font-weight: 700; color: #93221A; }
-h1 { margin: 10px 0 0; font-size: 104px; font-weight: 800; line-height: .98; letter-spacing: -.025em; }
-h1.lvl { font-size: 70px; line-height: 1.04; }
-p { margin: 22px 0 auto; font-family: "Lora", serif; font-size: 28px; line-height: 1.45; color: #55574F; max-width: 560px; }
-.card { flex: 0 0 500px; border: 3px solid #2E2E2B; background: #FBF6EA; }
-.card img { display: block; width: 100%; aspect-ratio: 3/2; object-fit: cover; }
+body { margin: 0; width: 1200px; height: 630px; overflow: hidden; background: #EBDDB8; color: #2E2E2B; font-family: "Lora", serif; }
+.spread { position: absolute; inset: 28px 40px; display: grid; grid-template-columns: 1fr 1fr; background: #F3E6C4; }
+.verso { position: relative; display: flex; align-items: center; padding: 40px; }
+.verso::after { content: ""; position: absolute; top: 0; bottom: 0; right: 0; width: 30px; background: linear-gradient(to left, rgba(46,46,43,.1), transparent); }
+.verso img { display: block; width: 100%; aspect-ratio: 3/2; object-fit: cover; }
+.recto { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 48px; }
+.logo { height: 46px; width: auto; margin-bottom: 34px; }
+.kicker { font-style: italic; font-size: 26px; color: #1E5866; letter-spacing: .01em; }
+h1 { margin: 10px 0 0; font-weight: 600; font-size: 66px; line-height: 1.1; letter-spacing: .01em; }
+h1.lvl { font-size: 50px; }
+.stars { width: 46px; margin: 30px 0 22px; fill: #1E5866; }
+p { margin: 0; font-family: "Open Sans", sans-serif; font-size: 22px; font-weight: 600; letter-spacing: .025em; color: #55574F; }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="left">
+<div class="spread">
+  <div class="verso"><img src="../public/art/cover.jpg" alt=""></div>
+  <div class="recto">
     <img class="logo" src="../public/hmarochos_logo_new.svg" alt="">
     <div class="kicker" id="kicker">Тест Хмарочоса</div>
     <h1 id="title">Код міста</h1>
-    <p id="lead">Будівлі, назви вулиць і пам’ятники. Перевірте, як добре ви читаєте своє місто.</p>
+    <svg class="stars" viewBox="0 0 40 30"><polygon id="s1"/><polygon id="s2"/><polygon id="s3"/></svg>
+    <p id="lead">8 питань про будинки, вулиці й пам’ятники</p>
   </div>
-  <div class="card"><img src="../public/art/cover.jpg" alt=""></div>
 </div>
 <script>
+  const star = (cx, cy, r) => Array.from({ length: 10 }, (_, i) => {
+    const a = (Math.PI / 5) * i - Math.PI / 2, rr = i % 2 ? r * 0.45 : r;
+    return `${cx + rr * Math.cos(a)},${cy + rr * Math.sin(a)}`;
+  }).join(" ");
+  [["s1", 20, 8], ["s2", 10, 22], ["s3", 30, 22]].forEach(([id, x, y]) => document.getElementById(id).setAttribute("points", star(x, y, 7)));
   const LV = {
     tourist: { title: "Турист у своєму місті", range: "0–2 бали" },
     citizen: { title: "Допитливий містянин", range: "3–5 балів" },
@@ -44,7 +53,7 @@ p { margin: 22px 0 auto; font-family: "Lora", serif; font-size: 28px; line-heigh
     const t = document.getElementById("title");
     t.textContent = lv.title;
     t.className = "lvl";
-    document.getElementById("lead").textContent = "Тест «Код міста» від Хмарочоса.";
+    document.getElementById("lead").textContent = "Тест «Код міста» від Хмарочоса";
   }
 </script>
 </body>

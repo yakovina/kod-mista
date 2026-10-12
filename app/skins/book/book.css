@@ -1,0 +1,595 @@
+/* Скін «Книга»: науково-популярна книжка 80-х. Друк у дві фарби — чорнило
+   і бірюза; цегла лише як «олівець перевіряльника» на хибній відповіді.
+   Шрифти тільки сайту Хмарочоса: Lora (набір), Open Sans (інтерфейс).
+   Розрядка скрізь додатна, кеглі книжкові. */
+
+body:has(.book) {
+  background: #ebddb8;
+}
+
+/* паперове зерно під текстом, ледь помітне */
+body:has(.book)::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.22;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .25  0 0 0 0 .2  0 0 0 0 .12  0 0 0 .32 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+.book {
+  --paper: #f3e6c4;
+  --margin: #ebddb8;
+  --ink: #2e2e2b;
+  --ink-2: #55574f;
+  --hair: rgba(46, 46, 43, 0.2);
+  --teal: #1e5866;
+  --brick: #93221a;
+
+  position: relative;
+  z-index: 1;
+  color: var(--ink);
+  font-family: "Lora", serif;
+  letter-spacing: 0.012em;
+}
+
+/* ——— спільне ——— */
+.book .logo img {
+  height: 36px;
+  width: auto;
+}
+.book .asterism {
+  display: block;
+  width: 34px;
+  height: auto;
+  margin: 28px auto;
+  fill: var(--teal);
+}
+.book .lead {
+  margin: 16px 0 0;
+  font-style: italic;
+  font-size: 17px;
+  line-height: 1.55;
+  letter-spacing: 0.015em;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+.book .meta,
+.book .shareLinks,
+.book .btn {
+  font-family: "Open Sans", sans-serif;
+  letter-spacing: 0.025em;
+}
+.book .meta {
+  margin: 0 0 22px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+/* ——— кнопки ——— */
+.book .btn {
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  min-height: 52px;
+  padding: 0 22px;
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.book .btn.primary {
+  background: var(--teal);
+  border-color: var(--teal);
+  color: var(--paper);
+}
+.book .btn.primary:hover {
+  background: #174955;
+}
+.book .btn.ghost:hover {
+  background: var(--teal);
+  border-color: var(--teal);
+  color: var(--paper);
+}
+.book .btn svg {
+  transition: transform 0.15s ease;
+}
+.book .btn:hover svg {
+  transform: translateX(3px);
+}
+.book :focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 2px var(--paper);
+}
+.book [tabindex="-1"]:focus {
+  outline: none;
+}
+
+.book .shareLinks {
+  margin: 18px 0 0;
+  font-size: 14px;
+  color: var(--ink-2);
+}
+.book .shareLinks button {
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--teal);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.book .shareLinks button:hover {
+  color: var(--ink);
+}
+
+/* ——— розворот: титул і результат ——— */
+.book.spread {
+  min-height: 100dvh;
+  background: var(--paper);
+}
+.book .leaf {
+  padding: 20px;
+}
+.book .verso {
+  padding: 0;
+}
+.book .cover {
+  margin: 0;
+}
+.book .cover img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+.book .recto {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 28px 20px 48px;
+}
+.book .recto .logo {
+  margin-bottom: 28px;
+}
+.book .title {
+  margin: 0;
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+}
+.book .title.mid {
+  font-size: 28px;
+  line-height: 1.2;
+}
+.book .recto .lead {
+  max-width: 32em;
+}
+.book .recto .btn.primary {
+  min-width: 240px;
+}
+.book .btnCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.book .btnCol .btn {
+  min-width: 260px;
+}
+.book .btnCol .btn.ghost {
+  justify-content: center;
+}
+.book .score {
+  margin: 0 0 10px;
+  font-style: italic;
+  font-size: 17px;
+  color: var(--teal);
+}
+
+.book .reread {
+  margin-top: 40px;
+  width: 100%;
+  max-width: 34em;
+  text-align: left;
+}
+.book .reread h2 {
+  margin: 0 0 6px;
+  font-weight: 600;
+  font-size: 20px;
+  text-align: center;
+}
+.book .reread ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.book .reread li {
+  padding: 14px 0;
+  border-top: 1px solid var(--hair);
+}
+.book .reread .rq {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+}
+.book .reread .ra {
+  margin: 6px 0 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+.book .reread .ra b {
+  color: var(--teal);
+}
+.book .colophon {
+  margin: 44px 0 0;
+  padding-top: 14px;
+  max-width: 34em;
+  border-top: 1px solid var(--hair);
+  font-family: "Open Sans", sans-serif;
+  font-size: 12.5px;
+  line-height: 1.55;
+  letter-spacing: 0.02em;
+  color: rgba(46, 46, 43, 0.72);
+}
+
+/* ——— аркуш питання ——— */
+.book.sheet {
+  min-height: 100dvh;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 16px 20px 28px;
+  background: var(--paper);
+  display: flex;
+  flex-direction: column;
+}
+.book .runhead {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 14px;
+  font-style: italic;
+  font-size: 14px;
+  letter-spacing: 0.03em;
+  color: var(--ink-2);
+}
+.book .runhead .logo img {
+  height: 26px;
+}
+.book .rhTitle {
+  justify-self: start;
+}
+.book .readline {
+  position: relative;
+  margin-top: 12px;
+  height: 1px;
+  background: var(--ink);
+}
+.book .readline span {
+  position: absolute;
+  left: 0;
+  top: -1px;
+  height: 3px;
+  background: var(--teal);
+  transition: width 0.3s ease;
+}
+.book .page {
+  flex: 1 1 auto;
+  padding-top: 28px;
+}
+.book .context {
+  margin: 0 0 14px;
+  font-style: italic;
+  font-size: 17px;
+  line-height: 1.6;
+  letter-spacing: 0.015em;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+.book .prompt {
+  margin: 0;
+  font-weight: 600;
+  font-size: 21px;
+  line-height: 1.38;
+  letter-spacing: 0.008em;
+  text-wrap: balance;
+}
+
+/* варіанти — як у збірнику задач */
+.book .opts {
+  list-style: none;
+  margin: 22px 0 0;
+  padding: 0;
+  border-bottom: 1px solid var(--hair);
+}
+.book .opts > li {
+  border-top: 1px solid var(--hair);
+}
+.book .opt {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2.2em 1fr;
+  width: 100%;
+  padding: 14px 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  font-family: "Lora", serif;
+  font-size: 17px;
+  line-height: 1.55;
+  letter-spacing: 0.012em;
+  text-align: left;
+  transition: background-color 0.15s ease;
+}
+.book .opt .k {
+  position: relative;
+  font-weight: 600;
+  transition: color 0.15s ease;
+}
+.book button.opt:hover {
+  background: rgba(30, 88, 102, 0.07);
+}
+.book button.opt:hover .k {
+  color: var(--teal);
+}
+
+/* стан після відповіді */
+.book .opts.done .opt {
+  display: grid;
+  border-top: 1px solid var(--hair);
+}
+.book .opt.rest {
+  color: var(--ink-2);
+}
+.book .opt.right .k {
+  color: var(--teal);
+}
+.book .opt.wrong .k {
+  color: var(--brick);
+}
+.book .mark {
+  display: block;
+  margin-top: 2px;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+}
+.book .opt.right .mark {
+  color: var(--teal);
+}
+.book .opt.wrong .mark {
+  color: var(--brick);
+}
+.book .pencil {
+  position: absolute;
+  left: -0.62em;
+  top: -0.08em;
+  width: 2.4em;
+  height: auto;
+  overflow: visible;
+  pointer-events: none;
+}
+.book .pencil path {
+  fill: none;
+  stroke: var(--teal);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.book .answer {
+  padding-top: 4px;
+}
+.book .verdict {
+  margin: 0;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 1.35;
+}
+.book .verdict b {
+  color: var(--teal);
+}
+.book .verdict.miss {
+  color: var(--brick);
+}
+.book .verdict.miss b {
+  color: var(--teal);
+}
+.book .explain {
+  margin: 12px 0 0;
+  font-size: 17px;
+  line-height: 1.65;
+  text-indent: 1.5em;
+  text-wrap: pretty;
+}
+.book .explain sup,
+.book .footnotes sup {
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.65em;
+  font-weight: 700;
+  color: var(--teal);
+}
+.book .nextRow {
+  margin-top: 26px;
+  display: flex;
+  justify-content: flex-end;
+}
+.book .footnotes {
+  list-style: none;
+  margin: 30px 0 0;
+  padding: 10px 0 0;
+  position: relative;
+  font-family: "Open Sans", sans-serif;
+  font-size: 13px;
+  line-height: 1.45;
+  letter-spacing: 0.02em;
+}
+.book .footnotes::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 33%;
+  border-top: 1px solid var(--ink);
+}
+.book .footnotes li {
+  display: flex;
+  gap: 6px;
+  padding: 4px 0;
+}
+.book .footnotes a {
+  color: var(--teal);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.book .footnotes a:hover {
+  color: var(--ink);
+}
+.book .folio {
+  margin-top: 32px;
+  text-align: center;
+  font-style: italic;
+  font-size: 14px;
+  letter-spacing: 0.03em;
+  color: var(--ink-2);
+}
+
+/* ——— рух ——— */
+@media (prefers-reduced-motion: no-preference) {
+  .book.sheet .page {
+    animation: turn 0.22s ease-out both;
+  }
+  .book .answer {
+    animation: ink 0.3s ease-out both;
+  }
+  .book .pencil path {
+    stroke-dasharray: 190;
+    stroke-dashoffset: 190;
+    animation: draw 0.5s 0.1s ease-out forwards;
+  }
+  .book.spread .recto > * {
+    animation: ink 0.4s ease-out both;
+  }
+}
+@keyframes turn {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+}
+@keyframes ink {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ——— десктоп ——— */
+@media (min-width: 720px) {
+  .book.sheet {
+    margin: 32px auto;
+    min-height: calc(100dvh - 64px);
+    padding: 26px 64px 30px;
+  }
+  .book .page {
+    padding-top: 40px;
+  }
+  .book .prompt {
+    font-size: 24px;
+  }
+  .book .context,
+  .book .opt,
+  .book .explain {
+    font-size: 18px;
+  }
+  .book button.opt::before {
+    content: "→";
+    position: absolute;
+    left: -1.6em;
+    top: 14px;
+    color: var(--teal);
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+  .book button.opt:hover::before {
+    opacity: 1;
+  }
+  .book .footnotes {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 980px) {
+  .book.spread {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    max-width: 1180px;
+    min-height: calc(100dvh - 64px);
+    margin: 32px auto;
+  }
+  .book .verso {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 56px 56px 56px 72px;
+  }
+  /* тінь корінця */
+  .book .verso::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 28px;
+    background: linear-gradient(to left, rgba(46, 46, 43, 0.09), transparent);
+  }
+  .book .recto {
+    justify-content: center;
+    padding: 56px 72px 56px 56px;
+  }
+  .book .recto .logo {
+    margin-bottom: 40px;
+  }
+  .book .title {
+    font-size: 46px;
+  }
+  .book .title.mid {
+    font-size: 36px;
+  }
+  .book .lead {
+    font-size: 19px;
+  }
+  .book.result .recto {
+    justify-content: flex-start;
+  }
+}
+
+/* результат: опис довгий — прямий набір; обкладинка тримається вгорі */
+.book.result .recto .lead {
+  font-style: normal;
+}
+@media (min-width: 980px) {
+  .book.result .verso {
+    align-items: flex-start;
+  }
+  .book.result .cover {
+    position: sticky;
+    top: 56px;
+  }
+}

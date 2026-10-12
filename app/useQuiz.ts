@@ -31,7 +31,12 @@ export interface QuizApi {
 // спрацює по старій розкладці.
 const toTop = () =>
   requestAnimationFrame(() =>
-    requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: "smooth" })),
+    requestAnimationFrame(() =>
+      window.scrollTo({
+        top: 0,
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+      }),
+    ),
   );
 
 export function useQuiz(): QuizApi {
@@ -61,7 +66,6 @@ export function useQuiz(): QuizApi {
     setHistory((h) => [...h, ok]);
     answersRef.current.push({ id: q.id, picked: key, ok });
     setScreen("reveal");
-    toTop();
   };
 
   const next = () => {
