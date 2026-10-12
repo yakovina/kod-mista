@@ -64,6 +64,21 @@ const PencilStrike = () => (
   </svg>
 );
 
+/** Плавна прокрутка власним кроком: не залежить від scroll-behavior браузера. */
+function glide(to: number, ms: number) {
+  const from = window.scrollY;
+  const dist = to - from;
+  if (Math.abs(dist) < 2) return;
+  const t0 = performance.now();
+  const step = (now: number) => {
+    const p = Math.min(1, (now - t0) / ms);
+    const e = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+    window.scrollTo(0, from + dist * e);
+    if (p < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
 /** Клавіші: 1–4 або а/б/в/г — відповідь, Enter — далі. */
 function useKeys(quiz: QuizApi) {
   const ref = useRef(quiz);
@@ -100,11 +115,27 @@ function Sheet({ quiz }: { quiz: QuizApi }) {
   const promptRef = useRef<HTMLHeadingElement>(null);
   const answerRef = useRef<HTMLElement>(null);
 
-  // фокус без прокрутки: після відповіді сторінка лишається на місці,
-  // щоб було видно олівцеві позначки; пояснення читач гортає сам
+  // після відповіді: спершу олівець позначає правильну й хибну, потім
+  // сторінка плавно гортається до пояснення
   useEffect(() => {
-    if (screen === "question") promptRef.current?.focus({ preventScroll: true });
-    else if (screen === "reveal") answerRef.current?.focus({ preventScroll: true });
+    if (screen === "question") {
+      promptRef.current?.focus({ preventScroll: true });
+      return;
+    }
+    if (screen !== "reveal") return;
+    const el = answerRef.current;
+    const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const t = window.setTimeout(
+      () => {
+        if (!el) return;
+        el.focus({ preventScroll: true });
+        const top = el.getBoundingClientRect().top + window.scrollY - 24;
+        if (calm) window.scrollTo(0, top);
+        else glide(top, 700);
+      },
+      calm ? 400 : 1300,
+    );
+    return () => window.clearTimeout(t);
   }, [screen, idx]);
 
   return (
@@ -195,22 +226,33 @@ export default function BookSkin({ quiz }: { quiz: QuizApi }) {
 
   if (screen === "intro") {
     return (
-      <main className="book spread intro">
-        <div className="leaf verso">
-          <Cover />
+      <main className="book closed intro">
+        {/* закрита книжка: тканинна палітурка з вклеєною ілюстрацією */}
+        <div className="bookCover">
+          <span className="coverSpine" aria-hidden />
+          <div className="coverFace">
+            <span className="coverPub">Хмарочос</span>
+            <h1 className="coverTitle">{intro.title}</h1>
+            <figure className="coverPlate">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={asset("/art/cover.jpg")} alt={COVER_ALT} />
+            </figure>
+            <span className="coverSub">Вісім питань про будинки, вулиці й пам’ятники</span>
+          </div>
         </div>
-        <div className="leaf recto titlePage">
+
+        {/* вкладка-анотація */}
+        <aside className="annotation">
           <Logo />
-          <h1 className="title">{intro.title}</h1>
+          <h2>Анотація</h2>
           <p className="lead">{intro.lead}</p>
-          <Asterism />
           <p className="meta">{intro.meta}</p>
           <button className="btn primary" onClick={quiz.start}>
             <span>Почати тест</span>
             <ArrowIcon />
           </button>
           <ShareLinks url={`${SITE_URL}/`} text={TEST_SHARE_TEXT} label="Поділитися тестом" />
-        </div>
+        </aside>
       </main>
     );
   }
