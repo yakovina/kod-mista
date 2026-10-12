@@ -356,9 +356,6 @@ function ResultBody({ level, score, onRestart, history }: { level: Level; score?
           <Logo />
           <div className="resultHead">
             <div className="scoreStar" aria-label={score !== undefined ? `${score} з ${questions.length}` : level.range}>
-              <svg viewBox="0 0 120 120" aria-hidden>
-                <polygon points="60,4 75,42 116,44 84,70 95,112 60,88 25,112 36,70 4,44 45,42" />
-              </svg>
               <span className="scoreNum">
                 {score !== undefined ? (
                   <>
