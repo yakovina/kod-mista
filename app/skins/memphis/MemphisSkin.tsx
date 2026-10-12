@@ -11,8 +11,6 @@ import { asset } from "../../bp";
 import { SITE_URL, TEST_SHARE_TEXT, resultShareUrl } from "../../share";
 import { COVER_ALT, glide, useKeys } from "../common";
 
-const TINTS = ["#79abb7", "#e9c150", "#d66c46", "#1e5866"];
-
 const Arrow = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" aria-hidden>
     <path d="M4 12h15M13 6l6 6-6 6" />
@@ -196,7 +194,7 @@ function Sheet({ quiz }: { quiz: QuizApi }) {
             const state = !answered ? "" : o.key === q.correct ? "isRight" : o.key === picked ? "isWrong" : "isRest";
             const inner = (
               <>
-                <span className="k" style={answered ? undefined : { background: TINTS[i], color: i === 3 ? "#fbf6ea" : undefined }}>
+                <span className="k">
                   {o.key}
                 </span>
                 <span className="t">{o.text}</span>
@@ -235,8 +233,10 @@ function Sheet({ quiz }: { quiz: QuizApi }) {
               <span>
                 Поки що: {score} з {idx + 1}
               </span>
-              <span className="stars" aria-hidden>
-                {history.map((h) => (h ? "★" : "☆")).join(" ")}
+              <span className="dots" aria-hidden>
+                {history.map((h, i) => (
+                  <i key={i} className={h ? "ok" : "miss"} />
+                ))}
               </span>
             </div>
           </section>
