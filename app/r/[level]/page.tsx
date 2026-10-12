@@ -52,8 +52,8 @@ export default async function ResultSharePage({ params }: { params: Promise<{ le
           <Link href="/" className="btn primary">
             <span>Пройти тест</span>
           </Link>
+          <ShareLinks url={resultShareUrl(lvl.slug)} text={lvl.shareText} label="Поділитися" />
         </div>
-        <ShareLinks url={resultShareUrl(lvl.slug)} text={lvl.shareText} label="Поділитися" />
         <p className="colophon">{intro.colophon}</p>
       </div>
     </main>

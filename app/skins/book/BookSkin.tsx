@@ -264,22 +264,6 @@ export default function BookSkin({ quiz }: { quiz: QuizApi }) {
   // result
   const shareUrl = resultShareUrl(level.slug);
   const misses = questions.filter((_, i) => history[i] === false);
-  const share = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({ title: level.title, text: level.shareText, url: shareUrl });
-      } catch {
-        /* скасовано */
-      }
-      return;
-    }
-    try {
-      await navigator.clipboard.writeText(`${level.shareText} ${shareUrl}`);
-      alert("Посилання на результат скопійовано");
-    } catch {
-      /* ignore */
-    }
-  };
   return (
     <main className="book spread result">
       <div className="leaf verso">
@@ -294,15 +278,11 @@ export default function BookSkin({ quiz }: { quiz: QuizApi }) {
         <p className="lead">{level.description}</p>
         <Asterism />
         <div className="btnCol">
-          <button className="btn primary" onClick={share}>
-            <span>Поділитися результатом</span>
-            <ArrowIcon />
-          </button>
+          <ShareLinks url={shareUrl} text={level.shareText} label="Поділитися результатом" primary />
           <button className="btn ghost" onClick={quiz.restart}>
             <span>Пройти ще раз</span>
           </button>
         </div>
-        <ShareLinks url={shareUrl} text={level.shareText} label="Або надіслати" />
 
         {misses.length > 0 && (
           <section className="reread">
