@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
+<rect width="800" height="450" fill="#FFE3CC"/>
+<circle cx="660" cy="96" r="54" fill="#FF9F5A"/>
+<path d="M560 110 H260 V350 H560 V280 H340 V180 H560 Z" fill="#2C6BD9"/><rect x="280" y="128" width="26" height="30" fill="#FFFFFF"/><rect x="280" y="302" width="26" height="30" fill="#FFFFFF"/><rect x="334" y="128" width="26" height="30" fill="#FFFFFF"/><rect x="334" y="302" width="26" height="30" fill="#FFFFFF"/><rect x="388" y="128" width="26" height="30" fill="#FFFFFF"/><rect x="388" y="302" width="26" height="30" fill="#FFFFFF"/><rect x="442" y="128" width="26" height="30" fill="#FFFFFF"/><rect x="442" y="302" width="26" height="30" fill="#FFFFFF"/><rect x="496" y="128" width="26" height="30" fill="#FFFFFF"/><rect x="496" y="302" width="26" height="30" fill="#FFFFFF"/><text x="400" y="246" font-family="Lora, serif" font-size="64" font-weight="700" fill="#FF9F5A" text-anchor="middle">С</text>
+<rect x="24" y="398" width="752" height="32" fill="#1D2433"/>
+<text x="38" y="420" font-family="Open Sans, sans-serif" font-size="16" font-weight="700" fill="#FFFFFF">ЗАГЛУШКА · Будинок «Слово»</text>
+</svg>

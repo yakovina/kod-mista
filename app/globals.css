@@ -1,0 +1,49 @@
+/* Спільна база для всіх скінів: шрифти сайту Хмарочоса і скидання.
+   Усе візуальне — у CSS конкретного скіна (app/skins/<назва>/). */
+
+@font-face {
+  font-family: "Open Sans";
+  src: url("/fonts/opensans.woff2") format("woff2");
+  font-weight: 300 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Lora";
+  src: url("/fonts/lora.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: "Open Sans", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}

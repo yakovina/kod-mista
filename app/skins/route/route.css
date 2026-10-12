@@ -1,0 +1,651 @@
+/* Скін «Маршрут»: тест як прогулянка вісьмома зупинками з листівками.
+   Палітра з концепт-полотна: небо, синій, абрикос, персик, чорнило. */
+
+body:has(.route) {
+  background: #ddebfa;
+}
+
+.route {
+  --sky: #ddebfa;
+  --blue: #2c6bd9;
+  --blue-soft: #dce7fa;
+  --apricot: #ff9f5a;
+  --apricot-ink: #c4621c;
+  --peach: #ffe3cc;
+  --peach-soft: #fff1e6;
+  --ink: #1d2433;
+  --ink-2: #3a4a66;
+  --rule: #c9d6ea;
+  --white: #ffffff;
+
+  min-height: 100dvh;
+  max-width: 460px;
+  margin: 0 auto;
+  padding: 20px 18px 24px;
+  display: flex;
+  flex-direction: column;
+  color: var(--ink);
+  background: var(--sky);
+}
+
+.route .grow {
+  flex-grow: 1;
+  min-height: 20px;
+}
+
+/* ——— шапка ——— */
+.route .masthead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.route .masthead img {
+  height: 26px;
+  width: auto;
+}
+
+/* ——— типографіка ——— */
+.route .title {
+  margin: 26px 0 0;
+  font-weight: 800;
+  font-size: 48px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.route .title.small {
+  margin-top: 22px;
+  font-size: 28px;
+  line-height: 1.12;
+}
+.route .lead {
+  margin: 12px 0 0;
+  font-family: "Lora", serif;
+  font-size: 17px;
+  line-height: 1.5;
+  color: #2b3852;
+}
+.route .kicker {
+  margin-top: 18px;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--blue);
+}
+.route .meta {
+  margin-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+
+/* ——— кнопки ——— */
+.route .btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 56px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 0;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: transform 0.12s ease, filter 0.12s ease;
+}
+.route .btn:hover {
+  filter: brightness(1.05);
+}
+.route .btn:active {
+  transform: translateY(1px);
+}
+.route .btn:focus-visible,
+.route .opt:focus-visible,
+.route a:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 2px;
+}
+.route .btn.blue {
+  background: var(--blue);
+  color: var(--white);
+}
+.route .btn.apricot {
+  background: var(--apricot);
+  color: var(--ink);
+}
+.route .btn.square {
+  flex: 0 0 56px;
+  width: 56px;
+  padding: 0;
+  justify-content: center;
+  background: var(--white);
+  color: var(--ink);
+}
+.route .btnRow {
+  display: flex;
+  gap: 8px;
+}
+.route .btnRow .btn.apricot {
+  flex: 1 1 auto;
+}
+
+/* ——— листівки ——— */
+.route .postcard {
+  position: relative;
+  margin: 16px 0 0;
+  background: var(--white);
+  padding: 12px;
+}
+.route .postcard.front {
+  transform: rotate(-1.2deg);
+}
+.route .postcard.back {
+  transform: rotate(0.8deg);
+  padding: 14px;
+}
+.route .postcard.result {
+  transform: rotate(1.4deg);
+}
+.route .postcard.mapCard {
+  margin-top: 18px;
+  padding: 10px;
+  transform: rotate(-1deg);
+}
+
+.route .pcPic {
+  aspect-ratio: 16 / 9;
+  background: var(--peach);
+  overflow: hidden;
+}
+.route .pcPic.tall {
+  aspect-ratio: 1 / 1;
+}
+.route .pcPic img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.route .pcCaption {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--ink-2);
+}
+.route .pcCaption .hello {
+  font-family: "Lora", serif;
+  font-style: italic;
+  font-size: 15px;
+  color: var(--ink);
+}
+
+.route .stamp {
+  position: absolute;
+  right: 18px;
+  top: 18px;
+  width: 54px;
+  height: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 4px dotted var(--white);
+  outline: 1px solid var(--blue);
+  background: var(--blue);
+  color: var(--white);
+  font-weight: 800;
+  font-size: 13px;
+  transform: rotate(6deg);
+}
+.route .stamp.apricot {
+  background: var(--apricot);
+  outline-color: var(--apricot);
+  color: var(--ink);
+}
+.route .stamp.big {
+  right: 22px;
+  top: -14px;
+  width: 62px;
+  height: 74px;
+  transform: rotate(8deg);
+}
+.route .stamp.big b {
+  font-size: 22px;
+  line-height: 1;
+}
+.route .stamp.big small {
+  font-size: 9px;
+  letter-spacing: 0.08em;
+}
+
+.route .pcLabel {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.route .pcBackHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+.route .pcBackHead .stamp {
+  position: static;
+  transform: rotate(4deg);
+}
+.route .pcResultGrid {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 12px;
+}
+.route .pcText {
+  margin: 0;
+  font-family: "Lora", serif;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ink);
+}
+.route .pcText.small {
+  font-size: 14px;
+  color: var(--ink-2);
+}
+.route .pcAddress {
+  position: relative;
+  margin: 14px 0 6px auto;
+  width: 52%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.route .pcAddress .postmark {
+  top: -22px;
+  right: auto;
+  left: -36px;
+}
+.route .pcTo {
+  border-left: 1px solid var(--rule);
+  padding-left: 12px;
+  display: flex;
+  flex-direction: column;
+}
+.route .pcAddress .line {
+  display: block;
+  height: 18px;
+  border-bottom: 1px solid var(--rule);
+}
+.route .pcTo {
+  gap: 6px;
+  font-size: 12px;
+  color: var(--ink-2);
+}
+.route .pcTo b {
+  font-size: 15px;
+  line-height: 1.2;
+  color: var(--ink);
+}
+.route .pcCountry {
+  border-top: 1px solid var(--rule);
+  padding-top: 6px;
+}
+
+.route .postmark {
+  position: absolute;
+  right: 28px;
+  top: 104px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2.5px solid var(--apricot);
+  color: var(--apricot-ink);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transform: rotate(-12deg);
+  pointer-events: none;
+}
+.route .postmark b {
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  max-width: 64px;
+  line-height: 1.1;
+}
+.route .postmark i {
+  font-style: normal;
+  font-weight: 800;
+  font-size: 12px;
+  line-height: 1.2;
+}
+.route .postmark small {
+  font-size: 9px;
+  font-weight: 700;
+}
+.route .postmark.big {
+  top: 20px;
+  right: 20px;
+  width: 88px;
+  height: 88px;
+  border: 3px solid var(--blue);
+  color: var(--blue);
+  background: rgba(255, 255, 255, 0.8);
+  transform: rotate(-14deg);
+}
+.route .postmark.big b {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: 0;
+  max-width: none;
+}
+.route .postmark.big small {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
+
+/* ——— мапа обкладинки ——— */
+.route .coverMap {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.route .cm-bg {
+  fill: #f3f8fe;
+}
+.route .cm-river {
+  fill: none;
+  stroke: #bfd6f2;
+  stroke-width: 10;
+}
+.route .cm-route {
+  fill: none;
+  stroke: var(--blue);
+  stroke-width: 3;
+  stroke-dasharray: 7 6;
+}
+.route .cm-stop {
+  fill: var(--blue);
+}
+.route .cm-stop.start {
+  fill: var(--apricot);
+}
+.route .cm-label {
+  font-family: "Open Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  fill: var(--ink);
+}
+
+/* ——— маршрут-прогрес ——— */
+.route .routeLine {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.route .rl-solid,
+.route .rl-dash {
+  fill: none;
+  stroke: var(--blue);
+}
+.route .rl-solid {
+  stroke-width: 3;
+}
+.route .rl-dash {
+  stroke-width: 2.5;
+  stroke-dasharray: 6 6;
+}
+.route .rl-stop.ok {
+  fill: var(--blue);
+}
+.route .rl-stop.miss {
+  fill: var(--apricot);
+}
+.route .rl-stop.now {
+  fill: var(--white);
+  stroke: var(--ink);
+  stroke-width: 3;
+}
+.route .rl-stop.next {
+  fill: var(--white);
+  stroke: var(--blue);
+  stroke-width: 2;
+}
+.route .stopLabel {
+  margin-top: 2px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+/* ——— питання ——— */
+.route .context {
+  margin: 20px 0 0;
+  font-family: "Lora", serif;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #2b3852;
+}
+.route .prompt {
+  margin: 12px 0 0;
+  font-weight: 800;
+  font-size: 19px;
+  line-height: 1.3;
+}
+.route .postcard.front + .prompt {
+  margin-top: 20px;
+}
+.route .opts {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.route .opt {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
+  padding: 6px 12px 6px 6px;
+  background: var(--white);
+  border: 0;
+  border-radius: 0;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: left;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.route .opt:hover {
+  box-shadow: inset 0 0 0 2px var(--blue);
+}
+.route .opt .k,
+.route .answerRecap .k {
+  flex: 0 0 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--apricot);
+  color: var(--ink);
+  font-weight: 800;
+  font-size: 15px;
+}
+
+/* ——— відповідь ——— */
+.route .verdict {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+}
+.route .verdict.ok {
+  background: var(--blue);
+  color: var(--white);
+}
+.route .verdict.miss {
+  background: var(--apricot);
+  color: var(--ink);
+}
+.route .verdictMark {
+  flex: 0 0 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid currentColor;
+  border-radius: 50%;
+  font-weight: 800;
+}
+.route .vTitle {
+  font-weight: 800;
+  font-size: 19px;
+  line-height: 1.15;
+}
+.route .vSub {
+  margin-top: 4px;
+  font-size: 13px;
+  opacity: 0.9;
+}
+.route .answerRecap {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 12px 6px 6px;
+  background: var(--white);
+  box-shadow: inset 0 0 0 2px var(--blue);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+.route .answerRecap .k {
+  background: var(--blue);
+  color: var(--white);
+}
+.route .answerRecap.mine {
+  box-shadow: none;
+  color: var(--ink-2);
+  text-decoration: line-through;
+  text-decoration-color: var(--apricot-ink);
+}
+.route .answerRecap.mine .k {
+  background: var(--peach);
+  color: var(--ink);
+}
+
+.route .sources {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+}
+.route .sources .sTitle {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--apricot-ink);
+}
+.route .sources a {
+  color: var(--blue);
+  font-weight: 600;
+  line-height: 1.35;
+}
+.route .sources a:hover {
+  color: var(--ink);
+}
+
+/* ——— поділитися ——— */
+.route .share {
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.route .share .lbl {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.route .shareBtns {
+  display: flex;
+  gap: 8px;
+}
+.route .shareBtn {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--white);
+  border: 0;
+  color: var(--blue);
+}
+.route .shareBtn svg {
+  width: 20px;
+  height: 20px;
+}
+.route .shareBtn:hover {
+  background: var(--blue);
+  color: var(--white);
+}
+.route .shareHint {
+  margin: 0;
+  flex-basis: 100%;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.route .share:has(.shareHint) {
+  flex-wrap: wrap;
+}
+
+/* ——— вхід екранів ——— */
+@media (prefers-reduced-motion: no-preference) {
+  .route.screen > * {
+    animation: routeIn 0.35s ease both;
+  }
+  .route .postcard.back {
+    animation: flipIn 0.5s ease both;
+  }
+}
+@keyframes routeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+@keyframes flipIn {
+  from {
+    opacity: 0;
+    transform: perspective(800px) rotateY(-70deg) rotate(0.8deg);
+  }
+}
+
+/* ——— ширші екрани ——— */
+@media (min-width: 720px) {
+  .route {
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+}
