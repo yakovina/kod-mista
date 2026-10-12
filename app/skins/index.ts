@@ -1,7 +1,7 @@
 // Скіни тесту. Рушій (app/useQuiz.ts) і контент (data/quiz.ts) спільні,
 // скін визначає лише вигляд: розмітку екранів і свій CSS.
 //
-// Як додати скін (наприклад, «Авангард» з концепт-полотна):
+// Як додати скін (наприклад, з варіантів на концепт-полотні):
 //   1. скопіювати app/skins/route → app/skins/<назва>, переписати розмітку і CSS;
 //      кореневий клас — .<назва> (див. route.css, де все під .route);
 //   2. зареєструвати його в SKINS нижче;
@@ -15,4 +15,4 @@ export type SkinName = keyof typeof SKINS;
 const wanted = (process.env.NEXT_PUBLIC_SKIN ?? "route") as SkinName;
 
 export const skinName: SkinName = wanted in SKINS ? wanted : "route";
-export const { Skin, ResultCard, Topbar } = SKINS[skinName];
+export const { Skin, Topbar, Cover } = SKINS[skinName];

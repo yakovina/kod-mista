@@ -6,7 +6,7 @@ export const SITE_URL =
 export const TEST_SHARE_TITLE = "Код міста — тест Хмарочоса";
 
 export const TEST_SHARE_TEXT =
-  "Вісім зупинок про будівлі, назви вулиць і пам’ятники. Перевір, як добре ти читаєш своє місто:";
+  "Вісім питань про будівлі, назви вулиць і пам’ятники. Перевір, як добре ти читаєш своє місто:";
 
 /** URL шер-сторінки конкретного результату: /r/{slug}/ */
 export function resultShareUrl(slug: string): string {

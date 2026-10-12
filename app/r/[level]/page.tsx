@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { TOTAL, getLevelBySlug, levels } from "../../../data/quiz";
-import { ResultCard, Topbar } from "../../skins";
+import { getLevelBySlug, levels } from "../../../data/quiz";
+import { Cover, Topbar } from "../../skins";
 import ShareButtons from "../../ShareButtons";
 import { SITE_URL, resultShareUrl } from "../../share";
 
@@ -40,18 +40,18 @@ export default async function ResultSharePage({ params }: { params: Promise<{ le
   if (!lvl) notFound();
   return (
     <main className="route screen result">
-      <Topbar right="Листівка з тесту" />
+      <Topbar />
       <div className="layout">
         <div className="visual">
-          <ResultCard level={lvl} total={TOTAL} />
+          <Cover />
         </div>
         <div className="content">
-          <p className="kicker">Результат · {lvl.range}</p>
+          <p className="score">Результат тесту «Код міста» · {lvl.range}</p>
           <h1 className="title mid">{lvl.title}</h1>
           <p className="lead">{lvl.description}</p>
           <div className="btnRow">
             <Link href="/" className="btn primary">
-              <span>Пройти маршрут</span>
+              <span>Пройти тест</span>
             </Link>
           </div>
           <ShareButtons url={resultShareUrl(lvl.slug)} text={lvl.shareText} title={lvl.title} label="Поділитися результатом" />

@@ -1,19 +1,19 @@
-/* Скін «Маршрут»: тест як прогулянка вісьмома зупинками з листівками.
-   Візуальна мова — з обкладинки (public/art/cover.jpg): папір із зерном,
-   чорнильний контур 2px, бірюзова арка, гірчиця, теракота, цегла. */
+/* Основний скін тесту. Текстовий: одна ілюстрація (обкладинка), решта —
+   типографіка. Шрифти лише сайту Хмарочоса: Open Sans (заголовки, інтерфейс)
+   і Lora (тексти). Кольори — з обкладинки (public/art/cover.jpg). */
 
 body:has(.route) {
   background: #f3e6c4;
 }
 
-/* паперове зерно поверх усього, як на ілюстрації */
+/* паперове зерно, як на ілюстрації */
 body:has(.route)::before {
   content: "";
   position: fixed;
   inset: 0;
   z-index: 50;
   pointer-events: none;
-  opacity: 0.35;
+  opacity: 0.3;
   mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .25  0 0 0 0 .2  0 0 0 0 .12  0 0 0 .32 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }
@@ -24,9 +24,6 @@ body:has(.route)::before {
   --ink: #2e2e2b;
   --ink-2: #55574f;
   --teal: #1e5866;
-  --teal-2: #3f7f8e;
-  --teal-3: #79abb7;
-  --stone: #e9e5dc;
   --mustard: #e9c150;
   --butter: #f5d88c;
   --terracotta: #d66c46;
@@ -37,7 +34,7 @@ body:has(.route)::before {
   min-height: 100dvh;
   max-width: 1240px;
   margin: 0 auto;
-  padding: 18px 20px 36px;
+  padding: 18px 20px 40px;
   color: var(--ink);
 }
 
@@ -49,10 +46,8 @@ body:has(.route)::before {
   gap: 16px;
   padding-bottom: 14px;
   border-bottom: 1px solid var(--ink);
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
 }
 .route .topbar img {
   height: 30px;
@@ -70,83 +65,91 @@ body:has(.route)::before {
   flex-direction: column;
   min-width: 0;
 }
-.route .visual {
-  min-width: 0;
+.route .narrow {
+  max-width: 760px;
+  margin: 0 auto;
+  padding-top: 22px;
+}
+
+/* ——— обкладинка ——— */
+.route .cover {
+  margin: 0;
+  border: var(--line);
+  background: var(--card);
+}
+.route .cover img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
 }
 
 /* ——— типографіка ——— */
-.route .kicker {
-  margin: 0;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--brick);
-}
 .route .title {
-  margin: 10px 0 0;
+  margin: 0;
   font-weight: 800;
-  font-size: clamp(52px, 8vw, 104px);
-  line-height: 0.95;
-  letter-spacing: -0.03em;
+  font-size: clamp(48px, 7vw, 96px);
+  line-height: 0.98;
+  letter-spacing: -0.025em;
 }
 .route .title.mid {
+  margin-top: 8px;
   font-size: clamp(34px, 4.4vw, 56px);
-  line-height: 1.02;
+  line-height: 1.05;
   letter-spacing: -0.02em;
 }
 .route .lead {
   margin: 18px 0 0;
   max-width: 34em;
   font-family: "Lora", serif;
-  font-size: 18px;
-  line-height: 1.55;
+  font-size: 19px;
+  line-height: 1.6;
   color: var(--ink-2);
-}
-.route .context {
-  margin: 14px 0 0;
-  font-family: "Lora", serif;
-  font-size: 17px;
-  line-height: 1.55;
-  color: var(--ink-2);
-}
-.route .prompt {
-  margin: 12px 0 0;
-  font-weight: 800;
-  font-size: clamp(21px, 2.2vw, 27px);
-  line-height: 1.25;
-  letter-spacing: -0.01em;
-}
-.route .kicker + .prompt {
-  margin-top: 14px;
+  text-wrap: pretty;
 }
 .route .meta {
-  margin-top: 14px;
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  font-size: 13px;
+  margin: 16px 0 28px;
+  font-size: 16px;
+  font-weight: 600;
   color: var(--ink-2);
 }
-
-.route .cities {
-  list-style: none;
-  margin: 22px 0 28px;
-  padding: 14px 0;
-  border-top: 1px solid var(--ink);
-  border-bottom: 1px solid var(--ink);
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px 0;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+.route .score {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink-2);
 }
-.route .cities li + li::before {
-  content: "→";
-  margin: 0 10px;
-  color: var(--terracotta);
+.route .score b {
+  font-size: 1.4em;
+  font-weight: 800;
+  color: var(--teal);
+}
+.route .topic {
+  margin: 28px 0 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--brick);
+}
+.route .context {
+  margin: 10px 0 0;
+  font-family: "Lora", serif;
+  font-size: 19px;
+  line-height: 1.6;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+.route .prompt {
+  margin: 14px 0 0;
+  font-weight: 700;
+  font-size: clamp(23px, 2.6vw, 30px);
+  line-height: 1.28;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.route .prompt.small {
+  margin-top: 24px;
+  font-size: 19px;
+  line-height: 1.35;
+  color: var(--ink-2);
 }
 
 /* ——— кнопки ——— */
@@ -161,11 +164,9 @@ body:has(.route)::before {
   border: var(--line);
   border-radius: 0;
   text-decoration: none;
-  font-weight: 800;
-  font-size: 15px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+  font-weight: 700;
+  font-size: 17px;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 .route .btn svg {
   transition: transform 0.15s ease;
@@ -214,434 +215,37 @@ body:has(.route)::before {
   flex: 1 1 auto;
 }
 
-/* ——— прогрес-маршрут ——— */
+/* ——— прогрес ——— */
 .route .progress {
-  --fill: 0;
-  position: relative;
-  list-style: none;
-  margin: 18px 0 0;
-  padding: 0;
-  display: flex;
-  justify-content: space-between;
-}
-.route .progress::before,
-.route .progress::after {
-  content: "";
-  position: absolute;
-  left: 15px;
-  top: 50%;
-  height: 2px;
-  transform: translateY(-50%);
-}
-.route .progress::before {
-  right: 15px;
-  background: var(--ink);
-  opacity: 0.25;
-}
-.route .progress::after {
-  width: calc((100% - 30px) * var(--fill));
-  background: var(--teal);
-  transition: width 0.4s ease;
-}
-.route .stop {
-  position: relative;
-  z-index: 1;
-  width: 30px;
-  height: 30px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  border: var(--line);
-  background: var(--card);
-  font-size: 12px;
-  font-weight: 800;
-}
-.route .stop.ok {
-  background: var(--teal);
-  color: var(--card);
-}
-.route .stop.miss {
-  background: var(--terracotta);
-  color: var(--ink);
-}
-.route .stop.now {
-  background: var(--mustard);
-  box-shadow: 0 0 0 4px var(--paper), 0 0 0 6px var(--ink);
-}
-.route .stop.next {
-  border-color: rgba(46, 46, 43, 0.35);
-  color: var(--ink-2);
-}
-
-/* ——— обкладинка ——— */
-.route .coverCard {
-  position: relative;
-  margin: 0;
-  border: var(--line);
-  background: var(--card);
-}
-.route .coverCard img {
-  width: 100%;
-  aspect-ratio: 3 / 2;
-  object-fit: cover;
-}
-.route .coverCard .stamp {
-  top: auto;
-  right: 18px;
-  bottom: -26px;
-}
-
-/* ——— листівки ——— */
-.route .postcard {
-  position: relative;
-  margin: 0;
-  background: var(--card);
-  border: var(--line);
-}
-.route .pcFace {
-  container-type: inline-size;
-  position: relative;
-  aspect-ratio: 16 / 10;
-  overflow: hidden;
-  border-bottom: var(--line);
-}
-.route .pcFace.square {
-  aspect-ratio: 1 / 1;
-}
-.route .pcFace > img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.route .pcFace .stamp {
-  top: 14px;
-  right: 14px;
-}
-
-.route .pcType {
-  --t-bg: var(--mustard);
-  --t-fg: var(--ink);
-  --a1: var(--teal);
-  --a2: var(--teal-2);
-  --a3: var(--teal-3);
-  --a4: var(--stone);
-  position: relative;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 20px 22px;
-  background: var(--t-bg);
-  color: var(--t-fg);
-}
-.route .tone-teal .pcType,
-.route .pcType.result {
-  --t-bg: var(--teal);
-  --t-fg: var(--card);
-  --a1: var(--mustard);
-  --a2: var(--butter);
-  --a3: var(--teal-3);
-  --a4: var(--stone);
-}
-.route .tone-terracotta .pcType {
-  --t-bg: var(--terracotta);
-  --a4: var(--butter);
-}
-.route .arch {
-  position: absolute;
-  right: -14%;
-  bottom: -16%;
-  height: 88%;
-  width: auto;
-}
-.route .arch .a1 {
-  fill: var(--a1);
-}
-.route .arch .a2 {
-  fill: var(--a2);
-}
-.route .arch .a3 {
-  fill: var(--a3);
-}
-.route .arch .a4 {
-  fill: var(--a4);
-}
-.route .arch path {
-  stroke: var(--ink);
-  stroke-width: 2;
-}
-.route .arch .crack {
-  fill: none;
-  stroke-width: 3;
-  stroke-linejoin: miter;
-}
-.route .pcGreet,
-.route .pcCity,
-.route .pcNo,
-.route .pcScore,
-.route .pcScoreSub {
-  position: relative;
-  max-width: 66%;
-}
-.route .pcNo {
-  position: absolute;
-  top: 18px;
-  left: 22px;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-.route .pcGreet {
-  font-family: "Lora", serif;
-  font-style: italic;
-  font-size: clamp(15px, 4cqi, 24px);
-}
-.route .pcCity {
-  margin-top: 2px;
-  font-weight: 800;
-  font-size: clamp(22px, 7cqi, 60px);
-  line-height: 0.95;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-}
-.route .pcType.result {
-  justify-content: center;
-}
-.route .pcScore {
-  font-weight: 800;
-  font-size: clamp(72px, 26cqi, 170px);
-  line-height: 0.9;
-  letter-spacing: -0.04em;
-}
-.route .pcScoreSub {
-  margin-top: 8px;
-  font-family: "Lora", serif;
-  font-style: italic;
-  font-size: 18px;
-}
-
-.route .pcCaption {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
   gap: 16px;
-  padding: 12px 16px;
-  font-family: "Lora", serif;
-  font-style: italic;
-  font-size: 15px;
 }
-.route .pcCaption .year {
-  font-family: "Open Sans", sans-serif;
-  font-style: normal;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  white-space: nowrap;
-}
-
-/* зворот */
-.route .postcard.back {
-  padding: 18px 20px 16px;
-}
-.route .pcBackHead {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid var(--ink);
-}
-.route .pcBackHead .stamp {
-  position: static;
-}
-.route .pcLabel {
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--ink-2);
-}
-.route .pcText::first-letter {
-  float: left;
-  margin: 6px 10px 0 0;
-  font-family: "Open Sans", sans-serif;
-  font-weight: 800;
-  font-size: 64px;
-  line-height: 0.8;
-  color: var(--teal);
-}
-.route .pcText {
-  text-wrap: pretty;
-  margin: 16px 0 0;
-  font-family: "Lora", serif;
-  font-size: 17px;
-  line-height: 1.6;
-}
-.route .pcFoot {
-  margin-top: 18px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.route .pcLines {
+.route .bar {
   flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-.route .pcLines span {
-  display: block;
-  border-bottom: 1px solid var(--ink);
-  opacity: 0.35;
-}
-
-/* марка */
-.route .stamp {
-  position: absolute;
-  width: 64px;
-  height: 72px;
-  padding: 5px;
-  background: radial-gradient(circle at 50% 50%, transparent 2.6px, var(--card) 3px) -4px -4px / 8px 8px;
-  filter: drop-shadow(0 0 0.6px rgba(46, 46, 43, 0.9));
-  flex: 0 0 auto;
-}
-.route .stampIn {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  background: var(--teal);
-  color: var(--card);
-  box-shadow: inset 0 0 0 2px var(--card), inset 0 0 0 3px var(--teal);
-}
-.route .stampIn b {
-  font-size: 17px;
-  font-weight: 800;
-  line-height: 1;
-}
-.route .stampIn small {
-  font-size: 7px;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-}
-.route .tone-teal .pcFace .stampIn,
-.route .postcard.result .stampIn {
-  background: var(--brick);
-  box-shadow: inset 0 0 0 2px var(--card), inset 0 0 0 3px var(--brick);
-}
-.route .coverCard .stampIn {
-  background: var(--terracotta);
-  color: var(--ink);
-  box-shadow: inset 0 0 0 2px var(--card), inset 0 0 0 3px var(--terracotta);
-}
-.route .coverCard .stampIn b {
-  font-size: 26px;
-}
-
-/* штемпель */
-.route .postmark {
-  flex: 0 0 auto;
-  width: 168px;
-  height: auto;
-  color: var(--brick);
-  transform: rotate(-8deg);
-  opacity: 0.85;
-}
-.route .pmWave,
-.route .pmRing {
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2.4;
-}
-.route .pmRing.thin {
-  stroke-width: 1.3;
-}
-.route .pmRingText {
-  font-family: "Open Sans", sans-serif;
-  font-size: 9.6px;
-  font-weight: 800;
-  letter-spacing: 1.4px;
-  fill: currentColor;
-}
-.route .pmCenter {
-  font-family: "Open Sans", sans-serif;
-  font-size: 19px;
-  font-weight: 800;
-  fill: currentColor;
-}
-
-/* фінальна листівка */
-.route .pcTo {
   display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: baseline;
-  gap: 4px 14px;
-  padding: 14px 18px 16px;
-}
-.route .pcToLabel {
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--ink-2);
-}
-.route .pcTo b {
-  font-size: 19px;
-  font-weight: 800;
-  line-height: 1.2;
-}
-.route .pcToLine {
-  grid-column: 2;
-  padding-top: 6px;
-  border-top: 1px solid rgba(46, 46, 43, 0.35);
-  font-family: "Lora", serif;
-  font-style: italic;
-  font-size: 14px;
-  color: var(--ink-2);
-}
-
-/* ——— шапка зупинки ——— */
-.route .stopHead {
-  display: flex;
-  align-items: flex-end;
-  gap: 16px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--ink);
-}
-.route .stopNum {
-  font-weight: 800;
-  font-size: clamp(64px, 7vw, 92px);
-  line-height: 0.78;
-  letter-spacing: -0.05em;
-  color: transparent;
-  -webkit-text-stroke: 2px var(--ink);
-  font-variant-numeric: tabular-nums;
-}
-.route .stopMeta {
-  display: flex;
-  flex-direction: column;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
   gap: 4px;
-  padding-bottom: 2px;
 }
-.route .stopCity {
-  font-family: "Lora", serif;
-  font-style: italic;
-  font-size: 20px;
-  line-height: 1.1;
+.route .seg {
+  height: 8px;
+  background: rgba(46, 46, 43, 0.15);
+  transition: background-color 0.3s ease;
 }
-.route .stopHead + .context,
-.route .stopHead + .prompt {
-  margin-top: 20px;
+.route .seg.ok {
+  background: var(--teal);
 }
-.route .context {
-  text-wrap: pretty;
+.route .seg.miss {
+  background: var(--terracotta);
 }
-.route .prompt {
-  text-wrap: balance;
+.route .seg.now {
+  background: var(--ink);
+}
+.route .count {
+  flex: 0 0 auto;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink-2);
 }
 
 /* ——— варіанти відповіді ——— */
@@ -652,44 +256,40 @@ body:has(.route)::before {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  counter-reset: none;
 }
 .route .opt {
   position: relative;
   display: flex;
-  align-items: center;
-  gap: 4px;
-  min-height: 64px;
-  padding: 10px 18px 10px 0;
+  align-items: stretch;
+  min-height: 62px;
+  padding: 0;
   background: var(--card);
   border: var(--line);
   border-radius: 0;
   color: var(--ink);
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 600;
   line-height: 1.4;
   text-align: left;
-  text-wrap: pretty;
   transition: background-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
 }
 .route .opt .k {
-  flex: 0 0 58px;
-  align-self: stretch;
+  flex: 0 0 54px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Lora", serif;
-  font-style: italic;
-  font-weight: 600;
-  font-size: 30px;
-  line-height: 1;
-  color: var(--terracotta);
-  transition: color 0.18s ease;
+  border-right: var(--line);
+  background: var(--mustard);
+  font-weight: 800;
+  font-size: 18px;
+  transition: background-color 0.18s ease, color 0.18s ease;
 }
 .route .opt .t {
   flex: 1 1 auto;
-  padding-left: 14px;
-  border-left: 1px solid rgba(46, 46, 43, 0.25);
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  padding: 12px 18px;
 }
 .route button.opt:hover {
   background: var(--butter);
@@ -697,68 +297,52 @@ body:has(.route)::before {
   transform: translate(-2px, -2px);
 }
 .route button.opt:hover .k {
-  color: var(--teal);
+  background: var(--teal);
+  color: var(--card);
 }
 .route button.opt:active {
-  box-shadow: 0 0 0 var(--ink);
+  box-shadow: none;
   transform: none;
 }
-.route .hint {
-  margin: 14px 0 0;
-  font-size: 12px;
-  color: var(--ink-2);
-}
-@media (hover: none) {
-  .route .hint {
-    display: none;
-  }
-}
 
-/* стан після відповіді */
-.route .promptSmall {
-  margin: 20px 0 0;
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 1.35;
-  color: var(--ink-2);
-  text-wrap: balance;
-}
+/* після відповіді */
 .route .opts.done {
-  margin-top: 14px;
-  gap: 8px;
+  margin-top: 16px;
+  gap: 14px;
 }
 .route .opts.done .opt {
   min-height: 54px;
-  flex-wrap: wrap;
 }
 .route .opt .tag {
-  margin-left: auto;
-  padding: 3px 8px;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  position: absolute;
+  top: -12px;
+  right: 12px;
+  padding: 2px 9px;
+  border: var(--line);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.4;
   white-space: nowrap;
 }
 .route .opt.right {
   background: var(--teal);
-  border-color: var(--ink);
   color: var(--card);
 }
 .route .opt.right .k {
-  color: var(--mustard);
-}
-.route .opt.right .t {
-  border-left-color: rgba(251, 246, 234, 0.35);
+  background: var(--mustard);
+  color: var(--ink);
 }
 .route .opt.right .tag {
   background: var(--mustard);
   color: var(--ink);
 }
 .route .opt.wrong {
-  background: var(--card);
   border-color: var(--terracotta);
   color: var(--ink-2);
+}
+.route .opt.wrong .k {
+  background: var(--terracotta);
+  border-right-color: var(--terracotta);
 }
 .route .opt.wrong .t {
   text-decoration: line-through;
@@ -775,26 +359,22 @@ body:has(.route)::before {
   color: var(--ink-2);
 }
 .route .opt.rest .k {
-  color: rgba(46, 46, 43, 0.4);
-}
-@media (prefers-reduced-motion: no-preference) {
-  .route .opt.right {
-    animation: pop 0.45s cubic-bezier(0.2, 0.8, 0.2, 1.2) both;
-  }
-}
-@keyframes pop {
-  from {
-    transform: scale(0.97);
-  }
+  background: transparent;
+  border-right-color: rgba(46, 46, 43, 0.22);
+  color: rgba(46, 46, 43, 0.45);
 }
 
-/* ——— відповідь ——— */
+/* ——— вердикт ——— */
 .route .verdict {
+  margin-top: 26px;
   display: flex;
   align-items: center;
   gap: 14px;
   padding: 16px 18px;
   border: var(--line);
+  font-weight: 800;
+  font-size: 22px;
+  line-height: 1.2;
 }
 .route .verdict.ok {
   background: var(--teal);
@@ -816,49 +396,58 @@ body:has(.route)::before {
   justify-content: center;
   border: 2.5px solid currentColor;
   border-radius: 50%;
-  font-weight: 800;
+  font-size: 18px;
 }
-.route .vTitle {
-  font-weight: 800;
-  font-size: 20px;
-  line-height: 1.15;
+
+/* ——— пояснення ——— */
+.route .explain {
+  margin-top: 28px;
+  padding: 24px 26px;
+  background: var(--card);
+  border: var(--line);
 }
-.route .vSub {
-  margin-top: 4px;
-  font-size: 13px;
+.route .explain p {
+  margin: 0;
+  font-family: "Lora", serif;
+  font-size: 19px;
+  line-height: 1.65;
+  text-wrap: pretty;
+}
+/* буквиця Lora, як .dropcap на сайті Хмарочоса */
+.route .explain p::first-letter {
+  float: left;
+  margin: 6px 10px 0 0;
+  font-family: "Lora", serif;
+  font-weight: 700;
+  font-size: 66px;
+  line-height: 0.82;
+  color: var(--teal);
 }
 
 .route .sources {
+  margin: 22px 0 26px;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 16px 0;
-  border-top: 1px solid var(--ink);
-  font-size: 14px;
+  font-size: 15px;
 }
 .route .sources .sTitle {
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+  font-weight: 700;
   color: var(--brick);
 }
 .route .sources a {
   color: var(--teal);
   font-weight: 600;
-  line-height: 1.4;
+  line-height: 1.45;
   text-underline-offset: 3px;
 }
 .route .sources a:hover {
   color: var(--ink);
 }
-.route .content.bottom .btn {
-  margin-top: 8px;
-}
 
 /* ——— поділитися ——— */
 .route .share {
-  margin-top: 22px;
+  margin-top: 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -867,10 +456,8 @@ body:has(.route)::before {
 }
 .route .share .lbl {
   margin: 0;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-size: 15px;
+  font-weight: 600;
   color: var(--ink-2);
 }
 .route .shareBtns {
@@ -899,113 +486,46 @@ body:has(.route)::before {
 .route .shareHint {
   margin: 0;
   flex-basis: 100%;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--ink-2);
 }
 
 /* ——— рух ——— */
 @media (prefers-reduced-motion: no-preference) {
-  .route .layout > * {
-    animation: routeIn 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  .route .layout > *,
+  .route .narrow > * {
+    animation: rise 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
   }
-  .route .layout > *:nth-child(2) {
-    animation-delay: 0.06s;
-  }
-  .route .layout > *:nth-child(3) {
-    animation-delay: 0.12s;
-  }
-  .route .postcard.back {
-    animation: flipIn 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-    transform-origin: left center;
+  .route .narrow > .explain {
+    animation-delay: 0.08s;
   }
 }
-@keyframes routeIn {
+@keyframes rise {
   from {
     opacity: 0;
     transform: translateY(8px);
-  }
-}
-@keyframes flipIn {
-  from {
-    opacity: 0;
-    transform: perspective(1000px) rotateY(-50deg);
   }
 }
 
 /* ——— планшет і десктоп ——— */
 @media (min-width: 720px) {
   .route {
-    padding: 26px 40px 48px;
+    padding: 26px 40px 56px;
   }
-  .route .stop {
-    width: 34px;
-    height: 34px;
-    font-size: 13px;
-  }
-  .route .progress::before,
-  .route .progress::after {
-    left: 17px;
-  }
-  .route .progress::before {
-    right: 17px;
-  }
-  .route .progress::after {
-    width: calc((100% - 34px) * var(--fill));
+  .route .narrow {
+    padding-top: 36px;
   }
 }
 
 @media (min-width: 980px) {
   .route {
-    padding: 30px 56px 64px;
+    padding: 30px 56px 72px;
   }
   .route .layout {
-    grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
     gap: 72px;
-    margin-top: 44px;
-  }
-  .route.intro .layout,
-  .route.result .layout {
     align-items: center;
-    min-height: calc(100dvh - 180px);
+    min-height: calc(100dvh - 150px);
+    margin-top: 0;
   }
-  .route.question .layout {
-    align-items: start;
-  }
-  .route .visual {
-    position: sticky;
-    top: 32px;
-    align-self: start;
-  }
-  .route.intro .visual,
-  .route.result .visual {
-    position: static;
-    align-self: center;
-  }
-  .route .layout.split {
-    grid-template-areas:
-      "v top"
-      "v bottom";
-    grid-template-rows: auto 1fr;
-    row-gap: 22px;
-  }
-  .route .layout.split .visual {
-    grid-area: v;
-  }
-  .route .layout.split .content.top {
-    grid-area: top;
-  }
-  .route .layout.split .content.bottom {
-    grid-area: bottom;
-  }
-  .route .pcText {
-    font-size: 18px;
-  }
-  .route .opt {
-    font-size: 16px;
-  }
-}
-
-.route .pcType.result .pcScoreSub,
-.route .pcType.result .pcGreet {
-  max-width: 52%;
 }
