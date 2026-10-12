@@ -243,13 +243,17 @@ function Sheet({ quiz }: { quiz: QuizApi }) {
             <div className="acardBody">
               <p className="akey">{ok ? `Ваша відповідь — ${q.correct}` : `Правильна відповідь — ${q.correct}`}</p>
               <Explanation text={q.explanation} />
-              <div className="srcs">
-                {q.sources.map((s) => (
-                  <a key={s.url} className="tag" href={s.url} target="_blank" rel="noopener noreferrer">
-                    {s.label}
-                  </a>
+              <p className="srcs">
+                <span>{q.sources.length > 1 ? "Джерела:" : "Джерело:"}</span>{" "}
+                {q.sources.map((s, i) => (
+                  <span key={s.url}>
+                    {i > 0 && " · "}
+                    <a href={s.url} target="_blank" rel="noopener noreferrer">
+                      {s.label}
+                    </a>
+                  </span>
                 ))}
-              </div>
+              </p>
             </div>
             <div className="acardFoot">
               <span>

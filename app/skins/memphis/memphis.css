@@ -889,3 +889,24 @@ body:has(.memphis) {
   }
 
 }
+
+/* джерела — тихий рядок дрібним текстом, не кнопки */
+.memphis p.srcs {
+  display: block;
+  margin: 0;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+.memphis p.srcs a {
+  color: var(--ink-2);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: rgba(46, 46, 43, 0.35);
+  text-underline-offset: 3px;
+}
+.memphis p.srcs a:hover {
+  color: var(--teal);
+  text-decoration-color: currentColor;
+}
