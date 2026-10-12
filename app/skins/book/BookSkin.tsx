@@ -14,7 +14,6 @@ import { ArrowIcon } from "./icons";
 
 const COVER_ALT = "Ілюстрація: місто з аркою, що тріснула, космонавт і супутник";
 const letter = (k: string) => `${k.toLowerCase()})`;
-const reduced = () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 export function Logo() {
   return (
@@ -57,6 +56,14 @@ const PencilRing = () => (
   </svg>
 );
 
+/** «Олівцеве» перекреслення хибної букви — червоним олівцем перевіряльника. */
+const PencilStrike = () => (
+  <svg className="pencil strike" viewBox="0 0 64 44" aria-hidden>
+    <path d="M12 34 C 22 26, 36 17, 54 9" />
+    <path d="M14 11 C 26 18, 40 27, 52 35" />
+  </svg>
+);
+
 /** Клавіші: 1–4 або а/б/в/г — відповідь, Enter — далі. */
 function useKeys(quiz: QuizApi) {
   const ref = useRef(quiz);
@@ -93,17 +100,11 @@ function Sheet({ quiz }: { quiz: QuizApi }) {
   const promptRef = useRef<HTMLHeadingElement>(null);
   const answerRef = useRef<HTMLElement>(null);
 
-  // фокус і прокрутка: нове питання — на питання; відповідь — до пояснення
+  // фокус без прокрутки: після відповіді сторінка лишається на місці,
+  // щоб було видно олівцеві позначки; пояснення читач гортає сам
   useEffect(() => {
-    if (screen === "question") {
-      promptRef.current?.focus({ preventScroll: true });
-    } else if (screen === "reveal") {
-      const el = answerRef.current;
-      requestAnimationFrame(() => {
-        el?.scrollIntoView({ behavior: reduced() ? "auto" : "smooth", block: "start" });
-        el?.focus({ preventScroll: true });
-      });
-    }
+    if (screen === "question") promptRef.current?.focus({ preventScroll: true });
+    else if (screen === "reveal") answerRef.current?.focus({ preventScroll: true });
   }, [screen, idx]);
 
   return (
@@ -141,6 +142,7 @@ function Sheet({ quiz }: { quiz: QuizApi }) {
                 <span className="k">
                   {letter(o.key)}
                   {state === "right" && <PencilRing />}
+                  {state === "wrong" && <PencilStrike />}
                 </span>
                 <span className="t">
                   {o.text}

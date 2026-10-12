@@ -11,8 +11,8 @@
 @font-face { font-family: "Open Sans"; src: url("../public/fonts/opensans.woff2") format("woff2"); font-weight: 300 800; }
 @font-face { font-family: "Lora"; src: url("../public/fonts/lora.woff2") format("woff2"); font-weight: 400 700; }
 * { box-sizing: border-box; }
-body { margin: 0; width: 1200px; height: 630px; overflow: hidden; background: #EBDDB8; color: #2E2E2B; font-family: "Lora", serif; }
-.spread { position: absolute; inset: 28px 40px; display: grid; grid-template-columns: 1fr 1fr; background: #F3E6C4; }
+body { margin: 0; width: 1200px; height: 630px; overflow: hidden; background: linear-gradient(rgba(46,46,43,.22), rgba(46,46,43,.22)), url("../public/art/cover.jpg") center / cover; color: #2E2E2B; font-family: "Lora", serif; }
+.spread { position: absolute; inset: 28px 40px; display: grid; grid-template-columns: 1fr 1fr; background: #F2EAD8; box-shadow: inset 0 0 70px rgba(140,105,50,.14), 4px 4px 0 #E3D7BD, 0 18px 50px rgba(0,0,0,.4); }
 .verso { position: relative; display: flex; align-items: center; padding: 40px; }
 .verso::after { content: ""; position: absolute; top: 0; bottom: 0; right: 0; width: 30px; background: linear-gradient(to left, rgba(46,46,43,.1), transparent); }
 .verso img { display: block; width: 100%; aspect-ratio: 3/2; object-fit: cover; }
