@@ -68,24 +68,22 @@ function CoverCard() {
   );
 }
 
-/** «Поділитися»: на тач-пристроях — системне меню, інакше три варіанти. */
-function Share({ url, text, label, primary = false }: { url: string; text: string; label: string; primary?: boolean }) {
-  const [open, setOpen] = useState(false);
+const FB = "M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z";
+const TG = "M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z";
+
+/** Окремі кнопки поширення: Facebook, Telegram, копіювати; на телефоні ще «Інше…». */
+function Share({ url, text, label }: { url: string; text: string; label: string }) {
   const [copied, setCopied] = useState(false);
-  const popup = (u: string) => window.open(u, "_blank", "noopener,noreferrer,width=620,height=560");
-  const main = async () => {
+  const [native, setNative] = useState(false);
+  useEffect(() => {
+    setNative(!!navigator.share && window.matchMedia("(pointer: coarse)").matches);
+  }, []);
+  const popup = (u: string) => {
     buzz(8);
-    if (window.matchMedia("(pointer: coarse)").matches && navigator.share) {
-      try {
-        await navigator.share({ text, url });
-      } catch {
-        /* скасовано */
-      }
-      return;
-    }
-    setOpen((o) => !o);
+    window.open(u, "_blank", "noopener,noreferrer,width=620,height=560");
   };
   const copy = async () => {
+    buzz(8);
     try {
       await navigator.clipboard.writeText(`${text} ${url}`);
       setCopied(true);
@@ -94,24 +92,41 @@ function Share({ url, text, label, primary = false }: { url: string; text: strin
       /* ignore */
     }
   };
+  const more = async () => {
+    buzz(8);
+    try {
+      await navigator.share({ text, url });
+    } catch {
+      /* скасовано */
+    }
+  };
   return (
     <div className="share">
-      <button type="button" className={primary ? "mbtn accent" : "mbtn plain"} onClick={main} aria-expanded={open}>
-        <span>{label}</span>
-      </button>
-      {open && (
-        <div className="shareRow">
-          <button type="button" className="tag" onClick={() => popup(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`)}>
-            Facebook
+      <p className="shareLabel">{label}</p>
+      <div className="shareGrid">
+        <button type="button" className="sbtn fb" onClick={() => popup(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`)}>
+          <svg viewBox="0 0 24 24" aria-hidden><path d={FB} /></svg>
+          <span>Facebook</span>
+        </button>
+        <button type="button" className="sbtn tg" onClick={() => popup(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`)}>
+          <svg viewBox="0 0 24 24" aria-hidden><path d={TG} /></svg>
+          <span>Telegram</span>
+        </button>
+        <button type="button" className="sbtn copy" onClick={copy}>
+          <svg viewBox="0 0 24 24" aria-hidden fill="none" stroke="currentColor" strokeWidth="2.2">
+            <path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1" />
+          </svg>
+          <span>{copied ? "Скопійовано" : "Копіювати"}</span>
+        </button>
+        {native && (
+          <button type="button" className="sbtn more" onClick={more}>
+            <svg viewBox="0 0 24 24" aria-hidden fill="none" stroke="currentColor" strokeWidth="2.2">
+              <path d="M12 3v12M7 8l5-5 5 5M5 14v7h14v-7" />
+            </svg>
+            <span>Інше…</span>
           </button>
-          <button type="button" className="tag" onClick={() => popup(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`)}>
-            Telegram
-          </button>
-          <button type="button" className="tag" onClick={copy}>
-            {copied ? "Скопійовано" : "Копіювати посилання"}
-          </button>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
@@ -378,7 +393,7 @@ function ResultBody({ level, score, onRestart, showMisses, history }: { level: L
             </section>
           )}
           <div className="actions">
-            <Share url={shareUrl} text={level.shareText} label="Поділитися результатом" primary />
+            <Share url={shareUrl} text={level.shareText} label="Поділитися результатом" />
             {onRestart ? (
               <button
                 className="mbtn plain"

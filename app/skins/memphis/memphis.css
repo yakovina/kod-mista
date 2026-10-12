@@ -910,3 +910,59 @@ body:has(.memphis) {
   color: var(--teal);
   text-decoration-color: currentColor;
 }
+
+/* окремі кнопки поширення */
+.memphis .shareLabel {
+  margin: 8px 0 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink-2);
+}
+.memphis .shareGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.memphis .sbtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 10px;
+  border: var(--line);
+  border-radius: 0;
+  background: var(--card);
+  box-shadow: 2px 2px 0 var(--ink);
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 700;
+  transition: transform 0.08s ease, box-shadow 0.12s ease, background-color 0.15s ease;
+}
+.memphis .sbtn svg {
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+.memphis .sbtn.copy svg,
+.memphis .sbtn.more svg {
+  fill: none;
+}
+.memphis .sbtn.fb svg { color: var(--teal); }
+.memphis .sbtn.tg svg { color: var(--mid); }
+.memphis .sbtn:hover {
+  background: #fff6dc;
+}
+.memphis .sbtn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0 0 0 var(--ink);
+}
+@media (min-width: 900px) {
+  .memphis .actions {
+    width: min(420px, 100%);
+  }
+  .memphis .shareGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
