@@ -64,6 +64,37 @@ const PencilStrike = () => (
   </svg>
 );
 
+/** Олівцева галочка для вердикту «Правильно». */
+const PencilTick = () => (
+  <svg className="pencil tick" viewBox="0 0 40 40" aria-hidden>
+    <path d="M7 21 C 11 24, 14 28, 17 31 C 22 22, 28 13, 35 7" />
+  </svg>
+);
+
+/** Олівцевий хрестик для вердикту «Не зовсім». */
+const PencilCross = () => (
+  <svg className="pencil cross" viewBox="0 0 40 40" aria-hidden>
+    <path d="M9 9 C 17 17, 24 24, 31 32" />
+    <path d="M31 8 C 24 16, 17 24, 9 32" />
+  </svg>
+);
+
+/** Пояснення: перше речення — головна думка, жирним; далі звичайний абзац. */
+function Explanation({ text }: { text: string }) {
+  const m = text.match(/^(.+?[.!?])\s+([\s\S]+)$/);
+  return (
+    <p className="explain">
+      {m ? (
+        <>
+          <strong>{m[1]}</strong> {m[2]}
+        </>
+      ) : (
+        text
+      )}
+    </p>
+  );
+}
+
 /** Плавна прокрутка власним кроком: не залежить від scroll-behavior браузера. */
 function glide(to: number, ms: number) {
   const from = window.scrollY;
@@ -131,9 +162,9 @@ function Sheet({ quiz }: { quiz: QuizApi }) {
         el.focus({ preventScroll: true });
         const top = el.getBoundingClientRect().top + window.scrollY - 24;
         if (calm) window.scrollTo(0, top);
-        else glide(top, 700);
+        else glide(top, 600);
       },
-      calm ? 400 : 1300,
+      calm ? 200 : 850,
     );
     return () => window.clearTimeout(t);
   }, [screen, idx]);
@@ -186,31 +217,40 @@ function Sheet({ quiz }: { quiz: QuizApi }) {
         </ol>
 
         {answered && (
-          <section className="answer" ref={answerRef} tabIndex={-1} aria-live="polite">
-            <Asterism />
-            <p className={ok ? "verdict ok" : "verdict miss"}>
-              {ok ? "Саме так." : "Майже."} Відповідь: <b>{letter(q.correct)}</b>
-            </p>
-            <p className="explain">
-              {q.explanation}
-              <sup>{q.sources.map((_, i) => i + 1).join(", ")}</sup>
-            </p>
-            <div className="nextRow">
+          <section className={`answer ${ok ? "ok" : "miss"}`} ref={answerRef} tabIndex={-1} aria-live="polite">
+            <header className="answerHead">
+              <span className="answerMark" aria-hidden>
+                {ok ? <PencilTick /> : <PencilCross />}
+              </span>
+              <span className="answerVerdict">{ok ? "Правильно" : "Не зовсім"}</span>
+              <span className="answerKey">
+                {ok ? "Ваша відповідь" : "Правильна відповідь"}: <b>{letter(q.correct)}</b>
+              </span>
+            </header>
+            <Explanation text={q.explanation} />
+            {q.sources.length > 0 && (
+              <details className="sources">
+                <summary>Джерела ({q.sources.length})</summary>
+                <ol>
+                  {q.sources.map((s) => (
+                    <li key={s.url}>
+                      <a href={s.url} target="_blank" rel="noopener noreferrer">
+                        {s.label}
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </details>
+            )}
+            <footer className="answerFoot">
+              <span className="tally">
+                Поки що: {quiz.score} з {idx + 1} правильних
+              </span>
               <button className="btn primary" onClick={quiz.next} aria-keyshortcuts="Enter">
                 <span>{quiz.isLast ? "Мій результат" : "Наступне питання"}</span>
                 <ArrowIcon />
               </button>
-            </div>
-            <ol className="footnotes">
-              {q.sources.map((s, i) => (
-                <li key={s.url}>
-                  <sup>{i + 1}</sup>
-                  <a href={s.url} target="_blank" rel="noopener noreferrer">
-                    {s.label}
-                  </a>
-                </li>
-              ))}
-            </ol>
+            </footer>
           </section>
         )}
       </article>

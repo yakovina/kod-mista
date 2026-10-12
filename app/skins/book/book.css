@@ -449,74 +449,6 @@ body:has(.book)::before {
   stroke-width: 1.8;
 }
 
-.book .answer {
-  padding-top: 4px;
-}
-.book .verdict {
-  margin: 0;
-  font-weight: 600;
-  font-size: 20px;
-  line-height: 1.35;
-}
-.book .verdict b {
-  color: var(--teal);
-}
-.book .verdict.miss {
-  color: var(--brick);
-}
-.book .verdict.miss b {
-  color: var(--teal);
-}
-.book .explain {
-  margin: 12px 0 0;
-  font-size: 17px;
-  line-height: 1.65;
-  text-indent: 1.5em;
-  text-wrap: pretty;
-}
-.book .explain sup,
-.book .footnotes sup {
-  font-family: "Open Sans", sans-serif;
-  font-size: 0.65em;
-  font-weight: 700;
-  color: var(--teal);
-}
-.book .nextRow {
-  margin-top: 26px;
-  display: flex;
-  justify-content: flex-end;
-}
-.book .footnotes {
-  list-style: none;
-  margin: 30px 0 0;
-  padding: 10px 0 0;
-  position: relative;
-  font-family: "Open Sans", sans-serif;
-  font-size: 13px;
-  line-height: 1.45;
-  letter-spacing: 0.02em;
-}
-.book .footnotes::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 33%;
-  border-top: 1px solid var(--ink);
-}
-.book .footnotes li {
-  display: flex;
-  gap: 6px;
-  padding: 4px 0;
-}
-.book .footnotes a {
-  color: var(--teal);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 3px;
-}
-.book .footnotes a:hover {
-  color: var(--ink);
-}
 .book .folio {
   margin-top: 32px;
   text-align: center;
@@ -528,13 +460,21 @@ body:has(.book)::before {
 
 /* ——— рух: лише олівець, решта з'являється одразу, як на друкованій сторінці ——— */
 @media (prefers-reduced-motion: no-preference) {
+  /* позначки на варіантах: усе закінчується до 0.8 с, далі одразу гортаємо */
   .book .pencil path {
     stroke-dasharray: 190;
     stroke-dashoffset: 190;
-    animation: draw 0.6s 0.15s ease-out forwards;
+    animation: draw 0.5s 0.1s ease-out forwards;
   }
   .book .pencil.strike path:nth-child(2) {
-    animation-delay: 0.45s;
+    animation-delay: 0.32s;
+  }
+  /* позначка у вердикті малюється, коли картка вже доїхала в кадр */
+  .book .answerMark .pencil path {
+    animation-delay: 1.35s;
+  }
+  .book .answerMark .pencil.cross path:nth-child(2) {
+    animation-delay: 1.55s;
   }
 }
 @keyframes draw {
@@ -573,9 +513,7 @@ body:has(.book)::before {
   .book button.opt:hover::before {
     opacity: 1;
   }
-  .book .footnotes {
-    font-size: 14px;
-  }
+
 }
 
 @media (min-width: 980px) {
@@ -792,5 +730,172 @@ body:has(.book)::before {
   }
   .book .annotation .logo {
     display: none;
+  }
+}
+
+/* ——— картка відповіді: вклейка в подвійній рамці ——— */
+.book .answer {
+  margin-top: 30px;
+  padding: 22px 20px 20px;
+  background: #faf5e8;
+  box-shadow:
+    inset 0 0 0 1px var(--ink),
+    inset 0 0 0 4px #faf5e8,
+    inset 0 0 0 5px var(--ink),
+    0 6px 18px rgba(60, 45, 20, 0.12);
+  scroll-margin-top: 24px;
+}
+.book .answerHead {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+    "mark verdict"
+    "mark key";
+  column-gap: 14px;
+  align-items: center;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--hair);
+}
+.book .answerMark {
+  grid-area: mark;
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+.book .answer.ok .answerMark {
+  background: rgba(30, 88, 102, 0.1);
+}
+.book .answer.miss .answerMark {
+  background: rgba(147, 34, 26, 0.09);
+}
+.book .answerMark .pencil {
+  position: static;
+  width: 30px;
+  height: 30px;
+}
+.book .answerMark .pencil path {
+  stroke-width: 3;
+}
+.book .answer.ok .answerMark .pencil path {
+  stroke: var(--teal);
+}
+.book .answer.miss .answerMark .pencil path {
+  stroke: var(--brick);
+}
+.book .answerVerdict {
+  grid-area: verdict;
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 1.2;
+}
+.book .answer.ok .answerVerdict {
+  color: var(--teal);
+}
+.book .answer.miss .answerVerdict {
+  color: var(--brick);
+}
+.book .answerKey {
+  grid-area: key;
+  margin-top: 2px;
+  font-family: "Open Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--ink-2);
+}
+.book .answerKey b {
+  color: var(--teal);
+  font-family: "Lora", serif;
+  font-size: 16px;
+}
+.book .explain {
+  margin: 16px 0 0;
+  font-size: 17px;
+  line-height: 1.65;
+  text-wrap: pretty;
+}
+.book .explain strong {
+  font-weight: 600;
+}
+.book .sources {
+  margin-top: 14px;
+  font-family: "Open Sans", sans-serif;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+}
+.book .sources summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  cursor: pointer;
+  color: var(--teal);
+  font-weight: 600;
+  list-style: none;
+}
+.book .sources summary::-webkit-details-marker {
+  display: none;
+}
+.book .sources summary::after {
+  content: "▾";
+  font-size: 12px;
+  transition: transform 0.15s ease;
+}
+.book .sources[open] summary::after {
+  transform: rotate(180deg);
+}
+.book .sources ol {
+  margin: 0 0 4px;
+  padding-left: 1.3em;
+  line-height: 1.45;
+}
+.book .sources li {
+  padding: 4px 0;
+}
+.book .sources a {
+  color: var(--teal);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.book .sources a:hover {
+  color: var(--ink);
+}
+.book .answerFoot {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--hair);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.book .tally {
+  font-style: italic;
+  font-size: 15px;
+  color: var(--ink-2);
+  text-align: center;
+}
+.book .answerFoot .btn {
+  width: 100%;
+}
+@media (min-width: 720px) {
+  .book .answer {
+    padding: 28px 32px 26px;
+  }
+  .book .explain {
+    font-size: 18px;
+  }
+  .book .answerFoot {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .book .tally {
+    text-align: left;
+  }
+  .book .answerFoot .btn {
+    width: auto;
   }
 }
