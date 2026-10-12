@@ -4,9 +4,9 @@
 // смугаста арка, зірки, супутник, сітка вікон. Плоскі фігури з товстим
 // чорнильним контуром і жорсткими тінями-зсувами; кольори лише з ілюстрації.
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { QuizApi } from "../../useQuiz";
-import { intro, questions, type Level } from "../../../data/quiz";
+import { intro, levels, questions, type Level } from "../../../data/quiz";
 import { asset } from "../../bp";
 import { SITE_URL, TEST_SHARE_TEXT, resultShareUrl } from "../../share";
 import { COVER_ALT, buzz, glide, useKeys } from "../common";
@@ -169,26 +169,19 @@ function Sheet({ quiz }: { quiz: QuizApi }) {
   const promptRef = useRef<HTMLHeadingElement>(null);
   const cardRef = useRef<HTMLElement>(null);
 
-  // після відповіді: позначки на варіантах (~0.7 с), одразу потім — до картки
-  useEffect(() => {
+  // після відповіді — одразу, в тому ж кадрі, гортаємо до картки пояснення
+  useLayoutEffect(() => {
     if (screen === "question") {
       promptRef.current?.focus({ preventScroll: true });
       return;
     }
     if (screen !== "reveal") return;
-    const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const t = window.setTimeout(
-      () => {
-        const el = cardRef.current;
-        if (!el) return;
-        el.focus({ preventScroll: true });
-        const top = el.getBoundingClientRect().top + window.scrollY - 28;
-        if (calm) window.scrollTo(0, top);
-        else glide(top, 550);
-      },
-      60,
-    );
-    return () => window.clearTimeout(t);
+    const el = cardRef.current;
+    if (!el) return;
+    el.focus({ preventScroll: true });
+    const top = el.getBoundingClientRect().top + window.scrollY - 28;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) window.scrollTo(0, top);
+    else glide(top, 520);
   }, [screen, idx]);
 
   return (
@@ -289,21 +282,97 @@ function Sheet({ quiz }: { quiz: QuizApi }) {
   );
 }
 
+/** Коротке конфеті з фігур обкладинки — один раз. */
+function Confetti() {
+  const colors = ["#1e5866", "#e9c150", "#d66c46", "#93221a", "#79abb7"];
+  const bits = Array.from({ length: 26 }, (_, i) => ({
+    left: `${(i * 37) % 100}%`,
+    delay: `${(i % 7) * 0.08}s`,
+    dur: `${1.4 + (i % 5) * 0.18}s`,
+    color: colors[i % colors.length],
+    shape: i % 3,
+    rot: `${(i * 47) % 360}deg`,
+  }));
+  return (
+    <div className="confetti" aria-hidden>
+      {bits.map((b, i) => (
+        <span
+          key={i}
+          className={`bit s${b.shape}`}
+          style={{ left: b.left, animationDelay: b.delay, animationDuration: b.dur, background: b.shape === 2 ? "transparent" : b.color, color: b.color, ["--r" as string]: b.rot }}
+        >
+          {b.shape === 2 ? "★" : ""}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+/** Шкала трьох рівнів з позначкою «ви тут». */
+function LevelScale({ current }: { current: Level }) {
+  return (
+    <ol className="scale" aria-label="Рівні результату">
+      {levels.map((l) => (
+        <li key={l.slug} className={l.slug === current.slug ? "on" : ""}>
+          <span className="lvlName">{l.title}</span>
+          <span className="lvlRange">{l.range}</span>
+          {l.slug === current.slug && <span className="here">ви тут</span>}
+        </li>
+      ))}
+    </ol>
+  );
+}
+
 function ResultBody({ level, score, onRestart, showMisses, history }: { level: Level; score?: number; onRestart?: () => void; showMisses?: boolean; history?: boolean[] }) {
   const shareUrl = resultShareUrl(level.slug);
   const misses = showMisses && history ? questions.filter((_, i) => history[i] === false) : [];
   return (
     <main className="memphis split result">
       <Decor variant="result" />
+      {score !== undefined && <Confetti />}
       <div className="splitInner">
         <div className="left">
           <CoverCard />
         </div>
         <div className="right">
           <Logo />
-          <p className="score">{score !== undefined ? <><CountUp to={score} /> з {questions.length} правильних</> : `Результат · ${level.range}`}</p>
+          <div className="resultHead">
+            <div className="scoreStar" aria-label={score !== undefined ? `${score} з ${questions.length}` : level.range}>
+              <svg viewBox="0 0 120 120" aria-hidden>
+                <polygon points="60,4 75,42 116,44 84,70 95,112 60,88 25,112 36,70 4,44 45,42" />
+              </svg>
+              <span className="scoreNum">
+                {score !== undefined ? (
+                  <>
+                    <CountUp to={score} />
+                    <small>/{questions.length}</small>
+                  </>
+                ) : (
+                  <b className="rangeOnly">{level.range.split(" ")[0]}</b>
+                )}
+              </span>
+            </div>
+            <p className="score">{score !== undefined ? "правильних відповідей" : "Результат тесту"}</p>
+          </div>
           <h1 className="titleBlock mid">{level.title}</h1>
+          <LevelScale current={level} />
           <p className="lead">{level.description}</p>
+          {history && history.length === questions.length && (
+            <section className="scorecard" aria-label="Ваші відповіді">
+              <h2>Ваші відповіді</h2>
+              <ol>
+                {questions.map((qq, i) => (
+                  <li key={qq.id} className={history[i] ? "ok" : "miss"}>
+                    <span className="n">{i + 1}</span>
+                    <span className="tp">{qq.topic}</span>
+                    <span className="mk" aria-label={history[i] ? "правильно" : "помилка"}>
+                      {history[i] ? "✓" : "✗"}
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            </section>
+          )}
           <div className="actions">
             <Share url={shareUrl} text={level.shareText} label="Поділитися результатом" primary />
             {onRestart ? (

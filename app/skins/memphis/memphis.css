@@ -666,3 +666,226 @@ body:has(.memphis) {
   background: var(--light);
   color: var(--ink);
 }
+
+/* ——— результат: штамп-зірка, шкала рівнів, картка відповідей, конфеті ——— */
+.memphis .resultHead {
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.memphis .resultHead .score {
+  margin: 0;
+  font-size: 16px;
+}
+.memphis .resultHead + .titleBlock {
+  margin-top: 16px;
+}
+.memphis .scoreStar {
+  position: relative;
+  flex: 0 0 92px;
+  height: 92px;
+}
+.memphis .scoreStar svg {
+  width: 100%;
+  height: 100%;
+}
+.memphis .scoreStar polygon {
+  fill: var(--mustard);
+  stroke: var(--ink);
+  stroke-width: 3;
+  stroke-linejoin: round;
+}
+.memphis .scoreNum {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 8px;
+  font-weight: 800;
+  font-size: 28px;
+  line-height: 1;
+}
+.memphis .scoreNum b {
+  font-size: 30px;
+  color: var(--ink);
+}
+.memphis .scoreNum small {
+  font-size: 16px;
+  font-weight: 800;
+}
+.memphis .scoreNum .rangeOnly {
+  font-size: 22px;
+}
+
+.memphis .scale {
+  list-style: none;
+  margin: 22px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border: var(--line);
+  background: var(--card);
+}
+.memphis .scale li {
+  position: relative;
+  padding: 10px 10px 12px;
+  border-right: var(--line);
+  color: var(--ink-2);
+}
+.memphis .scale li:last-child {
+  border-right: 0;
+}
+.memphis .scale li.on {
+  background: var(--teal);
+  color: var(--card);
+}
+.memphis .lvlName {
+  display: block;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+.memphis .lvlRange {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.memphis .here {
+  position: absolute;
+  top: -13px;
+  right: 8px;
+  padding: 1px 7px;
+  background: var(--mustard);
+  color: var(--ink);
+  border: 1.5px solid var(--ink);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.memphis .scorecard {
+  margin-top: 24px;
+  background: var(--card);
+  border: var(--line);
+  box-shadow: 4px 4px 0 var(--teal);
+  padding: 14px 16px 16px;
+}
+.memphis .scorecard h2 {
+  margin: 0 0 10px;
+  font-size: 17px;
+  font-weight: 800;
+}
+.memphis .scorecard ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+.memphis .scorecard li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border: 1.5px solid var(--ink);
+  font-size: 13.5px;
+  font-weight: 700;
+}
+.memphis .scorecard li.ok {
+  background: rgba(30, 88, 102, 0.12);
+}
+.memphis .scorecard li.miss {
+  background: rgba(147, 34, 26, 0.08);
+}
+.memphis .scorecard .n {
+  flex: 0 0 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid var(--ink);
+  background: var(--card);
+  font-size: 12px;
+}
+.memphis .scorecard .tp {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.memphis .scorecard .mk {
+  font-weight: 800;
+}
+.memphis .scorecard li.ok .mk { color: var(--teal); }
+.memphis .scorecard li.miss .mk { color: var(--brick); }
+
+.memphis .confetti {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  overflow: hidden;
+}
+.memphis .bit {
+  position: absolute;
+  top: -20px;
+  width: 10px;
+  height: 14px;
+  border: 1.5px solid var(--ink);
+  opacity: 0;
+}
+.memphis .bit.s1 {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+.memphis .bit.s2 {
+  width: auto;
+  height: auto;
+  border: 0;
+  font-size: 18px;
+  line-height: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .memphis .scoreStar svg {
+    animation: mStamp 0.45s 0.15s cubic-bezier(0.3, 1.3, 0.5, 1) both;
+  }
+  .memphis .scale li.on {
+    animation: mRise 0.4s 0.5s ease-out both;
+  }
+  .memphis .scorecard li {
+    animation: mRise 0.3s ease-out both;
+  }
+  .memphis .scorecard li:nth-child(1) { animation-delay: 0.6s; }
+  .memphis .scorecard li:nth-child(2) { animation-delay: 0.65s; }
+  .memphis .scorecard li:nth-child(3) { animation-delay: 0.7s; }
+  .memphis .scorecard li:nth-child(4) { animation-delay: 0.75s; }
+  .memphis .scorecard li:nth-child(5) { animation-delay: 0.8s; }
+  .memphis .scorecard li:nth-child(6) { animation-delay: 0.85s; }
+  .memphis .scorecard li:nth-child(7) { animation-delay: 0.9s; }
+  .memphis .scorecard li:nth-child(8) { animation-delay: 0.95s; }
+  .memphis .bit {
+    animation-name: mFall;
+    animation-timing-function: cubic-bezier(0.3, 0.2, 0.5, 1);
+    animation-fill-mode: forwards;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .memphis .confetti {
+    display: none;
+  }
+}
+@keyframes mFall {
+  0% { opacity: 1; transform: translateY(0) rotate(0deg); }
+  85% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(105vh) rotate(var(--r, 180deg)); }
+}
+@media (min-width: 900px) {
+  .memphis .scoreStar {
+    flex-basis: 120px;
+    height: 120px;
+  }
+
+}

@@ -13,10 +13,14 @@ export function glide(to: number, ms: number) {
   const dist = to - from;
   if (Math.abs(dist) < 2) return;
   const t0 = performance.now();
+  let expected = from;
   const step = (now: number) => {
+    // хтось інший прокрутив сторінку (новий екран, користувач) — зупиняємось
+    if (Math.abs(window.scrollY - expected) > 3) return;
     const p = Math.min(1, (now - t0) / ms);
     const e = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
-    window.scrollTo(0, from + dist * e);
+    expected = Math.round(from + dist * e);
+    window.scrollTo(0, expected);
     if (p < 1) requestAnimationFrame(step);
   };
   requestAnimationFrame(step);
