@@ -342,9 +342,8 @@ function LevelScale({ current }: { current: Level }) {
   );
 }
 
-function ResultBody({ level, score, onRestart, showMisses, history }: { level: Level; score?: number; onRestart?: () => void; showMisses?: boolean; history?: boolean[] }) {
+function ResultBody({ level, score, onRestart, history }: { level: Level; score?: number; onRestart?: () => void; history?: boolean[] }) {
   const shareUrl = resultShareUrl(level.slug);
-  const misses = showMisses && history ? questions.filter((_, i) => history[i] === false) : [];
   return (
     <main className="memphis split result">
       <Decor variant="result" />
@@ -364,14 +363,14 @@ function ResultBody({ level, score, onRestart, showMisses, history }: { level: L
                 {score !== undefined ? (
                   <>
                     <CountUp to={score} />
-                    <small>/{questions.length}</small>
+                    <small>з {questions.length}</small>
                   </>
                 ) : (
                   <b className="rangeOnly">{level.range.split(" ")[0]}</b>
                 )}
               </span>
             </div>
-            <p className="score">{score !== undefined ? "правильних відповідей" : "Результат тесту"}</p>
+            <p className="score">{score !== undefined ? <>правильних<br />відповідей</> : <>результат<br />тесту</>}</p>
           </div>
           <h1 className="titleBlock mid">{level.title}</h1>
           <LevelScale current={level} />
@@ -410,21 +409,6 @@ function ResultBody({ level, score, onRestart, showMisses, history }: { level: L
               </a>
             )}
           </div>
-          {misses.length > 0 && (
-            <section className="reread">
-              <h2>Варто перечитати</h2>
-              <ol>
-                {misses.map((m) => (
-                  <li key={m.id}>
-                    <p className="rq">{m.prompt}</p>
-                    <p className="ra">
-                      Відповідь: <b>{m.correct}</b> {m.options.find((o) => o.key === m.correct)?.text}
-                    </p>
-                  </li>
-                ))}
-              </ol>
-            </section>
-          )}
         </div>
       </div>
     </main>
@@ -473,5 +457,5 @@ export default function MemphisSkin({ quiz }: { quiz: QuizApi }) {
 
   if (screen === "question" || screen === "reveal") return <Sheet quiz={quiz} />;
 
-  return <ResultBody level={level} score={score} onRestart={quiz.restart} showMisses history={history} />;
+  return <ResultBody level={level} score={score} onRestart={quiz.restart} history={history} />;
 }

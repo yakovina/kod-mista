@@ -98,7 +98,7 @@ body:has(.memphis) {
   background: var(--mustard);
   border: var(--line);
   box-shadow: 5px 5px 0 var(--teal);
-  font-weight: 800;
+  font-weight: 700;
   font-size: 42px;
   line-height: 1;
   letter-spacing: 0.005em;
@@ -239,7 +239,7 @@ body:has(.memphis) {
 .memphis .reread h2 {
   margin: 0;
   font-size: 19px;
-  font-weight: 800;
+  font-weight: 700;
 }
 .memphis .reread ol {
   list-style: none;
@@ -280,7 +280,7 @@ body:has(.memphis) {
   align-items: center;
 }
 .memphis .count {
-  font-weight: 800;
+  font-weight: 700;
   font-size: 15px;
 }
 .memphis .steps {
@@ -323,7 +323,7 @@ body:has(.memphis) {
 }
 .memphis .prompt {
   margin: 12px 0 0;
-  font-weight: 800;
+  font-weight: 700;
   font-size: 20px;
   line-height: 1.32;
   text-wrap: balance;
@@ -356,7 +356,7 @@ body:has(.memphis) {
   align-items: center;
   justify-content: center;
   border-right: var(--line);
-  font-weight: 800;
+  font-weight: 700;
   font-size: 16px;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
@@ -441,7 +441,7 @@ body:has(.memphis) {
   top: -16px;
   padding: 2px 10px;
   border: var(--line);
-  font-weight: 800;
+  font-weight: 700;
   font-size: 16px;
   transform: rotate(-2deg);
 }
@@ -453,7 +453,7 @@ body:has(.memphis) {
 .memphis .akey {
   margin: 0;
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--ink-2);
 }
 .memphis .explain {
@@ -464,7 +464,7 @@ body:has(.memphis) {
   text-wrap: pretty;
 }
 .memphis .explain strong {
-  font-weight: 600;
+  font-weight: 700;
 }
 .memphis .acardFoot {
   display: flex;
@@ -660,7 +660,7 @@ body:has(.memphis) {
   background: transparent;
   border-color: rgba(46, 46, 43, 0.4);
   color: var(--teal);
-  font-weight: 600;
+  font-weight: 500;
 }
 .memphis .srcs .tag:hover {
   background: var(--light);
@@ -683,40 +683,51 @@ body:has(.memphis) {
 }
 .memphis .scoreStar {
   position: relative;
-  flex: 0 0 92px;
-  height: 92px;
+  flex: 0 0 128px;
+  height: 128px;
 }
 .memphis .scoreStar svg {
   width: 100%;
   height: 100%;
+  overflow: visible;
 }
 .memphis .scoreStar polygon {
   fill: var(--mustard);
   stroke: var(--ink);
-  stroke-width: 3;
+  stroke-width: 2.5;
   stroke-linejoin: round;
 }
+/* оптичний центр зірки нижчий за геометричний */
 .memphis .scoreNum {
   position: absolute;
-  inset: 0;
+  left: 0;
+  right: 0;
+  top: 40px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding-top: 8px;
-  font-weight: 800;
-  font-size: 28px;
   line-height: 1;
 }
 .memphis .scoreNum b {
-  font-size: 30px;
+  font-size: 38px;
+  font-weight: 700;
   color: var(--ink);
 }
 .memphis .scoreNum small {
-  font-size: 16px;
-  font-weight: 800;
+  margin-top: 2px;
+  font-size: 13px;
+  font-weight: 700;
 }
 .memphis .scoreNum .rangeOnly {
-  font-size: 22px;
+  margin-top: 6px;
+  font-size: 24px;
+}
+.memphis .resultHead .score {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--ink-2);
 }
 
 .memphis .scale {
@@ -744,14 +755,14 @@ body:has(.memphis) {
 .memphis .lvlName {
   display: block;
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.25;
 }
 .memphis .lvlRange {
   display: block;
   margin-top: 4px;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
 }
 .memphis .here {
   position: absolute;
@@ -762,7 +773,7 @@ body:has(.memphis) {
   color: var(--ink);
   border: 1.5px solid var(--ink);
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .memphis .scorecard {
@@ -775,7 +786,7 @@ body:has(.memphis) {
 .memphis .scorecard h2 {
   margin: 0 0 10px;
   font-size: 17px;
-  font-weight: 800;
+  font-weight: 700;
 }
 .memphis .scorecard ol {
   list-style: none;
@@ -815,7 +826,7 @@ body:has(.memphis) {
   min-width: 0;
 }
 .memphis .scorecard .mk {
-  font-weight: 800;
+  font-weight: 700;
 }
 .memphis .scorecard li.ok .mk { color: var(--teal); }
 .memphis .scorecard li.miss .mk { color: var(--brick); }
@@ -883,10 +894,6 @@ body:has(.memphis) {
   100% { opacity: 0; transform: translateY(105vh) rotate(var(--r, 180deg)); }
 }
 @media (min-width: 900px) {
-  .memphis .scoreStar {
-    flex-basis: 120px;
-    height: 120px;
-  }
 
 }
 

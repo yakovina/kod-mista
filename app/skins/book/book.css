@@ -74,7 +74,7 @@ body:has(.book)::before {
   margin: 0 0 22px;
   font-family: "Open Sans", sans-serif;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.025em;
   color: var(--ink-2);
 }
@@ -90,7 +90,7 @@ body:has(.book)::before {
   border: 0;
   border-radius: 0;
   font-family: "Lora", serif;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 17px;
   letter-spacing: 0.02em;
   text-decoration: none;
@@ -172,7 +172,7 @@ body:has(.book)::before {
   color: var(--teal);
   font-family: "Lora", serif;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.02em;
 }
 .book .chip:hover {
@@ -223,7 +223,7 @@ body:has(.book)::before {
 }
 .book .title {
   margin: 0;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 32px;
   line-height: 1.15;
   letter-spacing: 0.01em;
@@ -264,7 +264,7 @@ body:has(.book)::before {
 }
 .book .reread h2 {
   margin: 0 0 6px;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 20px;
   text-align: center;
 }
@@ -357,7 +357,7 @@ body:has(.book)::before {
 }
 .book .prompt {
   margin: 0;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 21px;
   line-height: 1.38;
   letter-spacing: 0.008em;
@@ -393,7 +393,7 @@ body:has(.book)::before {
 }
 .book .opt .k {
   position: relative;
-  font-weight: 600;
+  font-weight: 700;
   transition: color 0.15s ease;
 }
 .book button.opt:hover {
@@ -630,7 +630,7 @@ body:has(.book)::before {
 }
 .book .answerVerdict {
   grid-area: verdict;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 22px;
   line-height: 1.2;
 }
@@ -645,7 +645,7 @@ body:has(.book)::before {
   margin-top: 2px;
   font-family: "Open Sans", sans-serif;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.02em;
   color: var(--ink-2);
 }
@@ -661,7 +661,7 @@ body:has(.book)::before {
   text-wrap: pretty;
 }
 .book .explain strong {
-  font-weight: 600;
+  font-weight: 700;
 }
 .book .sources {
   margin-top: 14px;
@@ -676,7 +676,7 @@ body:has(.book)::before {
   min-height: 44px;
   cursor: pointer;
   color: var(--teal);
-  font-weight: 600;
+  font-weight: 700;
   list-style: none;
 }
 .book .sources summary::-webkit-details-marker {
@@ -803,7 +803,7 @@ body:has(.book)::before {
   border-bottom: 1px solid var(--hair);
   font-family: "Open Sans", sans-serif;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.025em;
   color: var(--ink-2);
 }
@@ -815,7 +815,7 @@ body:has(.book)::before {
 }
 .book .bandTitle {
   margin: 0;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 44px;
   line-height: 1.05;
   letter-spacing: 0.01em;
