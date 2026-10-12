@@ -266,33 +266,35 @@ export default function BookSkin({ quiz }: { quiz: QuizApi }) {
 
   if (screen === "intro") {
     return (
-      <main className="book closed intro">
-        {/* закрита книжка: тканинна палітурка з вклеєною ілюстрацією */}
-        <div className="bookCover">
-          <span className="coverSpine" aria-hidden />
-          <div className="coverFace">
-            <span className="coverPub">Хмарочос</span>
-            <h1 className="coverTitle">{intro.title}</h1>
-            <figure className="coverPlate">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={asset("/art/cover.jpg")} alt={COVER_ALT} />
-            </figure>
-            <span className="coverSub">Вісім питань про будинки, вулиці й пам’ятники</span>
-          </div>
-        </div>
+      <main className="book poster intro">
+        {/* суперобкладинка: ілюстрація на весь екран */}
+        <figure className="posterArt">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={asset("/art/cover.jpg")} alt={COVER_ALT} />
+        </figure>
 
-        {/* вкладка-анотація */}
-        <aside className="annotation">
-          <Logo />
-          <h2>Анотація</h2>
-          <p className="lead">{intro.lead}</p>
-          <p className="meta">{intro.meta}</p>
-          <button className="btn primary" onClick={quiz.start}>
-            <span>Почати тест</span>
-            <ArrowIcon />
-          </button>
-          <ShareLinks url={`${SITE_URL}/`} text={TEST_SHARE_TEXT} label="Поділитися тестом" />
-        </aside>
+        {/* паперовий поясок поперек обкладинки, як на книжках 80-х */}
+        <section className="band">
+          <div className="bandInner">
+            <div className="bandTop">
+              <Logo />
+              <span>{intro.meta}</span>
+            </div>
+            <div className="bandBody">
+              <h1 className="bandTitle">{intro.title}</h1>
+              <div className="bandText">
+                <p className="lead">{intro.lead}</p>
+                <div className="bandActions">
+                  <button className="btn primary" onClick={quiz.start}>
+                    <span>Почати тест</span>
+                    <ArrowIcon />
+                  </button>
+                  <ShareLinks url={`${SITE_URL}/`} text={TEST_SHARE_TEXT} label="Поділитися тестом" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
     );
   }

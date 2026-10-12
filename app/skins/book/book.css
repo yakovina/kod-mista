@@ -575,163 +575,6 @@ body:has(.book)::before {
   }
 }
 
-/* ——— перший екран: закрита книжка й анотація ——— */
-.book.closed {
-  min-height: 100dvh;
-  padding: 24px 16px 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 28px;
-}
-.book .bookCover {
-  position: relative;
-  width: min(420px, 100%);
-  aspect-ratio: 3 / 4;
-  display: flex;
-  /* тканина палітурки: бірюза з ледь помітним плетінням */
-  background-color: #1e5866;
-  background-image:
-    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 3px),
-    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.06) 0 1px, transparent 1px 3px);
-  color: var(--paper);
-  box-shadow:
-    inset -2px 0 0 rgba(0, 0, 0, 0.25),
-    inset 0 0 40px rgba(0, 0, 0, 0.25),
-    6px 6px 0 #d6c9ad,
-    0 24px 60px rgba(0, 0, 0, 0.5);
-}
-.book .coverSpine {
-  flex: 0 0 9%;
-  background: rgba(0, 0, 0, 0.18);
-  box-shadow:
-    inset -1px 0 0 rgba(255, 255, 255, 0.12),
-    inset -6px 0 10px rgba(0, 0, 0, 0.15);
-}
-.book .coverFace {
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  padding: 26px 22px 24px;
-  text-align: center;
-}
-.book .coverPub {
-  font-style: italic;
-  font-size: 15px;
-  letter-spacing: 0.04em;
-  opacity: 0.9;
-}
-.book .coverTitle {
-  margin: 0;
-  font-weight: 600;
-  font-size: 40px;
-  line-height: 1.1;
-  letter-spacing: 0.02em;
-  /* «тиснення»: легка тінь зверху і світло знизу */
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.35), 0 1px 0 rgba(255, 255, 255, 0.12);
-}
-.book .coverPlate {
-  margin: 0;
-  width: 100%;
-  padding: 6px;
-  background: var(--paper);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
-}
-.book .coverPlate img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 3 / 2;
-  object-fit: cover;
-}
-.book .coverSub {
-  max-width: 18em;
-  font-style: italic;
-  font-size: 15px;
-  line-height: 1.45;
-  letter-spacing: 0.02em;
-  opacity: 0.92;
-}
-
-.book .annotation {
-  width: min(420px, 100%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 26px 24px 22px;
-  background-color: var(--paper);
-  box-shadow:
-    inset 0 0 50px rgba(140, 105, 50, 0.12),
-    0 14px 36px rgba(0, 0, 0, 0.35);
-}
-.book .annotation .logo {
-  margin-bottom: 14px;
-}
-.book .annotation h2 {
-  margin: 0;
-  font-style: italic;
-  font-weight: 400;
-  font-size: 18px;
-  letter-spacing: 0.04em;
-  color: var(--teal);
-}
-.book .annotation .lead {
-  margin-top: 10px;
-  font-style: normal;
-}
-.book .annotation .meta {
-  margin: 12px 0 20px;
-}
-.book .annotation .btn,
-.book .annotation .share {
-  align-self: stretch;
-}
-.book .annotation .share {
-  margin-top: 10px;
-}
-
-@media (min-width: 900px) {
-  .book.closed {
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 56px;
-    padding: 40px;
-  }
-  .book .bookCover {
-    width: 440px;
-  }
-  .book .coverTitle {
-    font-size: 46px;
-  }
-  .book .annotation {
-    width: 380px;
-    /* вкладка лежить трохи нижче, як аркуш, що виглядає з книжки */
-    transform: translateY(24px);
-  }
-}
-
-/* мобайл: книжка менша, щоб кнопка «Почати тест» була на першому екрані */
-@media (max-width: 899px) {
-  .book .bookCover {
-    width: min(300px, 80%);
-  }
-  .book .coverTitle {
-    font-size: 32px;
-  }
-  .book .coverFace {
-    padding: 20px 16px 18px;
-  }
-  .book .coverSub {
-    font-size: 13px;
-  }
-  .book .annotation .logo {
-    display: none;
-  }
-}
 
 /* ——— картка відповіді: вклейка в подвійній рамці ——— */
 .book .answer {
@@ -897,5 +740,170 @@ body:has(.book)::before {
   }
   .book .answerFoot .btn {
     width: auto;
+  }
+}
+
+/* ——— перший екран: суперобкладинка з паперовим пояском ——— */
+.book.poster {
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.book .posterArt {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  margin: 0;
+}
+.book .posterArt img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 40% 30%;
+}
+.book .band {
+  position: relative;
+  z-index: 1;
+  background-color: var(--paper);
+  box-shadow:
+    inset 0 0 60px rgba(140, 105, 50, 0.12),
+    0 -10px 40px rgba(0, 0, 0, 0.25),
+    0 10px 40px rgba(0, 0, 0, 0.25);
+}
+/* подвійні лінійки по краях пояска */
+.book .band::before,
+.book .band::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 4px;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+}
+.book .band::before {
+  top: 8px;
+}
+.book .band::after {
+  bottom: 8px;
+}
+.book .bandInner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 26px 20px 30px;
+}
+.book .bandTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--hair);
+  font-family: "Open Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  color: var(--ink-2);
+}
+.book .bandTop .logo img {
+  height: 30px;
+}
+.book .bandBody {
+  padding-top: 18px;
+}
+.book .bandTitle {
+  margin: 0;
+  font-weight: 600;
+  font-size: 44px;
+  line-height: 1.05;
+  letter-spacing: 0.01em;
+}
+.book .bandText .lead {
+  margin-top: 12px;
+  font-size: 17px;
+}
+.book .bandActions {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.book .bandActions .btn {
+  width: 100%;
+}
+
+@media (min-width: 900px) {
+  .book.poster {
+    justify-content: center;
+    padding-top: 34vh;
+  }
+  .book .bandInner {
+    padding: 34px 48px 38px;
+  }
+  .book .bandBody {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 48px;
+    padding-top: 24px;
+  }
+  .book .bandTitle {
+    padding-right: 48px;
+    border-right: 1px solid var(--ink);
+    font-size: 76px;
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .book .bandText .lead {
+    margin-top: 0;
+    max-width: 30em;
+    font-size: 19px;
+  }
+  .book .bandActions {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .book .bandActions .btn {
+    width: auto;
+  }
+  .book .bandActions .share {
+    flex-direction: column;
+  }
+  .book .bandActions .shareRow {
+    justify-content: flex-start;
+  }
+}
+
+/* телефон: ілюстрація ціла вгорі, поясок одразу під нею */
+@media (max-width: 899px) {
+  .book.poster {
+    justify-content: flex-start;
+  }
+  .book .posterArt {
+    position: relative;
+    inset: auto;
+  }
+  .book .posterArt img {
+    height: auto;
+    aspect-ratio: 3 / 2;
+  }
+}
+/* десктоп: поясок унизу обкладинки, щоб не закривати космонавта й супутник */
+@media (min-width: 900px) {
+  .book.poster {
+    justify-content: flex-end;
+    padding-top: 0;
+    padding-bottom: 6vh;
+  }
+  .book .posterArt img {
+    object-position: 50% 20%;
+  }
+}
+@media (max-width: 899px) {
+  .book.poster .band {
+    flex: 1 1 auto;
   }
 }
