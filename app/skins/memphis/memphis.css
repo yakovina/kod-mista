@@ -966,3 +966,16 @@ body:has(.memphis) {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
+
+/* «Наступне питання» — з відступом знизу, не впритул до краю екрана */
+.memphis .mbtn.next {
+  margin-bottom: calc(40px + env(safe-area-inset-bottom, 0px));
+}
+@media (min-width: 900px) {
+  .memphis .mbtn.next {
+    float: none;
+    display: flex;
+    margin-left: auto;
+    margin-bottom: 56px;
+  }
+}
