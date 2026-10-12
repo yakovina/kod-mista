@@ -10,23 +10,23 @@
 @font-face { font-family: "Open Sans"; src: url("../public/fonts/opensans.woff2") format("woff2"); font-weight: 300 800; }
 @font-face { font-family: "Lora"; src: url("../public/fonts/lora.woff2") format("woff2"); }
 * { box-sizing: border-box; }
-body { margin: 0; width: 1200px; height: 630px; overflow: hidden; background: #DDEBFA; color: #1D2433; font-family: "Open Sans", sans-serif; }
+body { margin: 0; width: 1200px; height: 630px; overflow: hidden; background: #F3E6C4; color: #2E2E2B; font-family: "Open Sans", sans-serif; }
 .wrap { position: relative; width: 1200px; height: 630px; padding: 56px 64px; display: flex; gap: 56px; align-items: center; }
 .left { flex: 1 1 auto; display: flex; flex-direction: column; height: 100%; }
 .logo { height: 40px; width: auto; align-self: flex-start; }
-.kicker { margin-top: 44px; font-size: 22px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #2C6BD9; }
+.kicker { margin-top: 44px; font-size: 22px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #1E5866; }
 h1 { margin: 14px 0 0; font-size: 92px; font-weight: 800; line-height: .98; letter-spacing: -.02em; }
 h1.lvl { font-size: 66px; line-height: 1.05; }
-p { margin: 22px 0 0; font-family: "Lora", serif; font-size: 28px; line-height: 1.4; color: #2B3852; max-width: 560px; }
-.foot { margin-top: auto; font-size: 22px; font-weight: 700; color: #3A4A66; }
+p { margin: 22px 0 0; font-family: "Lora", serif; font-size: 28px; line-height: 1.4; color: #4F524C; max-width: 560px; }
+.foot { margin-top: auto; font-size: 22px; font-weight: 700; color: #4F524C; }
 .card { position: relative; flex: 0 0 470px; background: #fff; padding: 16px; transform: rotate(2deg); }
-.card img { display: block; width: 100%; aspect-ratio: 16/9; object-fit: cover; }
+.card img { display: block; width: 100%; aspect-ratio: 3/2; object-fit: cover; }
 .card.lvl img { aspect-ratio: 1/1; }
 .card.map img { aspect-ratio: auto; }
-.mark { position: absolute; right: 26px; top: 26px; width: 128px; height: 128px; border-radius: 50%; border: 4px solid #2C6BD9; color: #2C6BD9; background: rgba(255,255,255,.85); display: flex; flex-direction: column; align-items: center; justify-content: center; transform: rotate(-14deg); }
+.mark { position: absolute; right: 26px; top: 26px; width: 128px; height: 128px; border-radius: 50%; border: 4px solid #1E5866; color: #1E5866; background: rgba(255,255,255,.85); display: flex; flex-direction: column; align-items: center; justify-content: center; transform: rotate(-14deg); }
 .mark b { font-size: 40px; font-weight: 800; line-height: 1; }
 .mark small { font-size: 14px; font-weight: 800; letter-spacing: .08em; }
-.stamp { position: absolute; right: 30px; top: -22px; width: 92px; height: 110px; background: #FF9F5A; border: 6px dotted #fff; outline: 2px solid #FF9F5A; display: flex; flex-direction: column; align-items: center; justify-content: center; transform: rotate(8deg); }
+.stamp { position: absolute; right: 30px; top: -22px; width: 92px; height: 110px; background: #D66C46; border: 6px dotted #fff; outline: 2px solid #D66C46; display: flex; flex-direction: column; align-items: center; justify-content: center; transform: rotate(8deg); }
 .stamp b { font-size: 36px; font-weight: 800; line-height: 1; }
 .stamp small { font-size: 12px; font-weight: 800; letter-spacing: .08em; }
 </style>
@@ -41,7 +41,7 @@ p { margin: 22px 0 0; font-family: "Lora", serif; font-size: 28px; line-height: 
     <div class="foot">Перевірте, як добре ви читаєте своє місто</div>
   </div>
   <div class="card" id="card">
-    <img id="pic" src="../public/art/postcard-7.svg" alt="">
+    <img id="pic" src="../public/art/cover.jpg" alt="">
     <div class="stamp" id="stamp"><b>8</b><small>ЗУПИНОК</small></div>
   </div>
 </div>

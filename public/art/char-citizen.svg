@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
-<rect width="800" height="800" fill="#FFE3CC"/>
-<circle cx="640" cy="150" r="70" fill="#FF9F5A"/>
-<rect x="0" y="640" width="800" height="160" fill="#DDEBFA"/>
-<circle cx="330" cy="250" r="80" fill="#1D2433"/>
-<path d="M210 640 V430 Q210 360 280 360 H380 Q450 360 450 430 V640 Z" fill="#2C6BD9"/>
-<rect x="380" y="420" width="250" height="110" fill="#1D2433" transform="rotate(-8 505 475)"/><text x="505" y="488" font-family="Open Sans, sans-serif" font-size="28" font-weight="800" fill="#FFFFFF" text-anchor="middle" transform="rotate(-8 505 475)">вул. ?</text>
-<rect x="40" y="720" width="720" height="44" fill="#1D2433"/>
-<text x="58" y="750" font-family="Open Sans, sans-serif" font-size="20" font-weight="700" fill="#FFFFFF">ЗАГЛУШКА · Допитливий містянин</text>
+<rect width="800" height="800" fill="#F5D88C"/>
+<circle cx="640" cy="150" r="70" fill="#D66C46"/>
+<rect x="0" y="640" width="800" height="160" fill="#79ABB7"/>
+<circle cx="330" cy="250" r="80" fill="#2E2E2B"/>
+<path d="M210 640 V430 Q210 360 280 360 H380 Q450 360 450 430 V640 Z" fill="#1E5866"/>
+<rect x="380" y="420" width="250" height="110" fill="#2E2E2B" transform="rotate(-8 505 475)"/><text x="505" y="488" font-family="Open Sans, sans-serif" font-size="28" font-weight="800" fill="#E9E5DC" text-anchor="middle" transform="rotate(-8 505 475)">вул. ?</text>
+<rect x="40" y="720" width="720" height="44" fill="#2E2E2B"/>
+<text x="58" y="750" font-family="Open Sans, sans-serif" font-size="20" font-weight="700" fill="#E9E5DC">ЗАГЛУШКА · Допитливий містянин</text>
 </svg>

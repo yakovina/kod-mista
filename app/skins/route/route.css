@@ -1,21 +1,22 @@
 /* Скін «Маршрут»: тест як прогулянка вісьмома зупинками з листівками.
-   Палітра з концепт-полотна: небо, синій, абрикос, персик, чорнило. */
+   Палітра взята з обкладинки (public/art/cover.jpg): папір, бірюза,
+   теракота, цегла, гірчиця. Імена змінних лишились від першого макета. */
 
 body:has(.route) {
-  background: #ddebfa;
+  background: #f3e6c4;
 }
 
 .route {
-  --sky: #ddebfa;
-  --blue: #2c6bd9;
-  --blue-soft: #dce7fa;
-  --apricot: #ff9f5a;
-  --apricot-ink: #c4621c;
-  --peach: #ffe3cc;
-  --peach-soft: #fff1e6;
-  --ink: #1d2433;
-  --ink-2: #3a4a66;
-  --rule: #c9d6ea;
+  --sky: #f3e6c4;
+  --blue: #1e5866;
+  --blue-soft: #cfe3e6;
+  --apricot: #d66c46;
+  --apricot-ink: #93221a;
+  --peach: #f5d88c;
+  --peach-soft: #fbebc2;
+  --ink: #2e2e2b;
+  --ink-2: #4f524c;
+  --rule: #dccfae;
   --white: #ffffff;
 
   min-height: 100dvh;
@@ -66,7 +67,7 @@ body:has(.route) {
   font-family: "Lora", serif;
   font-size: 17px;
   line-height: 1.5;
-  color: #2b3852;
+  color: var(--ink-2);
 }
 .route .kicker {
   margin-top: 18px;
@@ -156,10 +157,15 @@ body:has(.route) {
 .route .postcard.result {
   transform: rotate(1.4deg);
 }
-.route .postcard.mapCard {
+.route .postcard.coverCard {
   margin-top: 18px;
   padding: 10px;
   transform: rotate(-1deg);
+}
+.route .postcard.coverCard img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
 }
 
 .route .pcPic {
@@ -215,8 +221,9 @@ body:has(.route) {
   color: var(--ink);
 }
 .route .stamp.big {
-  right: 22px;
-  top: -14px;
+  right: -6px;
+  top: auto;
+  bottom: -22px;
   width: 62px;
   height: 74px;
   transform: rotate(8deg);
@@ -357,39 +364,6 @@ body:has(.route) {
   letter-spacing: 0.08em;
 }
 
-/* ——— мапа обкладинки ——— */
-.route .coverMap {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-.route .cm-bg {
-  fill: #f3f8fe;
-}
-.route .cm-river {
-  fill: none;
-  stroke: #bfd6f2;
-  stroke-width: 10;
-}
-.route .cm-route {
-  fill: none;
-  stroke: var(--blue);
-  stroke-width: 3;
-  stroke-dasharray: 7 6;
-}
-.route .cm-stop {
-  fill: var(--blue);
-}
-.route .cm-stop.start {
-  fill: var(--apricot);
-}
-.route .cm-label {
-  font-family: "Open Sans", sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  fill: var(--ink);
-}
-
 /* ——— маршрут-прогрес ——— */
 .route .routeLine {
   display: block;
@@ -440,7 +414,7 @@ body:has(.route) {
   font-family: "Lora", serif;
   font-size: 15px;
   line-height: 1.5;
-  color: #2b3852;
+  color: var(--ink-2);
 }
 .route .prompt {
   margin: 12px 0 0;

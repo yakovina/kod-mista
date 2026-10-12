@@ -9,7 +9,7 @@ import { join } from "node:path";
 const OUT = join(process.cwd(), "public", "art");
 mkdirSync(OUT, { recursive: true });
 
-const C = { sky: "#DDEBFA", blue: "#2C6BD9", apricot: "#FF9F5A", peach: "#FFE3CC", ink: "#1D2433", white: "#FFFFFF" };
+const C = { sky: "#79ABB7", blue: "#1E5866", apricot: "#D66C46", peach: "#F5D88C", ink: "#2E2E2B", white: "#E9E5DC" };
 
 const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
 
@@ -26,11 +26,11 @@ const scenes = {
   // будинок «Слово»: С-подібний план
   5: `<path d="M560 110 H260 V350 H560 V280 H340 V180 H560 Z" fill="${C.blue}"/>${[0, 1, 2, 3, 4].map((i) => `<rect x="${280 + i * 54}" y="128" width="26" height="30" fill="${C.white}"/><rect x="${280 + i * 54}" y="302" width="26" height="30" fill="${C.white}"/>`).join("")}<text x="400" y="246" font-family="Lora, serif" font-size="64" font-weight="700" fill="${C.apricot}" text-anchor="middle">С</text>`,
   // арка в парку
-  6: `<path d="M210 360 A190 190 0 0 1 590 360 L560 360 A160 160 0 0 0 240 360 Z" fill="${C.ink}"/>${[0, 1, 2, 3, 4].map((i) => `<circle cx="${110 + i * 150}" cy="340" r="${38 + (i % 2) * 14}" fill="#7FB07A"/>`).join("")}<rect x="0" y="356" width="800" height="94" fill="#7FB07A"/>`,
+  6: `<path d="M210 360 A190 190 0 0 1 590 360 L560 360 A160 160 0 0 0 240 360 Z" fill="${C.ink}"/>${[0, 1, 2, 3, 4].map((i) => `<circle cx="${110 + i * 150}" cy="340" r="${38 + (i % 2) * 14}" fill="#498C95"/>`).join("")}<rect x="0" y="356" width="800" height="94" fill="#498C95"/>`,
   // Держпром: каскад веж і переходи
   7: `<rect x="100" y="200" width="150" height="160" fill="${C.blue}"/><rect x="300" y="120" width="200" height="240" fill="${C.ink}"/><rect x="550" y="200" width="150" height="160" fill="${C.blue}"/><rect x="250" y="230" width="50" height="22" fill="${C.ink}"/><rect x="500" y="230" width="50" height="22" fill="${C.ink}"/>${[0, 1, 2, 3, 4].map((i) => `<rect x="318" y="${140 + i * 42}" width="164" height="14" fill="${C.white}"/>`).join("")}${[0, 1, 2].map((i) => `<rect x="116" y="${222 + i * 42}" width="118" height="12" fill="${C.white}"/><rect x="566" y="${222 + i * 42}" width="118" height="12" fill="${C.white}"/>`).join("")}`,
   // вулична табличка зі старою назвою
-  8: `<rect x="0" y="0" width="800" height="450" fill="#F2D3B6"/><rect x="200" y="150" width="400" height="140" fill="${C.ink}"/><rect x="214" y="164" width="372" height="112" fill="none" stroke="${C.white}" stroke-width="4"/><text x="400" y="200" font-family="Open Sans, sans-serif" font-size="22" fill="${C.white}" text-anchor="middle">вулиця</text><text x="400" y="248" font-family="Open Sans, sans-serif" font-size="40" font-weight="800" fill="${C.white}" text-anchor="middle" opacity="0.55">• • • • •</text><path d="M210 290 L590 150" stroke="${C.apricot}" stroke-width="10"/>`,
+  8: `<rect x="0" y="0" width="800" height="450" fill="#E9C150"/><rect x="200" y="150" width="400" height="140" fill="${C.ink}"/><rect x="214" y="164" width="372" height="112" fill="none" stroke="${C.white}" stroke-width="4"/><text x="400" y="200" font-family="Open Sans, sans-serif" font-size="22" fill="${C.white}" text-anchor="middle">вулиця</text><text x="400" y="248" font-family="Open Sans, sans-serif" font-size="40" font-weight="800" fill="${C.white}" text-anchor="middle" opacity="0.55">• • • • •</text><path d="M210 290 L590 150" stroke="${C.apricot}" stroke-width="10"/>`,
 };
 
 const captions = {

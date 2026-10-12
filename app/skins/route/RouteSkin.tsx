@@ -7,7 +7,6 @@ import ShareButtons from "../../ShareButtons";
 import { SITE_URL, TEST_SHARE_TEXT, TEST_SHARE_TITLE, resultShareUrl } from "../../share";
 import RouteLine, { type StopState } from "./RouteLine";
 import { PostcardBack, PostcardFront, ResultPostcard } from "./Postcards";
-import CoverMap from "./CoverMap";
 import { ArrowIcon, CheckIcon, RetryIcon, SendIcon } from "./icons";
 
 function stopStates(history: boolean[], idx: number, total: number, onReveal: boolean): StopState[] {
@@ -37,8 +36,9 @@ export default function RouteSkin({ quiz }: { quiz: QuizApi }) {
     return (
       <main className="route screen intro">
         <Masthead />
-        <div className="postcard mapCard">
-          <CoverMap />
+        <div className="postcard coverCard">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={asset("/art/cover.jpg")} alt="Ілюстрація: місто з аркою, що тріснула, космонавт і супутник" />
           <span className="stamp apricot big" aria-hidden>
             <b>8</b>
             <small>ЗУПИНОК</small>

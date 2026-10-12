@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
-<rect width="800" height="450" fill="#FFE3CC"/>
-<circle cx="660" cy="96" r="54" fill="#FF9F5A"/>
-<path d="M210 360 A190 190 0 0 1 590 360 L560 360 A160 160 0 0 0 240 360 Z" fill="#1D2433"/><circle cx="110" cy="340" r="38" fill="#7FB07A"/><circle cx="260" cy="340" r="52" fill="#7FB07A"/><circle cx="410" cy="340" r="38" fill="#7FB07A"/><circle cx="560" cy="340" r="52" fill="#7FB07A"/><circle cx="710" cy="340" r="38" fill="#7FB07A"/><rect x="0" y="356" width="800" height="94" fill="#7FB07A"/>
-<rect x="24" y="398" width="752" height="32" fill="#1D2433"/>
-<text x="38" y="420" font-family="Open Sans, sans-serif" font-size="16" font-weight="700" fill="#FFFFFF">ЗАГЛУШКА · Арка в Хрещатому парку</text>
+<rect width="800" height="450" fill="#F5D88C"/>
+<circle cx="660" cy="96" r="54" fill="#D66C46"/>
+<path d="M210 360 A190 190 0 0 1 590 360 L560 360 A160 160 0 0 0 240 360 Z" fill="#2E2E2B"/><circle cx="110" cy="340" r="38" fill="#498C95"/><circle cx="260" cy="340" r="52" fill="#498C95"/><circle cx="410" cy="340" r="38" fill="#498C95"/><circle cx="560" cy="340" r="52" fill="#498C95"/><circle cx="710" cy="340" r="38" fill="#498C95"/><rect x="0" y="356" width="800" height="94" fill="#498C95"/>
+<rect x="24" y="398" width="752" height="32" fill="#2E2E2B"/>
+<text x="38" y="420" font-family="Open Sans, sans-serif" font-size="16" font-weight="700" fill="#E9E5DC">ЗАГЛУШКА · Арка в Хрещатому парку</text>
 </svg>
