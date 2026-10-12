@@ -6,13 +6,13 @@
 
 import { useEffect, useRef } from "react";
 import type { QuizApi } from "../../useQuiz";
-import { ORDINALS, intro, questions } from "../../../data/quiz";
+import { ORDINALS, intro, questions, type Level } from "../../../data/quiz";
 import { asset } from "../../bp";
 import { SITE_URL, TEST_SHARE_TEXT, resultShareUrl } from "../../share";
 import ShareLinks from "./ShareLinks";
 import { ArrowIcon } from "./icons";
+import { COVER_ALT, glide, useKeys } from "../common";
 
-const COVER_ALT = "Ілюстрація: місто з аркою, що тріснула, космонавт і супутник";
 const letter = (k: string) => `${k.toLowerCase()})`;
 
 export function Logo() {
@@ -95,49 +95,7 @@ function Explanation({ text }: { text: string }) {
   );
 }
 
-/** Плавна прокрутка власним кроком: не залежить від scroll-behavior браузера. */
-function glide(to: number, ms: number) {
-  const from = window.scrollY;
-  const dist = to - from;
-  if (Math.abs(dist) < 2) return;
-  const t0 = performance.now();
-  const step = (now: number) => {
-    const p = Math.min(1, (now - t0) / ms);
-    const e = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
-    window.scrollTo(0, from + dist * e);
-    if (p < 1) requestAnimationFrame(step);
-  };
-  requestAnimationFrame(step);
-}
 
-/** Клавіші: 1–4 або а/б/в/г — відповідь, Enter — далі. */
-function useKeys(quiz: QuizApi) {
-  const ref = useRef(quiz);
-  useEffect(() => {
-    ref.current = quiz;
-  });
-  useEffect(() => {
-    const letters = ["а", "б", "в", "г"];
-    const onKey = (e: KeyboardEvent) => {
-      if (e.metaKey || e.ctrlKey || e.altKey) return;
-      const t = e.target as HTMLElement | null;
-      const z = ref.current;
-      if (z.screen === "question") {
-        const n = ["1", "2", "3", "4"].indexOf(e.key);
-        const o = z.q.options[n >= 0 ? n : letters.indexOf(e.key.toLowerCase())];
-        if (o) {
-          e.preventDefault();
-          z.answer(o.key);
-        }
-      } else if (z.screen === "reveal" && e.key === "Enter" && t?.tagName !== "BUTTON" && t?.tagName !== "A") {
-        e.preventDefault();
-        z.next();
-      }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
-}
 
 function Sheet({ quiz }: { quiz: QuizApi }) {
   const { screen, q, idx, total, picked } = quiz;
@@ -345,6 +303,31 @@ export default function BookSkin({ quiz }: { quiz: QuizApi }) {
           </section>
         )}
 
+        <p className="colophon">{intro.colophon}</p>
+      </div>
+    </main>
+  );
+}
+
+/** Шер-сторінка результату /r/{slug}/. */
+export function ResultPage({ level }: { level: Level }) {
+  return (
+    <main className="book spread result">
+      <div className="leaf verso">
+        <Cover />
+      </div>
+      <div className="leaf recto">
+        <Logo />
+        <p className="score">Результат тесту «Код міста» · {level.range}</p>
+        <h1 className="title mid">{level.title}</h1>
+        <p className="lead">{level.description}</p>
+        <Asterism />
+        <div className="btnCol">
+          <a href={`${SITE_URL}/`} className="btn primary">
+            <span>Пройти тест</span>
+          </a>
+          <ShareLinks url={resultShareUrl(level.slug)} text={level.shareText} label="Поділитися" />
+        </div>
         <p className="colophon">{intro.colophon}</p>
       </div>
     </main>
