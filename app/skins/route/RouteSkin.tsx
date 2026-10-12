@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import type { QuizApi } from "../../useQuiz";
 import { intro, questions } from "../../../data/quiz";
 import { asset } from "../../bp";
@@ -29,10 +30,53 @@ export function Topbar({ right }: { right: string }) {
   );
 }
 
+function StopHead({ n, topic, city }: { n: number; topic: string; city: string }) {
+  return (
+    <div className="stopHead">
+      <span className="stopNum" aria-hidden>
+        {String(n).padStart(2, "0")}
+      </span>
+      <span className="stopMeta">
+        <span className="kicker">{topic}</span>
+        <span className="stopCity">{city}</span>
+      </span>
+    </div>
+  );
+}
+
+/** Клавіші: 1–4 або а/б/в/г — відповідь, Enter — далі. */
+function useKeys(quiz: QuizApi) {
+  const ref = useRef(quiz);
+  ref.current = quiz;
+  useEffect(() => {
+    const keys = ["а", "б", "в", "г"];
+    const onKey = (e: KeyboardEvent) => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      const t = e.target as HTMLElement | null;
+      if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA")) return;
+      const z = ref.current;
+      if (z.screen === "question") {
+        const i = ["1", "2", "3", "4"].indexOf(e.key) >= 0 ? Number(e.key) - 1 : keys.indexOf(e.key.toLowerCase());
+        const o = z.q.options[i];
+        if (o) {
+          e.preventDefault();
+          z.answer(o.key);
+        }
+      } else if (z.screen === "reveal" && e.key === "Enter" && t?.tagName !== "BUTTON" && t?.tagName !== "A") {
+        e.preventDefault();
+        z.next();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+}
+
 const CITIES = Array.from(new Set(questions.map((q) => q.place.city).filter((c) => c !== "Ваше місто")));
 
 export default function RouteSkin({ quiz }: { quiz: QuizApi }) {
   const { screen, q, idx, total, picked, history, score, level } = quiz;
+  useKeys(quiz);
 
   if (screen === "intro") {
     return (
@@ -81,19 +125,18 @@ export default function RouteSkin({ quiz }: { quiz: QuizApi }) {
             <PostcardFront q={q} />
           </div>
           <div className="content">
-            <p className="kicker">
-              {q.topic} · {q.place.city}
-            </p>
+            <StopHead n={idx + 1} topic={q.topic} city={q.place.city} />
             {q.context && <p className="context">{q.context}</p>}
             <h2 className="prompt">{q.prompt}</h2>
-            <div className="opts">
-              {q.options.map((o) => (
-                <button key={o.key} className="opt" onClick={() => quiz.answer(o.key)}>
-                  <span className="k">{o.key}</span>
+            <div className="opts" role="group" aria-label="Варіанти відповіді">
+              {q.options.map((o, i) => (
+                <button key={o.key} className="opt" onClick={() => quiz.answer(o.key)} aria-keyshortcuts={String(i + 1)}>
+                  <span className="k">{o.key.toLowerCase()}</span>
                   <span className="t">{o.text}</span>
                 </button>
               ))}
             </div>
+            <p className="hint">Можна відповідати клавішами 1–4</p>
           </div>
         </div>
       </main>
@@ -102,8 +145,6 @@ export default function RouteSkin({ quiz }: { quiz: QuizApi }) {
 
   if (screen === "reveal") {
     const ok = picked === q.correct;
-    const right = q.options.find((o) => o.key === q.correct);
-    const mine = q.options.find((o) => o.key === picked);
     return (
       <main className="route screen reveal">
         <Topbar right={`Зупинка ${idx + 1} з ${total}`} />
@@ -114,21 +155,23 @@ export default function RouteSkin({ quiz }: { quiz: QuizApi }) {
               {ok ? <CheckIcon /> : <span className="verdictMark" aria-hidden>!</span>}
               <div>
                 <div className="vTitle">{ok ? "Влучно — зупинку зараховано" : "Майже. Ось як було насправді"}</div>
-                <div className="vSub">
-                  {ok ? `Правильна відповідь — ${q.correct}` : `Ваша відповідь — ${picked}, правильна — ${q.correct}`}
-                </div>
+                <div className="vSub">{ok ? "Ви обрали правильну відповідь" : "Правильну відповідь позначено нижче"}</div>
               </div>
             </div>
-            <div className="answerRecap">
-              <span className="k">{q.correct}</span>
-              <span>{right?.text}</span>
-            </div>
-            {!ok && mine && (
-              <div className="answerRecap mine">
-                <span className="k">{mine.key}</span>
-                <span>{mine.text}</span>
-              </div>
-            )}
+            <p className="promptSmall">{q.prompt}</p>
+            <ul className="opts done">
+              {q.options.map((o) => {
+                const state = o.key === q.correct ? "right" : o.key === picked ? "wrong" : "rest";
+                return (
+                  <li key={o.key} className={`opt ${state}`}>
+                    <span className="k">{o.key.toLowerCase()}</span>
+                    <span className="t">{o.text}</span>
+                    {state === "right" && <span className="tag">{ok ? "ваша відповідь" : "правильна"}</span>}
+                    {state === "wrong" && <span className="tag">ваша відповідь</span>}
+                  </li>
+                );
+              })}
+            </ul>
           </div>
           <div className="visual">
             <PostcardBack q={q} />
@@ -142,7 +185,7 @@ export default function RouteSkin({ quiz }: { quiz: QuizApi }) {
                 </a>
               ))}
             </div>
-            <button className="btn accent" onClick={quiz.next}>
+            <button className="btn accent" onClick={quiz.next} aria-keyshortcuts="Enter">
               <span>{quiz.isLast ? "До фінальної листівки" : "Наступна зупинка"}</span>
               <ArrowIcon />
             </button>

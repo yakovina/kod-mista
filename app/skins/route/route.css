@@ -463,7 +463,17 @@ body:has(.route)::before {
   text-transform: uppercase;
   color: var(--ink-2);
 }
+.route .pcText::first-letter {
+  float: left;
+  margin: 6px 10px 0 0;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 800;
+  font-size: 64px;
+  line-height: 0.8;
+  color: var(--teal);
+}
 .route .pcText {
+  text-wrap: pretty;
   margin: 16px 0 0;
   font-family: "Lora", serif;
   font-size: 17px;
@@ -594,18 +604,63 @@ body:has(.route)::before {
   color: var(--ink-2);
 }
 
+/* ——— шапка зупинки ——— */
+.route .stopHead {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--ink);
+}
+.route .stopNum {
+  font-weight: 800;
+  font-size: clamp(64px, 7vw, 92px);
+  line-height: 0.78;
+  letter-spacing: -0.05em;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.route .stopMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: 2px;
+}
+.route .stopCity {
+  font-family: "Lora", serif;
+  font-style: italic;
+  font-size: 20px;
+  line-height: 1.1;
+}
+.route .stopHead + .context,
+.route .stopHead + .prompt {
+  margin-top: 20px;
+}
+.route .context {
+  text-wrap: pretty;
+}
+.route .prompt {
+  text-wrap: balance;
+}
+
 /* ——— варіанти відповіді ——— */
 .route .opts {
-  margin-top: 22px;
+  list-style: none;
+  margin: 26px 0 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  counter-reset: none;
 }
 .route .opt {
+  position: relative;
   display: flex;
-  align-items: stretch;
-  min-height: 58px;
-  padding: 0;
+  align-items: center;
+  gap: 4px;
+  min-height: 64px;
+  padding: 10px 18px 10px 0;
   background: var(--card);
   border: var(--line);
   border-radius: 0;
@@ -614,31 +669,123 @@ body:has(.route)::before {
   font-weight: 600;
   line-height: 1.4;
   text-align: left;
-  transition: background-color 0.15s ease;
+  text-wrap: pretty;
+  transition: background-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
 }
-.route .opt .t {
-  display: flex;
-  align-items: center;
-  padding: 10px 16px;
-}
-.route .opt .k,
-.route .answerRecap .k {
-  flex: 0 0 48px;
+.route .opt .k {
+  flex: 0 0 58px;
+  align-self: stretch;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-right: var(--line);
-  background: var(--mustard);
-  font-weight: 800;
-  font-size: 16px;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  font-family: "Lora", serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: 30px;
+  line-height: 1;
+  color: var(--terracotta);
+  transition: color 0.18s ease;
 }
-.route .opt:hover {
+.route .opt .t {
+  flex: 1 1 auto;
+  padding-left: 14px;
+  border-left: 1px solid rgba(46, 46, 43, 0.25);
+}
+.route button.opt:hover {
   background: var(--butter);
+  box-shadow: 4px 4px 0 var(--ink);
+  transform: translate(-2px, -2px);
 }
-.route .opt:hover .k {
+.route button.opt:hover .k {
+  color: var(--teal);
+}
+.route button.opt:active {
+  box-shadow: 0 0 0 var(--ink);
+  transform: none;
+}
+.route .hint {
+  margin: 14px 0 0;
+  font-size: 12px;
+  color: var(--ink-2);
+}
+@media (hover: none) {
+  .route .hint {
+    display: none;
+  }
+}
+
+/* стан після відповіді */
+.route .promptSmall {
+  margin: 20px 0 0;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.35;
+  color: var(--ink-2);
+  text-wrap: balance;
+}
+.route .opts.done {
+  margin-top: 14px;
+  gap: 8px;
+}
+.route .opts.done .opt {
+  min-height: 54px;
+  flex-wrap: wrap;
+}
+.route .opt .tag {
+  margin-left: auto;
+  padding: 3px 8px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.route .opt.right {
   background: var(--teal);
+  border-color: var(--ink);
   color: var(--card);
+}
+.route .opt.right .k {
+  color: var(--mustard);
+}
+.route .opt.right .t {
+  border-left-color: rgba(251, 246, 234, 0.35);
+}
+.route .opt.right .tag {
+  background: var(--mustard);
+  color: var(--ink);
+}
+.route .opt.wrong {
+  background: var(--card);
+  border-color: var(--terracotta);
+  color: var(--ink-2);
+}
+.route .opt.wrong .t {
+  text-decoration: line-through;
+  text-decoration-color: var(--brick);
+  text-decoration-thickness: 2px;
+}
+.route .opt.wrong .tag {
+  background: var(--terracotta);
+  color: var(--ink);
+}
+.route .opt.rest {
+  background: transparent;
+  border-color: rgba(46, 46, 43, 0.22);
+  color: var(--ink-2);
+}
+.route .opt.rest .k {
+  color: rgba(46, 46, 43, 0.4);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .route .opt.right {
+    animation: pop 0.45s cubic-bezier(0.2, 0.8, 0.2, 1.2) both;
+  }
+}
+@keyframes pop {
+  from {
+    transform: scale(0.97);
+  }
 }
 
 /* ——— відповідь ——— */
@@ -679,37 +826,6 @@ body:has(.route)::before {
 .route .vSub {
   margin-top: 4px;
   font-size: 13px;
-}
-.route .answerRecap {
-  margin-top: 10px;
-  display: flex;
-  align-items: stretch;
-  background: var(--card);
-  border: 2px solid var(--teal);
-  font-size: 15px;
-  font-weight: 600;
-  line-height: 1.4;
-}
-.route .answerRecap > span:last-child {
-  padding: 10px 16px;
-}
-.route .answerRecap .k {
-  background: var(--teal);
-  color: var(--card);
-  border-right-color: var(--teal);
-}
-.route .answerRecap.mine {
-  border-color: rgba(46, 46, 43, 0.3);
-  color: var(--ink-2);
-}
-.route .answerRecap.mine > span:last-child {
-  text-decoration: line-through;
-  text-decoration-color: var(--brick);
-}
-.route .answerRecap.mine .k {
-  background: transparent;
-  color: var(--ink-2);
-  border-right: 2px solid rgba(46, 46, 43, 0.3);
 }
 
 .route .sources {
