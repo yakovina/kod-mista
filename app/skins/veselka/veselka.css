@@ -2123,26 +2123,26 @@ body:has(.veselka.result) {
 
 /* ═══ Іконка ілюстраторки на куті кожної картки відповіді (правильної й хибної),
    щоразу інша: жар-птиця, супутник, атом, космонавт, арка. ═══ */
-.veselka .acard .d-onCard {
+.veselka :is(.acard, .qpane) .d-onCard {
   top: 0;
   right: 12px;
   width: 84px;
   transform: translateY(-58%) rotate(-4deg);
   z-index: 2;
 }
-.veselka .acard .d-onCard.ic-firebird { width: 84px; }
-.veselka .acard .d-onCard.ic-sputnik { width: 74px; transform: translateY(-60%) rotate(6deg); }
-.veselka .acard .d-onCard.ic-atom { width: 62px; transform: translateY(-60%) rotate(-8deg); }
-.veselka .acard .d-onCard.ic-astronaut { width: 92px; transform: translateY(-56%) rotate(-6deg); }
-.veselka .acard .d-onCard.ic-arch { width: 96px; right: 14px; transform: translateY(-62%) rotate(0deg); }
+.veselka :is(.acard, .qpane) .d-onCard.ic-firebird { width: 84px; }
+.veselka :is(.acard, .qpane) .d-onCard.ic-sputnik { width: 74px; transform: translateY(-60%) rotate(6deg); }
+.veselka :is(.acard, .qpane) .d-onCard.ic-atom { width: 62px; transform: translateY(-60%) rotate(-8deg); }
+.veselka :is(.acard, .qpane) .d-onCard.ic-astronaut { width: 92px; transform: translateY(-56%) rotate(-6deg); }
+.veselka :is(.acard, .qpane) .d-onCard.ic-arch { width: 96px; right: 14px; transform: translateY(-62%) rotate(0deg); }
 .veselka .acard.withDeco { margin-top: 44px; }
 @media (min-width: 900px) {
-  .veselka .acard .d-onCard { right: 20px; }
-  .veselka .acard .d-onCard.ic-firebird { width: 112px; }
-  .veselka .acard .d-onCard.ic-sputnik { width: 100px; }
-  .veselka .acard .d-onCard.ic-atom { width: 84px; }
-  .veselka .acard .d-onCard.ic-astronaut { width: 116px; }
-  .veselka .acard .d-onCard.ic-arch { width: 124px; right: 22px; }
+  .veselka :is(.acard, .qpane) .d-onCard { right: 20px; }
+  .veselka :is(.acard, .qpane) .d-onCard.ic-firebird { width: 112px; }
+  .veselka :is(.acard, .qpane) .d-onCard.ic-sputnik { width: 100px; }
+  .veselka :is(.acard, .qpane) .d-onCard.ic-atom { width: 84px; }
+  .veselka :is(.acard, .qpane) .d-onCard.ic-astronaut { width: 116px; }
+  .veselka :is(.acard, .qpane) .d-onCard.ic-arch { width: 124px; right: 22px; }
   .veselka .acard.withDeco { margin-top: 58px; }
   .veselka .withDeco .acardIn::before { width: 112px; height: 26px; }
 }
@@ -2152,7 +2152,42 @@ body:has(.veselka.result) {
   to { opacity: 1; translate: 0 0; }
 }
 @media (prefers-reduced-motion: no-preference) {
-  .veselka .acard .d-onCard { animation: vPerchIcon 480ms 160ms var(--ease) both; }
+  .veselka :is(.acard, .qpane) .d-onCard { animation: vPerchIcon 480ms 160ms var(--ease) both; }
+}
+
+/* ═══ Картка питання: іконка ілюстраторки на правому верхньому куті (інша,
+   ніж на відповіді) і мозаїчна річка ілюстраторки вертикально зліва від
+   тексту питання. ═══ */
+.veselka .qpane.withDeco { margin-top: 44px; }
+.veselka .qtext {
+  position: relative;
+  min-height: 132px;
+  padding-left: 46px;
+}
+.veselka .qMosaic {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 34px;
+  object-fit: contain;
+  object-position: top center;
+  pointer-events: none;
+  user-select: none;
+}
+.veselka .qpane.hasPhoto .qtext { min-height: 120px; }
+@media (min-width: 900px) {
+  .veselka .qpane.withDeco { margin-top: 58px; }
+  .veselka .qtext { min-height: 170px; padding-left: 64px; }
+  .veselka .qMosaic { width: 44px; }
+  .veselka .qpane.hasPhoto .qtext { min-height: 150px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .veselka .qMosaic { animation: vMosaic 520ms 120ms var(--ease) both; }
+}
+@keyframes vMosaic {
+  from { opacity: 0; clip-path: inset(0 0 100% 0); }
+  to { opacity: 1; clip-path: inset(0 0 0 0); }
 }
 
 /* ——— 1x-екрани: контур рівно 1.5px ——— */

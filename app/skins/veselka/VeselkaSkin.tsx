@@ -6,7 +6,7 @@
 // варіанта — свій колір; вердикт — стікер на картці; на результаті — конфеті.
 // Мозаїка ілюстраторки лишається лише там, де вона сидить на контенті.
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { QuizApi } from "../../useQuiz";
 import { intro, questions, type Level, type Photo, type Question } from "../../../data/quiz";
 import { asset } from "../../bp";
@@ -211,21 +211,23 @@ function Sources({ q }: { q: Question }) {
   );
 }
 
-/** Іконки ілюстраторки, що сідають на кут картки відповіді. Сусідні питання
- *  ніколи не мають однакової; з якої почати — випадково при кожному проходженні. */
-const ANSWER_ICONS = ["firebird", "sputnik", "atom", "astronaut", "arch"] as const;
+/** Іконки ілюстраторки, що сідають на кут картки питання й картки відповіді.
+ *  На одному екрані вони різні, сусідні питання не повторюються;
+ *  з якої почати — випадково при кожному проходженні. */
+const ICONS = ["firebird", "sputnik", "atom", "astronaut", "arch"] as const;
+type Icon = (typeof ICONS)[number];
 let iconShift = -1;
 let lastQid = 0;
-function answerIcon(qid: number) {
+function iconsFor(qid: number): { question: Icon; answer: Icon } {
   // новий порядок — лише на початку проходження (повторний виклик для того самого питання його не міняє)
-  if (iconShift < 0 || (qid === 1 && lastQid !== 1)) iconShift = Math.floor(Math.random() * ANSWER_ICONS.length);
+  if (iconShift < 0 || (qid === 1 && lastQid !== 1)) iconShift = Math.floor(Math.random() * ICONS.length);
   lastQid = qid;
-  return ANSWER_ICONS[(qid - 1 + iconShift) % ANSWER_ICONS.length];
+  const i = (qid - 1 + iconShift) % ICONS.length;
+  return { answer: ICONS[i], question: ICONS[(i + 2) % ICONS.length] };
 }
 
 /** Картка пояснення: на екрані відповіді з іконкою на куті, у плитках — без. */
-function AnswerCard({ q, ok, deco, cardRef, id }: { q: Question; ok: boolean | null; deco?: boolean; cardRef?: React.Ref<HTMLElement>; id?: string }) {
-  const [icon] = useState(() => (deco ? answerIcon(q.id) : null));
+function AnswerCard({ q, ok, icon, cardRef, id }: { q: Question; ok: boolean | null; icon?: Icon; cardRef?: React.Ref<HTMLElement>; id?: string }) {
   return (
     <section className={`pane acard${icon ? " withDeco" : ""}${ok === false ? " miss" : ""}`} ref={cardRef} tabIndex={-1} aria-live="polite" id={id}>
       {icon && <Deco name={icon} cls={`d-onCard ic-${icon}`} />}
@@ -233,7 +235,7 @@ function AnswerCard({ q, ok, deco, cardRef, id }: { q: Question; ok: boolean | n
         <p className={`verdict sticker ${ok === false ? "miss" : "ok"}`}>
           {ok === false ? <Cross /> : <Check />}
           <span>{ok ? UI.right(q.correct) : UI.wrong(q.correct)}</span>
-          {deco && ok && (
+          {icon && ok && (
             <span className="burst" aria-hidden>
               {Array.from({ length: 10 }, (_, i) => (
                 <i key={i} className={`b${i}`} />
@@ -322,6 +324,7 @@ function Sheet({ quiz }: { quiz: QuizApi }) {
   const ok = picked === q.correct;
   const promptRef = useRef<HTMLHeadingElement>(null);
   const cardRef = useRef<HTMLElement>(null);
+  const icons = useMemo(() => iconsFor(q.id), [q.id]);
 
   // після відповіді — у тому ж кадрі гортаємо до картки так, щоб виступ декору лишився у вікні
   useLayoutEffect(() => {
@@ -347,15 +350,20 @@ function Sheet({ quiz }: { quiz: QuizApi }) {
         </header>
         <Windows idx={idx} total={total} answered={answered} />
 
-        <section className={`pane qpane in${q.photo ? " hasPhoto" : ""}`}>
+        <section className={`pane qpane withDeco in${q.photo ? " hasPhoto" : ""}`}>
+          <Deco name={icons.question} cls={`d-onCard ic-${icons.question}`} />
           <p className="topic">
             <span className="chip">{q.topic}</span>
           </p>
           {q.photo && <PhotoFig photo={q.photo} cls="inQuestion" />}
-          {q.context && <p className="qlead">{q.context}</p>}
-          <h2 className="prompt" ref={promptRef} tabIndex={-1}>
-            {q.prompt}
-          </h2>
+          <div className="qtext">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className="qMosaic" src={asset("/art/deco-river-v.webp")} alt="" aria-hidden />
+            {q.context && <p className="qlead">{q.context}</p>}
+            <h2 className="prompt" ref={promptRef} tabIndex={-1}>
+              {q.prompt}
+            </h2>
+          </div>
         </section>
 
         <ol className={answered ? "opts done" : "opts"}>
@@ -391,7 +399,7 @@ function Sheet({ quiz }: { quiz: QuizApi }) {
           })}
         </ol>
 
-        {answered && <AnswerCard q={q} ok={ok} deco cardRef={cardRef} />}
+        {answered && <AnswerCard q={q} ok={ok} icon={icons.answer} cardRef={cardRef} />}
         {answered && (
           <button
             className="btn next"
