@@ -1620,6 +1620,94 @@ body:has(.veselka.result) {
   .veselka .score small { font-size: 15px; line-height: 15px; }
 }
 
+/* ═══ Десктоп, перезбірка: старт займає рівно перший екран, поширення —
+   у текстовій колонці; питання, результат і 404 — картка-аркуш, що лежить
+   на обкладинці з полями зверху й знизу. ═══ */
+/* мобайл: поширення всередині героя йде після кнопки, як і було */
+.veselka .hero .share { order: 6; }
+@media (max-width: 899px) {
+  .veselka.intro .hero .share { margin-top: 36px; padding-top: 22px; border-top: 1px solid var(--seam); }
+  .veselka.intro .col > :last-child { margin-bottom: calc(64px + env(safe-area-inset-bottom, 0px)); }
+}
+@media (min-width: 900px) {
+  .veselka.intro .col { display: flex; flex-direction: column; min-height: 100dvh; }
+  .veselka.intro .hero {
+    flex: 1 0 auto;
+    grid-template-columns: minmax(0, 420px) minmax(0, 1fr);
+    column-gap: clamp(56px, 6vw, 96px);
+    align-items: center;
+    padding: 48px 0 56px;
+  }
+  .veselka.intro .col > :last-child { margin-bottom: 0; }
+  .veselka.intro .hero .share { margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--seam); width: 100%; }
+  .veselka.intro .hero .share .shareLabel { text-align: left; }
+  .veselka.intro .coverWrap { max-width: 660px; }
+
+  /* аркуш на обкладинці */
+  .veselka.sheet,
+  .veselka.result,
+  .veselka.notfound { padding: 36px 0; }
+  .veselka.sheet .col,
+  .veselka.result .col,
+  .veselka.notfound .col {
+    border: var(--lw) solid var(--ink);
+    border-radius: var(--r);
+    box-shadow: 6px 6px 0 var(--teal-600);
+    overflow: clip;
+  }
+  .veselka.sheet .col { --colw: 660px; }
+  .veselka.result .col { --colw: 600px; }
+  .veselka.notfound .col { --colw: 560px; }
+  .veselka .bar::before { left: calc(-1 * var(--gutter)); right: calc(-1 * var(--gutter)); }
+  .veselka.result .col > :last-child { margin-bottom: 64px; }
+  .veselka .btn.next { margin-bottom: 64px; }
+  .veselka .opts:not(.done) { margin-bottom: 64px; }
+  .veselka .poster .figure { height: 250px; }
+}
+@media (min-width: 900px) and (max-width: 1023px) {
+  .veselka.sheet .col,
+  .veselka.result .col,
+  .veselka.notfound .col { box-shadow: 4px 4px 0 var(--teal-600); }
+}
+
+/* ═══ Десктоп, уточнення: один аркуш 680 на всіх екранах, висота за змістом,
+   тінь 3px; старт — більша обкладинка; результат вміщується в 900px. ═══ */
+@media (min-width: 900px) {
+  .veselka.sheet .col,
+  .veselka.result .col,
+  .veselka.notfound .col {
+    --colw: 640px;
+    flex: 0 0 auto;
+    box-shadow: 3px 3px 0 var(--teal-600);
+  }
+  .veselka.sheet,
+  .veselka.result,
+  .veselka.notfound { padding: 40px 0 48px; justify-content: flex-start; }
+  .veselka.notfound .col { min-height: calc(100dvh - 88px); }
+  .veselka .opts:not(.done) { margin-bottom: 44px; }
+  .veselka .btn.next { margin-bottom: 44px; }
+  .veselka.result .col > :last-child { margin-bottom: 40px; }
+
+  /* результат у перший екран */
+  .veselka .poster { margin-top: 22px; padding-top: 18px; }
+  .veselka .poster .figure { height: 220px; }
+  .veselka .poster .arch { width: 56%; bottom: 40px; }
+  .veselka.result .titlePane { margin-top: -16px; }
+  .veselka.result .title { font-size: 30px; line-height: 36px; }
+  .veselka .scaleWrap { margin-top: 24px; }
+  .veselka .resCard { margin-top: 24px; padding: 22px 28px 22px; }
+  .veselka.result .resCard .lead { font-size: 16px; line-height: 27px; }
+  .veselka .resCard .share { margin-top: 16px; padding-top: 14px; }
+  .veselka .resNext { margin-top: 16px; }
+
+  /* старт: більша обкладинка, текст і обкладинка по одній осі */
+  .veselka.intro .hero { grid-template-columns: minmax(0, 400px) minmax(0, 1fr); column-gap: 72px; padding: 40px 0 48px; }
+  .veselka.intro .coverWrap { max-width: none; }
+}
+@media (min-width: 900px) and (max-height: 820px) {
+  .veselka .poster .figure { height: 190px; }
+}
+
 /* ——— 1x-екрани: контур рівно 1.5px ——— */
 @media (resolution < 1.5dppx) {
   .veselka { --lw: 1px; }

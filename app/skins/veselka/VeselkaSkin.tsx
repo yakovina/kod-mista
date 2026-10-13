@@ -546,15 +546,15 @@ export default function VeselkaSkin({ quiz }: { quiz: QuizApi }) {
                 {UI.start}
                 <Arrow />
               </button>
+              <Share url={`${SITE_URL}/`} text={TEST_SHARE_TEXT} label={UI.shareTest} />
             </div>
             <div className="coverWrap">
               <Bed src="/art/cover.jpg" alt={COVER_ALT} cls="cover" />
               <Shapes cls="d-hero" />
             </div>
           </section>
-          <Share url={`${SITE_URL}/`} text={TEST_SHARE_TEXT} label={UI.shareTest} />
         </div>
-        </main>
+      </main>
     );
   }
 
