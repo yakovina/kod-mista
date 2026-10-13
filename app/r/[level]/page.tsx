@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getLevelBySlug, levels } from "../../../data/quiz";
 import { ResultPage } from "../../skins";
-import { SITE_URL, resultShareUrl } from "../../share";
+import { OG_VERSION, SITE_URL, resultShareUrl } from "../../share";
 
 // Статично генеруємо лише три сторінки рівнів.
 export const dynamicParams = false;
@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: { params: Promise<{ level: st
   const lvl = getLevelBySlug(level);
   if (!lvl) return {};
   const title = `Мій результат — «${lvl.title}» · Код міста`;
-  const ogImage = `${SITE_URL}/og-${lvl.slug}.png`;
+  const ogImage = `${SITE_URL}/og-${lvl.slug}.png?v=${OG_VERSION}`;
   return {
     title,
     description: lvl.description,

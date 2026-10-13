@@ -1833,6 +1833,92 @@ body:has(.veselka.result) {
   .veselka .opts li { margin-top: 12px; }
 }
 
+/* ═══ Фото в питанні (на всю ширину картки, під стікером теми) і у відповіді
+   (після першого речення, з підписом). ═══ */
+.veselka .photo { margin: 0; }
+.veselka .photo img { display: block; width: 100%; height: auto; object-fit: cover; }
+.veselka .qpane { position: relative; }
+.veselka .photo.inQuestion {
+  margin: -22px -18px 18px;
+  border-bottom: var(--lw) solid var(--ink);
+  border-radius: calc(var(--r) - var(--lw)) calc(var(--r) - var(--lw)) 0 0;
+  overflow: hidden;
+  background: var(--sand);
+}
+.veselka .photo.inQuestion img { aspect-ratio: 16 / 9; }
+.veselka .qpane.hasPhoto .topic { z-index: 2; }
+.veselka .photo.inAnswer { margin: 16px 0 4px; }
+.veselka .photo.inAnswer img {
+  aspect-ratio: 3 / 2;
+  border: var(--lw) solid var(--ink);
+  border-radius: var(--r);
+  box-shadow: 2px 2px 0 var(--mustard-deep);
+  background: var(--sand);
+}
+.veselka .photo figcaption {
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 17px;
+  color: var(--ink-2);
+}
+@media (min-width: 900px) {
+  .veselka .photo.inQuestion { margin: -30px -30px 22px; }
+  .veselka .photo.inQuestion img { aspect-ratio: 2 / 1; }
+  .veselka .photo.inAnswer { margin: 18px 0 6px; }
+  .veselka .photo.inAnswer img { box-shadow: 3px 3px 0 var(--mustard-deep); }
+  .veselka .photo figcaption { font-size: 12.5px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .veselka .photo img { animation: vFade 360ms var(--ease) both; }
+}
+
+/* ═══ «Ви тут»: наліпка-підказка з ромбиком, що вказує на поточний рівень;
+   поточна комірка — гірчична смужка зверху. ═══ */
+.veselka .scaleWrap { padding-top: 30px; }
+.veselka .here {
+  top: 0;
+  gap: 0;
+  padding: 3px 11px 4px;
+  background: var(--mustard);
+  border: var(--lw) solid var(--ink);
+  border-radius: var(--r);
+  box-shadow: 2px 2px 0 var(--teal-600);
+  font-family: "Open Sans", sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  transform: translateX(-50%);
+}
+.veselka .here::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -5px;
+  width: 8px;
+  height: 8px;
+  margin-left: -4px;
+  background: var(--mustard);
+  border: 0;
+  border-right: var(--lw) solid var(--ink);
+  border-bottom: var(--lw) solid var(--ink);
+  transform: rotate(45deg);
+}
+.veselka .here i { display: none; }
+.veselka .lvl.on { box-shadow: inset 0 4px 0 var(--mustard-deep); }
+@media (prefers-reduced-motion: no-preference) {
+  .veselka .here { animation: vHere 360ms 420ms var(--ease) both; }
+}
+@keyframes vHere {
+  from { opacity: 0; transform: translate(-50%, -6px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+@media (min-width: 900px) {
+  .veselka .scaleWrap { padding-top: 32px; }
+  .veselka .here { font-size: 12.5px; padding: 3px 12px 4px; }
+}
+
 /* ——— 1x-екрани: контур рівно 1.5px ——— */
 @media (resolution < 1.5dppx) {
   .veselka { --lw: 1px; }

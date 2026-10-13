@@ -65,10 +65,19 @@ body.level .lvl { display: block; }
 .range { display: inline-flex; align-items: baseline; gap: 10px; margin-top: 30px; padding: 10px 18px 12px; background: var(--teal-900); color: var(--card); border: var(--lw) solid var(--ink); border-radius: var(--r); box-shadow: 4px 4px 0 var(--mustard-deep); }
 .range b { font-family: "Lora", serif; font-weight: 700; font-size: 40px; line-height: 1; letter-spacing: -0.02em; }
 .range span { font-weight: 500; font-size: 22px; color: var(--sky); }
-.text .btn { margin-top: 30px; }
+.text .btn { margin-top: 34px; }
 .arch .a-ink { fill: var(--ink); } .arch .a-900 { fill: var(--teal-900); } .arch .a-600 { fill: var(--teal-600); }
 .arch .a-500 { fill: var(--teal-500); } .arch .a-300 { fill: var(--teal-300); } .arch .a-card { fill: var(--card); }
 .arch .a-hole { fill: var(--mustard); } .arch .a-crack { fill: none; stroke: var(--ink); stroke-width: 1.4; }
+
+.scale { position: relative; margin-top: 46px; width: 100%; display: grid; grid-template-columns: repeat(3, 1fr); border: var(--lw) solid var(--ink); background: var(--card); }
+.scale div { padding: 12px 8px 11px; text-align: center; border-right: var(--lw) solid var(--ink); font-weight: 500; font-size: 17px; line-height: 1.25; color: var(--ink-2); }
+.scale div:last-child { border-right: 0; }
+.scale div small { display: block; margin-top: 3px; font-size: 15px; font-weight: 500; }
+.scale div.on { background: var(--teal-600); color: var(--card); font-weight: 700; box-shadow: inset 0 6px 0 var(--mustard-deep); }
+.scale div.on small { font-weight: 500; color: var(--sky); }
+.here { position: absolute; top: -42px; transform: translateX(-50%); padding: 4px 14px 6px; background: var(--mustard); border: var(--lw) solid var(--ink); border-radius: var(--r); box-shadow: 3px 3px 0 var(--teal-600); font-weight: 700; font-size: 18px; line-height: 22px; white-space: nowrap; }
+.here::after { content: ""; position: absolute; left: 50%; bottom: -7px; width: 11px; height: 11px; margin-left: -6px; background: var(--mustard); border-right: var(--lw) solid var(--ink); border-bottom: var(--lw) solid var(--ink); transform: rotate(45deg); }
 </style>
 </head>
 <body>
@@ -103,7 +112,12 @@ body.level .lvl { display: block; }
   <div class="text">
     <p class="kicker">Мій результат у тесті «Код міста»</p>
     <div class="plate"><h1 id="title"></h1></div>
-    <div class="range"><b id="rangeN"></b><span id="rangeT"></span></div>
+    <div class="scale" id="scale">
+      <span class="here" id="here">ви тут</span>
+      <div data-l="tourist">Турист<br>у&nbsp;своєму місті<small>0–2 бали</small></div>
+      <div data-l="citizen">Допитливий<br>містянин<small>3–5 балів</small></div>
+      <div data-l="keeper">Хранитель<br>коду міста<small>6–8 балів</small></div>
+    </div>
     <span class="btn">Пройти тест <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span>
   </div>
 </section>
@@ -120,8 +134,9 @@ body.level .lvl { display: block; }
     document.getElementById("char").src = `../public/art/char-${slug}.webp`;
     const h = document.getElementById("title");
     lv.title.forEach((line, k) => { if (k) h.appendChild(document.createElement("br")); h.appendChild(document.createTextNode(line)); });
-    document.getElementById("rangeN").textContent = lv.n;
-    document.getElementById("rangeT").textContent = lv.t;
+    const order = ["tourist", "citizen", "keeper"];
+    document.querySelectorAll("#scale div").forEach((d) => d.classList.toggle("on", d.dataset.l === slug));
+    document.getElementById("here").style.left = `${(order.indexOf(slug) * 2 + 1) / 6 * 100}%`;
   }
 </script>
 </body>

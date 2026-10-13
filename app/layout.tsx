@@ -4,7 +4,7 @@ import "./skins/book/book.css";
 import "./skins/memphis/memphis.css";
 import "./skins/vitrazh/vitrazh.css";
 import "./skins/veselka/veselka.css";
-import { SITE_URL, TEST_SHARE_TITLE } from "./share";
+import { OG_VERSION, SITE_URL, TEST_SHARE_TITLE } from "./share";
 import { asset } from "./bp";
 
 const TITLE = "Код міста · Тест Хмарочоса";
@@ -31,13 +31,13 @@ export const metadata: Metadata = {
     siteName: "Хмарочос",
     locale: "uk_UA",
     type: "website",
-    images: [{ url: `${SITE_URL}/og-test.png`, width: 1200, height: 630, alt: TEST_SHARE_TITLE }],
+    images: [{ url: `${SITE_URL}/og-test.png?v=${OG_VERSION}`, width: 1200, height: 630, alt: TEST_SHARE_TITLE }],
   },
   twitter: {
     card: "summary_large_image",
     title: TEST_SHARE_TITLE,
     description: DESC,
-    images: [`${SITE_URL}/og-test.png`],
+    images: [`${SITE_URL}/og-test.png?v=${OG_VERSION}`],
   },
 };
 

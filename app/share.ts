@@ -12,3 +12,6 @@ export const TEST_SHARE_TEXT =
 export function resultShareUrl(slug: string): string {
   return `${SITE_URL}/r/${slug}/`;
 }
+
+/** Версія OG-картинок: міняємо, коли картинки перемальовано, щоб соцмережі взяли нові. */
+export const OG_VERSION = "3";

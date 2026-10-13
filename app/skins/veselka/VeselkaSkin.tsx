@@ -8,7 +8,7 @@
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { QuizApi } from "../../useQuiz";
-import { intro, levels, questions, type Level, type Question } from "../../../data/quiz";
+import { intro, levels, questions, type Level, type Photo, type Question } from "../../../data/quiz";
 import { asset } from "../../bp";
 import { SITE_URL, TEST_SHARE_TEXT, resultShareUrl } from "../../share";
 import { COVER_ALT, buzz, glide, useKeys } from "../common";
@@ -157,13 +157,39 @@ function CountUp({ to }: { to: number }) {
   return <>{n}</>;
 }
 
-/** Пояснення: перше речення — окремий абзац як головна думка. */
-function Explanation({ text }: { text: string }) {
+/** Фото до питання чи відповіді: 640px для телефона, 1280px для широкого й 2x-екрана. */
+function PhotoFig({ photo, cls }: { photo: Photo; cls: string }) {
+  const small = photo.src.replace(/\.webp$/, "-640.webp");
+  return (
+    <figure className={`photo ${cls}`}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={asset(small)}
+        srcSet={`${asset(small)} 640w, ${asset(photo.src)} 1280w`}
+        sizes="(min-width: 900px) 640px, 100vw"
+        alt={photo.alt}
+        decoding="async"
+        style={photo.focus ? { objectPosition: photo.focus } : undefined}
+      />
+      {photo.caption && <figcaption>{photo.caption}</figcaption>}
+    </figure>
+  );
+}
+
+/** Пояснення: перше речення — окремий абзац як головна думка; фото — між ними. */
+function Explanation({ text, photo }: { text: string; photo?: Photo }) {
   const m = text.match(/^(.+?[.!?])\s+([\s\S]+)$/);
-  if (!m) return <p className="lede">{text}</p>;
+  if (!m)
+    return (
+      <>
+        <p className="lede">{text}</p>
+        {photo && <PhotoFig photo={photo} cls="inAnswer" />}
+      </>
+    );
   return (
     <>
       <p className="lede">{m[1]}</p>
+      {photo && <PhotoFig photo={photo} cls="inAnswer" />}
       <p className="explain">{m[2]}</p>
     </>
   );
@@ -202,7 +228,7 @@ function AnswerCard({ q, ok, deco, cardRef, id }: { q: Question; ok: boolean | n
             </span>
           )}
         </p>
-        <Explanation text={q.explanation} />
+        <Explanation text={q.explanation} photo={q.answerPhoto} />
         <Sources q={q} />
       </div>
     </section>
@@ -308,10 +334,11 @@ function Sheet({ quiz }: { quiz: QuizApi }) {
         </header>
         <Windows idx={idx} total={total} answered={answered} />
 
-        <section className="pane qpane in">
+        <section className={`pane qpane in${q.photo ? " hasPhoto" : ""}`}>
           <p className="topic">
             <span className="chip">{q.topic}</span>
           </p>
+          {q.photo && <PhotoFig photo={q.photo} cls="inQuestion" />}
           {q.context && <p className="qlead">{q.context}</p>}
           <h2 className="prompt" ref={promptRef} tabIndex={-1}>
             {q.prompt}
