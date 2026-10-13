@@ -211,11 +211,24 @@ function Sources({ q }: { q: Question }) {
   );
 }
 
-/** Картка пояснення: на екрані відповіді з декором на оправі, у плитках — без. */
+/** Іконки ілюстраторки, що сідають на кут картки відповіді. Сусідні питання
+ *  ніколи не мають однакової; з якої почати — випадково при кожному проходженні. */
+const ANSWER_ICONS = ["firebird", "sputnik", "atom", "astronaut", "arch"] as const;
+let iconShift = -1;
+let lastQid = 0;
+function answerIcon(qid: number) {
+  // новий порядок — лише на початку проходження (повторний виклик для того самого питання його не міняє)
+  if (iconShift < 0 || (qid === 1 && lastQid !== 1)) iconShift = Math.floor(Math.random() * ANSWER_ICONS.length);
+  lastQid = qid;
+  return ANSWER_ICONS[(qid - 1 + iconShift) % ANSWER_ICONS.length];
+}
+
+/** Картка пояснення: на екрані відповіді з іконкою на куті, у плитках — без. */
 function AnswerCard({ q, ok, deco, cardRef, id }: { q: Question; ok: boolean | null; deco?: boolean; cardRef?: React.Ref<HTMLElement>; id?: string }) {
+  const [icon] = useState(() => (deco ? answerIcon(q.id) : null));
   return (
-    <section className={`pane acard${deco && ok ? " withDeco" : ""}${ok === false ? " miss" : ""}`} ref={cardRef} tabIndex={-1} aria-live="polite" id={id}>
-      {deco && ok && <Deco name="firebird" cls="d-onCard bird" />}
+    <section className={`pane acard${icon ? " withDeco" : ""}${ok === false ? " miss" : ""}`} ref={cardRef} tabIndex={-1} aria-live="polite" id={id}>
+      {icon && <Deco name={icon} cls={`d-onCard ic-${icon}`} />}
       <div className="acardIn">
         <p className={`verdict sticker ${ok === false ? "miss" : "ok"}`}>
           {ok === false ? <Cross /> : <Check />}
