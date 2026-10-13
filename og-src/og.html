@@ -11,14 +11,18 @@
 @font-face { font-family: "Lora"; src: url("../public/fonts/hm/lora-v24-latin_cyrillic-ext-700.woff2") format("woff2"); font-weight: 700; }
 * { box-sizing: border-box; }
 body { margin: 0; width: 1200px; height: 630px; overflow: hidden; background: #e5e2d9; color: #30302e; font-family: "Open Sans", sans-serif; }
+.coverWrap { position: relative; width: 1200px; height: 630px; }
 .cover { width: 1200px; height: 630px; object-fit: cover; object-position: 50% 18%; display: block; }
+.plate { position: absolute; left: 56px; bottom: 56px; padding: 18px 28px 22px; background: #f2d98f; border: 3px solid #30302e; border-radius: 6px; outline: 2px solid #fbf7ec; outline-offset: -5px; }
+.plateTitle { font-family: "Lora", serif; font-weight: 700; font-size: 64px; line-height: 1; letter-spacing: -.01em; }
+.plateSub { margin-top: 10px; font-size: 22px; font-weight: 500; color: #30302e; }
 .lvl { display: none; position: relative; width: 1200px; height: 630px; }
-body.level .cover { display: none; }
+body.level .coverWrap { display: none; }
 body.level .lvl { display: block; }
 .fig { position: absolute; left: 40px; top: 0; height: 574px; width: 520px; overflow: hidden; display: flex; align-items: flex-end; justify-content: center; }
 .fig img { display: block; width: auto; height: auto; }
 .fig.tourist img { width: 470px; }
-.fig.citizen img { height: 960px; margin-bottom: -400px; }
+.fig.citizen img { width: 520px; align-self: flex-start; }
 .fig.keeper img { height: 1280px; margin-bottom: -710px; }
 .sill { position: absolute; left: 40px; top: 574px; width: 520px; height: 2px; background: #30302e; }
 .text { position: absolute; left: 610px; top: 0; height: 630px; width: 540px; display: flex; flex-direction: column; justify-content: center; }
@@ -29,7 +33,10 @@ body.level .lvl { display: block; }
 </style>
 </head>
 <body>
-<img class="cover" src="../public/art/cover.jpg" alt="">
+<div class="coverWrap">
+  <img class="cover" src="../public/art/cover.jpg" alt="">
+  <div class="plate"><div class="plateTitle">Код міста</div><div class="plateSub">Тест Хмарочоса · 8 питань про будівлі, вулиці й пам’ятники</div></div>
+</div>
 <div class="lvl">
   <div class="fig" id="fig"><img id="char" src="" alt=""></div>
   <div class="sill"></div>
@@ -51,7 +58,7 @@ body.level .lvl { display: block; }
     document.body.classList.add("level");
     document.getElementById("fig").classList.add(slug);
     document.getElementById("char").src = `../public/art/char-${slug}.webp`;
-    document.getElementById("title").textContent = lv.title;
+    document.getElementById("title").textContent = lv.title.replace(/ у /g, " у\u00a0");
     document.getElementById("range").textContent = lv.range;
   }
 </script>

@@ -2,13 +2,17 @@
    зачіпати інші скіни. Жодних box-shadow, text-shadow, filter, fixed. */
 
 body:has(.vitrazh) {
-  background: #e5e2d9;
+  background: #f1e8d3;
 }
 
 .vitrazh {
-  --wall: #e5e2d9;
-  --wall-deep: #d7d6cf;
-  --glass: #f7f6ec;
+  --wall: #f1e8d3;
+  --wall-deep: #e3d9bf;
+  --glass: #fbf7ec;
+  --glass-teal: #d3e4e4;
+  --glass-sky: #c6dde1;
+  --glass-sand: #eedfcf;
+  --glass-mustard: #f2d98f;
   --teal-900: #0e4758;
   --teal-600: #226a7a;
   --teal-500: #4a8c95;
@@ -23,7 +27,7 @@ body:has(.vitrazh) {
   --grout-warm: #b0a295;
   --highlight: #eef4f3;
   --focus: #0e4758;
-  --lead-w: 1.5px;
+  --lead-w: 2px;
   --r-pane: 4px;
   --gutter: 16px;
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
@@ -41,7 +45,7 @@ body:has(.vitrazh) {
   position: absolute;
   inset: 0;
   z-index: 0;
-  opacity: 0.06;
+  opacity: 0.11;
   mix-blend-mode: multiply;
   pointer-events: none;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='256' height='256'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
@@ -90,7 +94,7 @@ body:has(.vitrazh) {
 .vitrazh .brandSub {
   font-size: 15px;
   line-height: 24px;
-  color: var(--teal-900);
+  color: var(--ink-2);
 }
 @media (max-width: 899px) { .vitrazh.sheet .brandSub { display: none; } }
 
@@ -103,11 +107,10 @@ body:has(.vitrazh) {
 .vitrazh .win {
   box-sizing: border-box;
   display: inline-block;
-  width: 12px;
-  height: 16px;
+  width: 14px;
+  height: 19px;
   transition: background-color var(--t-base) var(--ease), border-color var(--t-base) var(--ease);
 }
-.vitrazh .windows .w6 { margin-right: 10px; }
 .vitrazh .win.next { background: var(--wall-deep); border: 1px solid var(--ink-2); }
 .vitrazh .win.now { background: var(--glass); border: var(--lead-w) solid var(--ink); }
 .vitrazh .win.done,
@@ -230,9 +233,9 @@ body:has(.vitrazh) {
 .vitrazh .hero .title { order: 1; }
 .vitrazh .hero .lead { order: 2; }
 .vitrazh .bed.cover { order: 3; margin: 20px 0 0; }
-.vitrazh .hero .meta { order: 4; margin: 20px 0 0; text-align: center; }
+.vitrazh .hero .meta { order: 4; margin: 20px 0 0; }
 .vitrazh .hero .btn { order: 5; margin-top: 8px; width: 100%; }
-.vitrazh.intro .share { margin-top: 24px; }
+.vitrazh.intro .share { margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--grout); }
 .vitrazh .bed.divider {
   width: 100%;
   max-width: 560px;
@@ -331,10 +334,10 @@ body:has(.vitrazh) {
 .vitrazh .acard {
   position: relative;
   margin-top: 16px;
-  padding: 20px 20px 24px;
   border-color: var(--teal-900);
 }
-.vitrazh .acard.withDeco { margin-top: 40px; padding-top: 36px; }
+.vitrazh .acard:not(.withDeco) .verdict { padding-top: 12px; }
+.vitrazh .acard.withDeco { margin-top: 40px; }
 .vitrazh .verdict {
   margin: 0;
   display: flex;
@@ -368,9 +371,10 @@ body:has(.vitrazh) {
   color: var(--ink-2);
 }
 .vitrazh .srcs a {
-  display: inline-block;
-  padding: 13px 0;
-  margin: -13px 0;
+  display: block;
+  padding: 11px 0;
+  margin: 0;
+  line-height: 22px;
   color: var(--ink-2);
   text-decoration: underline;
   text-decoration-thickness: 1px;
@@ -379,6 +383,11 @@ body:has(.vitrazh) {
   transition: color var(--t-fast) var(--ease), text-decoration-color var(--t-fast) var(--ease);
 }
 .vitrazh .srcs a:hover { color: var(--teal-600); text-decoration-color: var(--teal-600); }
+.vitrazh .srcs .dot { display: none; }
+@media (min-width: 900px) {
+  .vitrazh .srcs a { display: inline-block; padding: 8px 0; margin: -8px 0; line-height: 18px; }
+  .vitrazh .srcs .dot { display: inline; }
+}
 .vitrazh .btn.next {
   margin-top: 24px;
   margin-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
@@ -417,13 +426,9 @@ body:has(.vitrazh) {
   max-width: 100%;
   object-fit: contain;
   object-position: bottom center;
-}
-.vitrazh .ground {
-  height: var(--lead-w);
-  margin: 0;
-  border: 0;
-  background: var(--ink);
-  transform-origin: left center;
+  margin-bottom: -3px;
+  position: relative;
+  z-index: 1;
 }
 .vitrazh .score {
   position: relative;
@@ -440,7 +445,7 @@ body:has(.vitrazh) {
   line-height: 1;
 }
 .vitrazh .score::before {
-  content: "";
+  content: none;
   position: absolute;
   left: 15%;
   top: 11%;
@@ -497,6 +502,9 @@ body:has(.vitrazh) {
 .vitrazh .lvl {
   padding: 12px 8px 10px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 .vitrazh .lvl .name {
   display: block;
@@ -544,7 +552,7 @@ body:has(.vitrazh) {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 12px;
+  gap: 20px;
 }
 .vitrazh .share { display: flex; flex-direction: column; }
 .vitrazh .shareLabel {
@@ -606,6 +614,18 @@ body:has(.vitrazh) {
   line-height: 20px;
   transition: color var(--t-fast) var(--ease);
 }
+.vitrazh .tile .tp small {
+  display: block;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--ink-2);
+}
+.vitrazh .tile::after {
+  content: "";
+  grid-column: 2;
+  grid-row: 2;
+}
 .vitrazh .tile .mk {
   width: 22px;
   height: 22px;
@@ -663,7 +683,6 @@ body:has(.vitrazh) {
   .vitrazh .answersBlock .acard { animation: vIn var(--t-base) var(--ease) both; }
   .vitrazh .d-onCard { animation: vFade 320ms 120ms var(--ease) both; }
   .vitrazh .figure img { animation: vFade 320ms var(--ease) both; }
-  .vitrazh .ground { animation: vGround 400ms var(--ease) both; }
   .vitrazh .score { animation: vScore 280ms 160ms var(--ease) both; }
   .vitrazh.result .title { animation: vFade var(--t-base) 240ms var(--ease) both; }
 }
@@ -680,7 +699,7 @@ body:has(.vitrazh) {
 @media (min-width: 900px) {
   .vitrazh { --gutter: 40px; }
   .vitrazh .bar { height: 64px; }
-  .vitrazh .win { width: 14px; height: 18px; }
+  .vitrazh .win { width: 17px; height: 23px; }
   .vitrazh .title { font-size: 56px; line-height: 60px; }
   .vitrazh .lead { margin-top: 16px; font-size: 22px; line-height: 32px; }
   .vitrazh .meta { margin-top: 24px; font-size: 14px; line-height: 20px; }
@@ -710,7 +729,6 @@ body:has(.vitrazh) {
   .vitrazh .prompt { font-size: 28px; line-height: 36px; }
   .vitrazh .opt { padding: 16px 20px; font-size: 17px; line-height: 26px; }
   .vitrazh .acard { padding: 28px 32px 32px; }
-  .vitrazh .acard.withDeco { margin-top: 56px; padding-top: 36px; }
   .vitrazh .withDeco .verdict { padding-right: 148px; }
   .vitrazh .verdict { font-size: 20px; line-height: 26px; }
   .vitrazh .lede { font-size: 20px; line-height: 28px; }
@@ -756,3 +774,70 @@ body:has(.vitrazh) {
 }
 .vitrazh [tabindex="-1"]:focus { outline: none !important; }
 .vitrazh .tile:focus-visible { position: relative; z-index: 1; }
+
+
+/* ═══ Кольорове скло: щоб вікно не було порожнім і сірим ═══ */
+.vitrazh .titlePane {
+  position: relative;
+  display: inline-block;
+  padding: 10px 18px 14px;
+  background: var(--glass-mustard);
+  outline: 1px solid var(--glass);
+  outline-offset: -3px;
+}
+.vitrazh .titlePane .title { margin: 0; }
+.vitrazh.result .titlePane { margin-top: 14px; }
+.vitrazh.result .titlePane .title { margin-top: 0; }
+.vitrazh .qpane.tint {
+  background: var(--glass-teal);
+  outline: 1px solid var(--glass);
+  outline-offset: -3px;
+}
+.vitrazh .qpane.tint .topic .win { background: var(--teal-900); }
+.vitrazh .qpane.tint .context { color: var(--ink); }
+.vitrazh .acard { padding: 0; }
+.vitrazh .acardIn { padding: 0 20px 24px; overflow: hidden; border-radius: 2px; }
+.vitrazh .verdict {
+  margin: 0 -20px 0;
+  padding: 12px 20px;
+  border-bottom: var(--lead-w) solid var(--teal-900);
+}
+.vitrazh .verdict.ok { background: var(--glass-sky); }
+.vitrazh .verdict.miss { background: var(--glass-sand); border-bottom-color: var(--brick); }
+.vitrazh .acard.miss { border-color: var(--brick); }
+.vitrazh .acard.withDeco .verdict { padding-top: 40px; }
+.vitrazh .withDeco .verdict { padding-right: 0; }
+.vitrazh .lede { margin-top: 16px; }
+.vitrazh .d-onCard { z-index: 1; }
+
+/* супутник на куті панелі з назвою */
+.vitrazh .d-perch { top: 0; right: -14px; width: 72px; transform: translateY(-62%); }
+
+/* вертикальна річка — рамка зліва від питання (широкий екран) */
+.vitrazh .col-q { position: relative; }
+.vitrazh .d-frame { display: none; }
+@media (min-width: 1160px) {
+  .vitrazh .d-frame { display: block; top: 96px; left: -72px; width: 44px; }
+}
+
+/* результат: персонаж стоїть на мозаїчній річці; арка біля відповідей */
+.vitrazh .bed.riverGround {
+  width: 100%;
+}
+.vitrazh .answersBlock { position: relative; }
+.vitrazh .d-gate { display: none; }
+@media (min-width: 900px) {
+  .vitrazh .d-gate { display: block; right: -212px; bottom: -8px; width: 190px; }
+  .vitrazh .acard { padding: 0; }
+  .vitrazh .acardIn { padding: 0 32px 32px; }
+  .vitrazh .verdict { margin: 0 -32px; padding: 14px 32px; }
+  .vitrazh .acard.withDeco { margin-top: 64px; }
+  .vitrazh .acard.withDeco .verdict { padding-top: 40px; }
+  .vitrazh .withDeco .verdict { padding-right: 148px; }
+  .vitrazh .d-perch { width: 96px; right: -22px; }
+  .vitrazh .titlePane { padding: 12px 24px 18px; }
+  .vitrazh.result .titlePane { margin-top: 18px; }
+}
+@media (max-width: 899px) {
+  .vitrazh .hero .titlePane { order: 1; align-self: flex-start; }
+}

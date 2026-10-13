@@ -76,7 +76,7 @@ function Windows({ idx, total, answered }: { idx: number; total: number; answere
     <div className="windows" role="progressbar" aria-valuemin={1} aria-valuemax={total} aria-valuenow={idx + 1} aria-label={`Питання ${idx + 1} з ${total}`}>
       {Array.from({ length: total }, (_, i) => {
         const s = i < idx || (i === idx && answered) ? "done" : i === idx ? "now" : "next";
-        return <i key={i} className={`win ${s}${i === 5 ? " w6" : ""}`} />;
+        return <i key={i} className={`win ${s}`} />;
       })}
     </div>
   );
@@ -149,14 +149,16 @@ function Sources({ q }: { q: Question }) {
 /** Картка пояснення: на екрані відповіді з декором на оправі, у плитках — без. */
 function AnswerCard({ q, ok, idx, deco, cardRef, id }: { q: Question; ok: boolean | null; idx: number; deco?: boolean; cardRef?: React.Ref<HTMLElement>; id?: string }) {
   return (
-    <section className={`pane acard${deco ? " withDeco" : ""}`} ref={cardRef} tabIndex={-1} aria-live="polite" id={id}>
+    <section className={`pane acard${deco ? " withDeco" : ""}${ok === false ? " miss" : ""}`} ref={cardRef} tabIndex={-1} aria-live="polite" id={id}>
       {deco && <Deco name={idx % 2 === 0 ? "sputnik" : "atom"} cls="d-onCard" />}
-      <p className="verdict">
-        <i className={`win ${ok === false ? "miss" : "ok"}`} />
-        {ok ? UI.right(q.correct) : UI.wrong(q.correct)}
-      </p>
-      <Explanation text={q.explanation} />
-      <Sources q={q} />
+      <div className="acardIn">
+        <p className={`verdict ${ok === false ? "miss" : "ok"}`}>
+          <i className={`win ${ok === false ? "miss" : "ok"}`} />
+          <span>{ok ? UI.right(q.correct) : UI.wrong(q.correct)}</span>
+        </p>
+        <Explanation text={q.explanation} />
+        <Sources q={q} />
+      </div>
     </section>
   );
 }
@@ -209,7 +211,7 @@ function Share({ url, text, label }: { url: string; text: string; label: string 
           {copied ? (
             <Check />
           ) : (
-            <svg viewBox="0 0 24 24" aria-hidden fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
+            <svg viewBox="0 0 24 24" aria-hidden fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round">
               <path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1" />
             </svg>
           )}
@@ -217,7 +219,7 @@ function Share({ url, text, label }: { url: string; text: string; label: string 
         </button>
         {native && (
           <button type="button" className="btn plain sbtn" onClick={more}>
-            <svg viewBox="0 0 24 24" aria-hidden fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+            <svg viewBox="0 0 24 24" aria-hidden fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round">
               <path d="M12 3v12M7 8l5-5 5 5M5 14v7h14v-7" />
             </svg>
             <span>{UI.other}</span>
@@ -259,7 +261,8 @@ function Sheet({ quiz }: { quiz: QuizApi }) {
           <Windows idx={idx} total={total} answered={answered} />
         </header>
 
-        <section className="pane qpane in">
+        <Deco name="river-v" cls="d-frame" />
+        <section className="pane qpane tint in">
           <p className="topic">
             <i className="win ok" />
             <span>{q.topic}</span>
@@ -339,6 +342,7 @@ function Tiles({ history }: { history: boolean[] }) {
   const [open, setOpen] = useState<number | null>(null);
   return (
     <section className="answersBlock" aria-label={UI.answers}>
+      <Deco name="arch" cls="d-gate" />
       <h2 className="h2">{UI.answers}</h2>
       <ol className="tiles">
         {questions.map((qq, i) => (
@@ -354,7 +358,10 @@ function Tiles({ history }: { history: boolean[] }) {
                 setOpen(open === i ? null : i);
               }}
             >
-              <span className="tp">{qq.topic}</span>
+              <span className="tp">
+                {qq.topic}
+                <small>{qq.short}</small>
+              </span>
               <span className={`mk ${history[i] ? "ok" : "miss"}`}>{history[i] ? <Check /> : <Cross />}</span>
             </button>
           </li>
@@ -387,7 +394,7 @@ function ResultBody({ level, score, onRestart, history }: { level: Level; score?
           <Wordmark />
         </header>
         <Figure level={level} />
-        <hr className="ground" />
+        <Bed src="/art/deco-river-h.webp" alt="" cls="riverGround" />
         {score !== undefined && (
           <div className="score" aria-label={`${score} з ${questions.length} правильних`}>
             <b>
@@ -396,7 +403,9 @@ function ResultBody({ level, score, onRestart, history }: { level: Level; score?
             <small>з {questions.length}</small>
           </div>
         )}
-        <h1 className="title">{level.title}</h1>
+        <div className="titlePane pane mid">
+          <h1 className="title">{level.title}</h1>
+        </div>
         {score !== undefined && <LevelScale current={level} />}
         <p className="lead">{level.description}</p>
         <div className="actions">
@@ -417,7 +426,6 @@ function ResultBody({ level, score, onRestart, history }: { level: Level; score?
             </a>
           )}
         </div>
-        <Bed src="/art/deco-river-h.webp" alt="" cls="divider" />
         {full && <Tiles history={history} />}
       </div>
       <Foot />
@@ -461,7 +469,10 @@ export default function VitrazhSkin({ quiz }: { quiz: QuizApi }) {
           </header>
           <section className="hero">
             <div className="heroText">
-              <h1 className="title">{intro.title}</h1>
+              <div className="titlePane pane">
+                <Deco name="sputnik" cls="d-perch" />
+                <h1 className="title">{intro.title}</h1>
+              </div>
               <p className="lead">{intro.lead}</p>
               <p className="meta">
                 {intro.meta.split(" · ").map((t, i) => (
