@@ -1537,6 +1537,34 @@ body:has(.veselka.result) {
   .veselka .srcs a { padding: 4px 0; }
 }
 
+/* ═══ Один радіус для всього: блоки, кнопки, стікери, обкладинка — var(--r).
+   Круглим лишається тільки значок балу. Ілюстрація результату — компактна. ═══ */
+.veselka { --r: 4px; }
+.veselka .pane,
+.veselka .bed,
+.veselka .btn,
+.veselka .sbtn,
+.veselka .chip,
+.veselka .verdict.sticker,
+.veselka .here,
+.veselka .scale { border-radius: var(--r); }
+.veselka .sbtn { padding: 0 14px 0 12px; }
+
+/* результат: менший постер — персонаж і арка в пропорції, текст ближче до першого екрана */
+.veselka .poster { padding-top: 20px; }
+.veselka .poster .figure img { max-height: min(32vh, 230px); }
+.veselka .poster .arch { width: 76%; bottom: 26px; }
+.veselka .poster .score { top: 12px; left: 12px; }
+.veselka .poster.lvl-tourist .score { top: auto; bottom: 46px; left: 12px; right: auto; }
+@media (min-width: 900px) {
+  .veselka .poster { padding-top: 24px; }
+  .veselka .poster .figure { height: 270px; }
+  .veselka .poster .figure img { max-height: none; }
+  .veselka .poster .arch { width: 60%; bottom: 44px; }
+  .veselka .poster .score { top: 16px; left: 16px; }
+  .veselka .poster.lvl-tourist .score { top: 16px; bottom: auto; left: auto; right: 16px; }
+}
+
 /* ——— 1x-екрани: контур рівно 1.5px ——— */
 @media (resolution < 1.5dppx) {
   .veselka { --lw: 1px; }
