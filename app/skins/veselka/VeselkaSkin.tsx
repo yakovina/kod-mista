@@ -296,7 +296,7 @@ function Sheet({ quiz }: { quiz: QuizApi }) {
     if (screen !== "reveal" || !cardRef.current) return;
     const el = cardRef.current;
     el.focus({ preventScroll: true });
-    const off = window.matchMedia("(min-width: 900px)").matches ? 64 : 48;
+    const off = window.matchMedia("(min-width: 900px)").matches ? 72 : 64;
     const top = el.getBoundingClientRect().top + window.scrollY - off;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) window.scrollTo(0, top);
     else glide(top, 320);
@@ -338,7 +338,8 @@ function Sheet({ quiz }: { quiz: QuizApi }) {
                   aria-keyshortcuts={String(i + 1)}
                 >
                   <span className="k">
-                    {state === " isRight" ? <Check /> : state === " isWrong" ? <Cross /> : o.key}
+                    {o.key}
+                    {state === " isRight" ? <Check /> : state === " isWrong" ? <Cross /> : null}
                   </span>
                   {state === " isWrong" && <Crack />}
                   {state === " isRight" && <i className="gleam" aria-hidden />}
@@ -496,11 +497,16 @@ export function NotFound() {
         <header className="bar">
           <Wordmark />
         </header>
-        <Deco name="arch" cls="d-arch" />
-        <p className="nfText">{UI.nf}</p>
-        <a className="btn plain" href={`${SITE_URL}/`}>
-          {UI.home}
-        </a>
+        <div className="nfBody">
+          <Deco name="arch" cls="d-arch" />
+          <div className="titlePane pane">
+            <h1 className="title nfText">{UI.nf}</h1>
+          </div>
+          <a className="btn" href={`${SITE_URL}/`}>
+            {UI.home}
+            <Arrow />
+          </a>
+        </div>
       </div>
       <Foot />
     </main>
@@ -519,7 +525,6 @@ export default function VeselkaSkin({ quiz }: { quiz: QuizApi }) {
             <Wordmark />
           </header>
           <section className="hero">
-            <Shapes cls="d-hero" />
             <div className="heroText">
               <div className="titlePane pane">
                 <Deco name="sputnik" cls="d-perch" />
@@ -545,10 +550,12 @@ export default function VeselkaSkin({ quiz }: { quiz: QuizApi }) {
                 <Arrow />
               </button>
             </div>
-            <Bed src="/art/cover.jpg" alt={COVER_ALT} cls="cover" />
+            <div className="coverWrap">
+              <Bed src="/art/cover.jpg" alt={COVER_ALT} cls="cover" />
+              <Shapes cls="d-hero" />
+            </div>
           </section>
           <Share url={`${SITE_URL}/`} text={TEST_SHARE_TEXT} label={UI.shareTest} />
-          <Bed src="/art/deco-river-h.webp" alt="" cls="divider" />
         </div>
         <Foot />
       </main>
