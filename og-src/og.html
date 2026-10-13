@@ -3,33 +3,50 @@
 <head>
 <meta charset="utf-8">
 <title>OG</title>
-<!-- OG 1200×630 у стилі «Вітраж на світлій стіні». Рендерить scripts/render-og.mjs:
-     og.html → public/og-test.png (обкладинка на весь кадр);
-     og.html?l=<slug> → public/og-<slug>.png (персонаж ліворуч, звання праворуч). -->
+<!-- OG 1200×630 у стилі «Веселка» (Мемфіс на світлій стіні). Рендерить scripts/render-og.mjs:
+     og.html → public/og-test.png (обкладинка на весь кадр + гірчична плашка назви);
+     og.html?l=<slug> → public/og-<slug>.png (персонаж ліворуч, звання на плашці праворуч). -->
 <style>
+@font-face { font-family: "Open Sans"; src: url("../public/fonts/hm/open-sans-v29-latin_cyrillic-ext-700.woff2") format("woff2"); font-weight: 700; }
 @font-face { font-family: "Open Sans"; src: url("../public/fonts/hm/open-sans-v29-latin_cyrillic-ext-500.woff2") format("woff2"); font-weight: 500; }
 @font-face { font-family: "Lora"; src: url("../public/fonts/hm/lora-v24-latin_cyrillic-ext-700.woff2") format("woff2"); font-weight: 700; }
 * { box-sizing: border-box; }
-body { margin: 0; width: 1200px; height: 630px; overflow: hidden; background: #e5e2d9; color: #30302e; font-family: "Open Sans", sans-serif; }
+body {
+  margin: 0; width: 1200px; height: 630px; overflow: hidden; color: #2b2a27; font-family: "Open Sans", sans-serif;
+  background-color: #f1e8d3;
+  background-image: radial-gradient(rgba(34, 106, 122, 0.2) 2px, transparent 2.8px);
+  background-size: 30px 30px;
+}
+.band { position: absolute; left: 0; right: 0; top: 0; height: 14px; background: linear-gradient(to bottom, #0e4758 0 25%, #226a7a 25% 50%, #72aab5 50% 75%, #e9c150 75% 100%); }
 .coverWrap { position: relative; width: 1200px; height: 630px; }
 .cover { width: 1200px; height: 630px; object-fit: cover; object-position: 50% 18%; display: block; }
-.plate { position: absolute; left: 56px; bottom: 56px; padding: 18px 28px 22px; background: #f2d98f; border: 3px solid #30302e; border-radius: 6px; outline: 2px solid #fbf7ec; outline-offset: -5px; }
-.plateTitle { font-family: "Lora", serif; font-weight: 700; font-size: 64px; line-height: 1; letter-spacing: -.01em; }
-.plateSub { margin-top: 10px; font-size: 22px; font-weight: 500; color: #30302e; }
+.plate {
+  position: absolute; left: 56px; bottom: 60px; padding: 18px 30px 24px;
+  background: #f2d98f; border: 3px solid #2b2a27; border-radius: 8px; box-shadow: 8px 8px 0 #226a7a;
+  transform: rotate(-1.5deg); transform-origin: left bottom;
+}
+.plateTitle { font-family: "Lora", serif; font-weight: 700; font-size: 72px; line-height: 1; letter-spacing: -.01em; }
+.plateSub { margin-top: 12px; font-size: 24px; font-weight: 700; color: #2b2a27; }
 .lvl { display: none; position: relative; width: 1200px; height: 630px; }
 body.level .coverWrap { display: none; }
 body.level .lvl { display: block; }
-.fig { position: absolute; left: 40px; top: 0; height: 574px; width: 520px; overflow: hidden; display: flex; align-items: flex-end; justify-content: center; }
+.fig { position: absolute; left: 40px; top: 14px; height: 560px; width: 520px; overflow: hidden; display: flex; align-items: flex-end; justify-content: center; }
 .fig img { display: block; width: auto; height: auto; }
 .fig.tourist img { width: 470px; }
 .fig.citizen img { width: 520px; align-self: flex-start; }
 .fig.keeper img { height: 1280px; margin-bottom: -710px; }
-.sill { position: absolute; left: 40px; top: 574px; width: 520px; height: 2px; background: #30302e; }
-.text { position: absolute; left: 610px; top: 0; height: 630px; width: 540px; display: flex; flex-direction: column; justify-content: center; }
-.text h1 { margin: 0; font-family: "Lora", serif; font-weight: 700; font-size: 72px; line-height: 1.08; letter-spacing: -.01em; }
-.text .range { margin-top: 20px; font-size: 28px; font-weight: 500; color: #414a4b; }
-.text .brand { position: absolute; right: 0; bottom: 56px; font-size: 24px; font-weight: 500; color: #414a4b; }
-.text .brand i { font-style: normal; color: #b0a295; }
+.sill { position: absolute; left: 40px; top: 574px; width: 520px; height: 16px; border: 3px solid #2b2a27; border-radius: 4px; background: linear-gradient(to bottom, #0e4758 0 25%, #226a7a 25% 50%, #72aab5 50% 75%, #e9c150 75% 100%); }
+.text { position: absolute; left: 610px; top: 0; height: 630px; width: 540px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; }
+.tp { display: inline-block; padding: 14px 26px 20px; background: #f2d98f; border: 3px solid #2b2a27; border-radius: 8px; box-shadow: 8px 8px 0 #d36d47; transform: rotate(-1.5deg); transform-origin: left bottom; }
+.text h1 { margin: 0; font-family: "Lora", serif; font-weight: 700; font-size: 60px; line-height: 1.08; letter-spacing: -.01em; }
+.text .range { display: inline-block; margin-top: 34px; padding: 8px 20px; border: 3px solid #2b2a27; border-radius: 999px; background: #c6dde1; font-size: 26px; font-weight: 700; }
+.text .brand { position: absolute; left: 0; bottom: 48px; font-size: 24px; font-weight: 700; color: #2b2a27; }
+.text .brand i { font-style: normal; color: #d36d47; }
+.shapes { position: absolute; right: 36px; top: 40px; width: 150px; height: 150px; }
+.shapes .a { fill: #226a7a; stroke: #2b2a27; stroke-width: 3; }
+.shapes .b { fill: #e9c150; stroke: #2b2a27; stroke-width: 3; }
+.shapes .c { fill: none; stroke: #d36d47; stroke-width: 6; stroke-linejoin: round; stroke-linecap: round; }
+.shapes .d { fill: #92221b; stroke: #2b2a27; stroke-width: 3; }
 </style>
 </head>
 <body>
@@ -38,10 +55,17 @@ body.level .lvl { display: block; }
   <div class="plate"><div class="plateTitle">Код міста</div><div class="plateSub">Тест Хмарочоса · 8 питань про будівлі, вулиці й пам’ятники</div></div>
 </div>
 <div class="lvl">
+  <div class="band"></div>
   <div class="fig" id="fig"><img id="char" src="" alt=""></div>
   <div class="sill"></div>
+  <svg class="shapes" viewBox="0 0 120 120" aria-hidden>
+    <circle cx="22" cy="24" r="12" class="a" />
+    <path d="M70 8 L96 48 L44 48 Z" class="b" />
+    <path d="M8 78 l10 -12 l10 12 l10 -12 l10 12 l10 -12 l10 12" class="c" />
+    <rect x="84" y="80" width="22" height="22" class="d" transform="rotate(12 95 91)" />
+  </svg>
   <div class="text">
-    <h1 id="title"></h1>
+    <div class="tp"><h1 id="title"></h1></div>
     <div class="range" id="range"></div>
     <div class="brand">Код міста <i>·</i> Хмарочос</div>
   </div>
@@ -58,7 +82,7 @@ body.level .lvl { display: block; }
     document.body.classList.add("level");
     document.getElementById("fig").classList.add(slug);
     document.getElementById("char").src = `../public/art/char-${slug}.webp`;
-    document.getElementById("title").textContent = lv.title.replace(/ у /g, " у\u00a0");
+    document.getElementById("title").textContent = lv.title.replace(/ у /g, " у ");
     document.getElementById("range").textContent = lv.range;
   }
 </script>

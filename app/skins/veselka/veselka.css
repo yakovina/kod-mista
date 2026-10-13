@@ -1,0 +1,1027 @@
+/* Скін «Веселка»: Мемфіс на світлій стіні. Токени — у .veselka, не в :root.
+   Контур 2px чорнилом, кольорові тіні-зсуви 3–4px, жодних розмитих тіней,
+   жодних пружних анімацій. Смуги арки-веселки з обкладинки — фірмова стрічка. */
+
+body:has(.veselka) {
+  background-color: #f1e8d3;
+  background-image: radial-gradient(rgba(34, 106, 122, 0.17) 1.2px, transparent 1.7px);
+  background-size: 18px 18px;
+}
+/* на результаті крапки стають терраццо */
+body:has(.veselka.result) {
+  background-image:
+    radial-gradient(rgba(34, 106, 122, 0.17) 1.4px, transparent 1.9px),
+    radial-gradient(rgba(233, 193, 80, 0.42) 2px, transparent 2.5px),
+    radial-gradient(rgba(211, 109, 71, 0.22) 1.6px, transparent 2.1px);
+  background-size: 56px 56px, 72px 72px, 44px 44px;
+  background-position: 0 0, 23px 31px, 9px 17px;
+}
+
+.veselka {
+  --wall: #f1e8d3;
+  --wall-deep: #e3d9bf;
+  --card: #fbf7ec;
+  --ink: #2b2a27;
+  --ink-2: #4a4c47;
+  --teal-900: #0e4758;
+  --teal-600: #226a7a;
+  --teal-500: #4a8c95;
+  --teal-300: #72aab5;
+  --sky: #c6dde1;
+  --mustard: #f2d98f;
+  --mustard-deep: #e9c150;
+  --terracotta: #d36d47;
+  --terracotta-light: #de8560;
+  --peach: #f3cdb2;
+  --brick: #92221b;
+  --sand: #e3d9bf;
+  --seam: #cfc6b0;
+  --focus: #0e4758;
+  --lw: 2px;
+  --r: 6px;
+  --tilt: 1;
+  --sh: 3px;
+  --gutter: 16px;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --t-fast: 120ms;
+  --t-base: 240ms;
+  --band: linear-gradient(to bottom, var(--teal-900) 0 25%, var(--teal-600) 25% 50%, var(--teal-300) 50% 75%, var(--mustard-deep) 75% 100%);
+
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  color: var(--ink);
+  font-family: "Open Sans", sans-serif;
+}
+
+/* ——— колонка ——— */
+.veselka .col {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  flex: 1 0 auto;
+}
+.veselka .col-start { max-width: 1120px; }
+.veselka .col-q { max-width: 720px; }
+.veselka .col-r { max-width: 640px; }
+
+/* ——— верхня смуга зі стрічкою-веселкою ——— */
+.veselka .bar {
+  position: relative;
+  height: 56px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.veselka .bar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 8px;
+  background: var(--band);
+  border-radius: 2px;
+}
+.veselka .brandRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.veselka .brand {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-family: "Lora", serif;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 24px;
+  color: var(--ink);
+  text-decoration: none;
+  transition: color var(--t-fast) var(--ease);
+}
+.veselka .brand:hover { color: var(--teal-600); }
+.veselka .brandSub {
+  font-size: 15px;
+  line-height: 24px;
+  color: var(--ink-2);
+}
+.veselka .count {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
+}
+@media (max-width: 899px) { .veselka.sheet .brandSub { display: none; } .veselka { --tilt: 0.8; } }
+
+/* ——— прогрес: вісім плиток у ряд ——— */
+.veselka .windows {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 4px;
+}
+.veselka .win {
+  box-sizing: border-box;
+  display: block;
+  height: 12px;
+  border: 1.5px solid var(--ink);
+  border-radius: 2px;
+  background: var(--card);
+  transition: background-color 420ms var(--ease);
+}
+.veselka .win.now { background: var(--mustard-deep); }
+.veselka .win.done { background: var(--teal-600); }
+/* арка збирається смуга за смугою */
+.veselka .win.done:nth-child(4n + 1) { background: var(--teal-900); }
+.veselka .win.done:nth-child(4n + 2) { background: var(--teal-600); }
+.veselka .win.done:nth-child(4n + 3) { background: var(--teal-500); }
+.veselka .win.done:nth-child(4n) { background: var(--teal-300); }
+
+/* ——— базова панель ——— */
+.veselka .pane {
+  background: var(--card);
+  border: var(--lw) solid var(--ink);
+  border-radius: var(--r);
+}
+.veselka .pane.off {
+  background: transparent;
+  border-color: var(--ink);
+  color: var(--ink-2);
+}
+.veselka .bed {
+  display: block;
+  margin: 0;
+  padding: 0;
+  background: var(--card);
+  border: var(--lw) solid var(--ink);
+  border-radius: var(--r);
+  overflow: hidden;
+}
+.veselka .bed img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* ——— типографіка ——— */
+.veselka .title {
+  margin: 0;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 40px;
+  letter-spacing: -0.01em;
+}
+.veselka .lead {
+  margin: 16px 0 0;
+  font-family: "Lora", serif;
+  font-style: italic;
+  font-size: 18px;
+  line-height: 27px;
+  max-width: 440px;
+}
+.veselka .meta {
+  margin: 16px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  color: var(--ink);
+}
+.veselka .meta > span {
+  display: inline-block;
+  padding: 3px 11px;
+  background: var(--card);
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+}
+.veselka .meta > span:nth-child(2) { background: var(--sky); }
+.veselka .meta .dot { display: none; }
+.veselka .dot {
+  font-style: normal;
+  color: var(--seam);
+}
+.veselka .h2 {
+  margin: 0;
+  font-family: "Lora", serif;
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 28px;
+}
+.veselka .h2::after {
+  content: "";
+  display: block;
+  width: 96px;
+  height: 8px;
+  margin-top: 6px;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8'><polyline points='0,7 3,1 6,7 9,1 12,7' fill='none' stroke='%23d36d47' stroke-width='2'/></svg>") repeat-x left center;
+}
+
+/* ——— кнопки: плоскі блоки з тінню-зсувом ——— */
+.veselka .btn {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 48px;
+  padding: 0 22px;
+  min-width: 160px;
+  background: var(--teal-600);
+  color: var(--card);
+  border: var(--lw) solid var(--ink);
+  border-radius: var(--r);
+  box-shadow: 3px 3px 0 var(--mustard-deep);
+  font-family: "Open Sans", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+}
+.veselka .btn:hover { background: var(--teal-900); }
+.veselka .btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--mustard-deep); }
+.veselka .btn .arrow { flex: 0 0 auto; transition: transform var(--t-base) var(--ease); }
+@media (hover: hover) { .veselka .btn:hover .arrow { transform: translateX(3px); } }
+.veselka .btn.plain {
+  height: 44px;
+  padding: 0 18px;
+  min-width: 0;
+  background: var(--card);
+  color: var(--ink);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+.veselka .btn.plain:hover { background: #fff6dc; }
+.veselka .btn.plain:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--ink); }
+.veselka .btn svg { width: 18px; height: 18px; flex: 0 0 auto; }
+.veselka .btn .arrow { width: 20px; height: 20px; }
+
+/* ——— старт ——— */
+.veselka .hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding-top: 48px;
+}
+.veselka .heroText { display: contents; }
+.veselka .hero .titlePane { order: 1; align-self: flex-start; }
+.veselka .hero .lead { order: 2; }
+.veselka .bed.cover { order: 3; margin: 24px 0 0; box-shadow: var(--sh) var(--sh) 0 var(--terracotta); }
+.veselka .hero .meta { order: 4; margin: 20px 0 0; }
+.veselka .hero .btn { order: 5; margin-top: 12px; width: 100%; }
+.veselka .titlePane {
+  position: relative;
+  display: inline-block;
+  padding: 10px 18px 14px;
+  background: var(--mustard);
+  box-shadow: var(--sh) var(--sh) 0 var(--teal-600);
+  transform: rotate(calc(-1.2deg * var(--tilt)));
+}
+.veselka .titlePane .title { margin: 0; }
+.veselka.intro .share { margin-top: 32px; padding-top: 24px; border-top: var(--lw) dashed var(--seam); }
+.veselka .bed.divider {
+  width: 100%;
+  max-width: 560px;
+  margin: 40px auto 40px;
+}
+@media (max-width: 359px) { .veselka .bed.divider { display: none; } }
+
+/* геометричний кластер на куті обкладинки */
+.veselka .shapes {
+  position: absolute;
+  width: 84px;
+  height: 84px;
+  pointer-events: none;
+}
+.veselka .shapes .f-teal { fill: var(--teal-600); }
+.veselka .shapes .f-mustard { fill: var(--mustard-deep); }
+.veselka .shapes .f-brick { fill: var(--brick); }
+.veselka .shapes .f-ink { fill: var(--ink); }
+.veselka .shapes .s-terracotta { fill: none; stroke: var(--terracotta); stroke-width: 5; stroke-linejoin: round; stroke-linecap: round; }
+.veselka .shapes [class^="f-"] { stroke: var(--ink); stroke-width: 3; }
+.veselka .d-hero { display: none; }
+
+/* ——— питання ——— */
+.veselka .qpane {
+  position: relative;
+  margin-top: 34px;
+  padding: 22px 18px 22px;
+  box-shadow: var(--sh) var(--sh) 0 var(--teal-600);
+}
+.veselka .topic { position: absolute; top: -14px; left: 12px; margin: 0; }
+.veselka .chip {
+  display: inline-block;
+  padding: 3px 11px;
+  background: var(--mustard);
+  border: var(--lw) solid var(--ink);
+  border-radius: 4px;
+  box-shadow: 2px 2px 0 var(--ink);
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 700;
+  transform: rotate(calc(-2deg * var(--tilt)));
+  transform-origin: left center;
+}
+.veselka .qpane .context { margin-top: 0; }
+.veselka .context {
+  margin: 0 0 12px;
+  font-family: "Lora", serif;
+  font-style: italic;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--ink-2);
+}
+.veselka .prompt {
+  margin: 0;
+  font-family: "Lora", serif;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 30px;
+  letter-spacing: -0.005em;
+  max-width: 28ch;
+}
+.veselka .opts {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.veselka .opts li { margin-top: 10px; }
+.veselka .opt {
+  position: relative;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  align-items: stretch;
+  width: 100%;
+  min-height: 56px;
+  padding: 0;
+  overflow: hidden;
+  color: var(--ink);
+  font-family: "Open Sans", sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+}
+.veselka .opt .k {
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  border-right: var(--lw) solid var(--ink);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 16px;
+  transition: background-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+.veselka .opt .t { padding: 13px 14px 13px 14px; }
+/* кожна літера — свій колір */
+.veselka .opts li:nth-child(1) .opt .k { background: var(--mustard); }
+.veselka .opts li:nth-child(2) .opt .k { background: var(--sky); }
+.veselka .opts li:nth-child(3) .opt .k { background: var(--peach); }
+.veselka .opts li:nth-child(4) .opt .k { background: var(--teal-300); }
+.veselka .opts li:nth-child(1) { --tile: var(--mustard-deep); }
+.veselka .opts li:nth-child(2) { --tile: var(--teal-300); }
+.veselka .opts li:nth-child(3) { --tile: var(--terracotta); }
+.veselka .opts li:nth-child(4) { --tile: var(--teal-600); }
+@media (hover: hover) and (pointer: fine) {
+  .veselka .opt:not(:disabled):hover { box-shadow: 3px 3px 0 var(--tile); transform: translate(-1px, -1px); background: #fffaea; }
+  .veselka .opts li .opt:not(:disabled):hover .k { background: var(--teal-600); color: var(--card); }
+}
+.veselka .opt:not(:disabled):active { transform: translate(1px, 1px); box-shadow: none; }
+.veselka .opt:disabled { cursor: default; opacity: 1; }
+.veselka .opts li .opt.isRight {
+  isolation: isolate;
+  background: var(--card);
+  color: var(--card);
+  box-shadow: var(--sh) var(--sh) 0 var(--mustard-deep);
+}
+.veselka .opt.isRight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--teal-600);
+  transform-origin: left center;
+}
+.veselka .opts li .opt.isRight .k { background: var(--mustard); color: var(--ink); }
+.veselka .opts li .opt.isWrong { border-color: var(--brick); }
+.veselka .opts li .opt.isWrong .k { background: var(--brick); color: var(--card); border-right-color: var(--brick); }
+.veselka .opts li .opt.isWrong .t { color: var(--ink-2); }
+.veselka .opts li .opt.isRest { background: transparent; border-color: var(--seam); color: var(--ink-2); }
+.veselka .opts li .opt.isRest .k { background: var(--sand); border-right-color: var(--seam); color: var(--ink-2); }
+
+/* ——— картка пояснення зі стікером ——— */
+.veselka .acard {
+  position: relative;
+  margin-top: 40px;
+  padding: 0;
+  box-shadow: var(--sh) var(--sh) 0 var(--teal-600);
+}
+.veselka .acard.miss { box-shadow: var(--sh) var(--sh) 0 var(--brick); }
+.veselka .acardIn { padding: 26px 18px 22px; }
+.veselka .verdict.sticker {
+  position: absolute;
+  top: -16px;
+  left: 12px;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: var(--mustard);
+  border: var(--lw) solid var(--ink);
+  border-radius: 4px;
+  box-shadow: 2px 2px 0 var(--ink);
+  font-family: "Lora", serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  color: var(--ink);
+  transform: rotate(calc(-2deg * var(--tilt)));
+  transform-origin: left center;
+  white-space: nowrap;
+}
+.veselka .verdict.sticker.miss { background: var(--brick); color: var(--card); }
+.veselka .verdict.sticker svg { flex: 0 0 auto; }
+.veselka .lede {
+  margin: 0;
+  font-family: "Lora", serif;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 26px;
+}
+.veselka .explain {
+  margin: 10px 0 0;
+  font-size: 16px;
+  line-height: 25px;
+}
+.veselka .srcs {
+  margin: 16px 0 0;
+  padding-top: 10px;
+  border-top: 1.5px dashed var(--seam);
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--ink-2);
+}
+.veselka .srcs a {
+  display: block;
+  padding: 11px 0;
+  margin: 0;
+  line-height: 22px;
+  color: var(--ink-2);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--seam);
+  text-underline-offset: 3px;
+  transition: color var(--t-fast) var(--ease), text-decoration-color var(--t-fast) var(--ease);
+}
+.veselka .srcs a:hover { color: var(--teal-600); text-decoration-color: var(--teal-600); }
+.veselka .srcs .dot { display: none; }
+@media (min-width: 900px) {
+  .veselka .srcs a { display: inline-block; padding: 8px 0; margin: -8px 0; line-height: 18px; }
+  .veselka .srcs .dot { display: inline; }
+}
+.veselka .btn.next {
+  margin-top: 28px;
+  margin-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+  width: 100%;
+}
+
+/* декор на верхній оправі картки */
+.veselka .deco {
+  position: absolute;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+  z-index: 1;
+}
+.veselka .d-onCard {
+  top: 0;
+  right: 14px;
+  transform: translateY(-50%);
+}
+.veselka .d-onCard.bird { width: 92px; right: 10px; transform: translateY(-60%) rotate(-4deg); }
+
+/* ——— результат ——— */
+.veselka.result .col,
+.veselka.notfound .col { text-align: center; }
+.veselka .figure {
+  margin-top: 24px;
+  height: min(50vh, 380px);
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+.veselka .figure img {
+  display: block;
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  object-position: bottom center;
+  margin-bottom: -3px;
+  position: relative;
+  z-index: 1;
+}
+.veselka .bed.riverGround { width: 100%; }
+.veselka .score {
+  position: relative;
+  box-sizing: border-box;
+  width: 96px;
+  height: 96px;
+  margin: 20px auto 0;
+  display: grid;
+  place-content: center;
+  border-radius: 999px;
+  background: radial-gradient(circle, var(--teal-900) 0 64%, var(--teal-600) 64% 76%, var(--teal-500) 76% 88%, var(--teal-300) 88% 100%);
+  border: var(--lw) solid var(--ink);
+  box-shadow: 3px 3px 0 var(--mustard-deep), 3px 3px 0 2px var(--ink);
+  color: var(--card);
+  line-height: 1;
+}
+.veselka .score b {
+  font-family: "Lora", serif;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 40px;
+}
+.veselka .score small {
+  display: block;
+  margin-top: 2px;
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 16px;
+}
+.veselka.result .titlePane { margin-top: 20px; transform: rotate(calc(-1deg * var(--tilt))); }
+.veselka.result .title,
+.veselka.notfound .title {
+  font-size: 30px;
+  line-height: 34px;
+  letter-spacing: -0.005em;
+}
+.veselka.result .lead {
+  margin: 24px auto 0;
+  max-width: 56ch;
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  font-size: 16px;
+  line-height: 25px;
+  text-align: left;
+}
+
+/* шкала рівнів: три комірки в одній рамці, ярлик «ви тут» */
+.veselka .scaleWrap {
+  position: relative;
+  margin-top: 22px;
+  padding-top: 20px;
+}
+.veselka .scale {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border: var(--lw) solid var(--ink);
+  border-radius: var(--r);
+  background: var(--card);
+  overflow: hidden;
+}
+.veselka .lvl {
+  padding: 12px 8px 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  border: 0;
+  border-right: var(--lw) solid var(--ink);
+  border-radius: 0;
+  background: transparent;
+}
+.veselka .lvl:last-child { border-right: 0; }
+.veselka .lvl .name {
+  display: block;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
+}
+.veselka .lvl .range {
+  display: block;
+  margin-top: 2px;
+  font-size: 13px;
+  line-height: 18px;
+}
+.veselka .lvl.on { background: var(--teal-600); color: var(--card); }
+.veselka .lvl.on * { color: var(--card); }
+.veselka .here {
+  position: absolute;
+  top: 0;
+  left: 16.67%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 8px;
+  white-space: nowrap;
+  background: var(--mustard);
+  border: 1.5px solid var(--ink);
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--ink);
+  transition: left 400ms var(--ease);
+  z-index: 1;
+}
+.veselka .here { transform: translateX(-50%) rotate(calc(-2deg * var(--tilt))); }
+.veselka .here::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -7px;
+  margin-left: -5px;
+  border: 5px solid transparent;
+  border-bottom: 0;
+  border-top-color: var(--ink);
+}
+.veselka .here i { display: none; }
+.veselka .scaleWrap.at-0 .here { left: 16.67%; }
+.veselka .scaleWrap.at-1 .here { left: 50%; }
+.veselka .scaleWrap.at-2 .here { left: 83.33%; }
+
+/* дії */
+.veselka .actions {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 20px;
+}
+.veselka .share { display: flex; flex-direction: column; }
+.veselka .shareLabel {
+  margin: 0 0 10px;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--ink-2);
+  text-align: center;
+}
+.veselka .shareGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.veselka .sbtn { width: 100%; font-size: 15px; }
+.veselka .sbtn:nth-child(1):hover { box-shadow: 3px 3px 0 var(--teal-600); }
+.veselka .sbtn:nth-child(2):hover { box-shadow: 3px 3px 0 var(--teal-300); }
+.veselka .sbtn:nth-child(3):hover { box-shadow: 3px 3px 0 var(--mustard-deep); }
+.veselka .sbtn:nth-child(4):hover { box-shadow: 3px 3px 0 var(--terracotta); }
+.veselka .sbtn:nth-child(3):last-child { grid-column: 1 / -1; }
+.veselka .sbtn.isCopied,
+.veselka .sbtn.isCopied:hover { background: var(--mustard); }
+
+/* плитки відповідей */
+.veselka .answersBlock { position: relative; margin-top: 28px; text-align: left; }
+.veselka .tiles {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+.veselka .tile {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 64px;
+  padding: 10px 10px 10px 12px;
+  display: grid;
+  grid-template-columns: 1fr 22px;
+  gap: 8px;
+  align-items: center;
+  background: var(--card);
+  border: 1.5px solid var(--ink);
+  border-radius: 4px;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+}
+.veselka .tile .tp {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
+}
+.veselka .tile .tp small {
+  display: block;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--ink-2);
+}
+.veselka .tile .mk {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 1.5px solid var(--ink);
+  color: var(--card);
+}
+.veselka .tile .mk.ok { background: var(--teal-600); }
+.veselka .tile .mk.miss { background: var(--brick); }
+.veselka .tiles li:has(.mk.ok) .tile { background: var(--sky); }
+.veselka .tiles li:has(.mk.miss) .tile { background: var(--peach); }
+@media (hover: hover) { .veselka .tile:hover { box-shadow: 2px 2px 0 var(--ink); transform: translate(-1px, -1px); } }
+.veselka .tiles li .tile.isOpen { background: var(--mustard); box-shadow: 2px 2px 0 var(--ink); }
+.veselka .answersBlock .acard { margin-top: 20px; }
+.veselka .d-gate { display: none; }
+
+/* конфеті на результаті: геометрія Мемфіса сиплеться один раз */
+.veselka .confetti {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  overflow: hidden;
+}
+.veselka .bit {
+  position: absolute;
+  top: -24px;
+  width: 12px;
+  height: 12px;
+  opacity: 0;
+  border: 1.5px solid var(--ink);
+  box-sizing: border-box;
+}
+.veselka .bit.c { border-radius: 50%; }
+.veselka .bit.t { width: 0; height: 0; border: 0; border-left: 7px solid transparent; border-right: 7px solid transparent; border-bottom: 13px solid var(--ink); }
+.veselka .bit.z { width: 22px; height: 10px; border: 0; background: none; }
+.veselka .bit.z::before { content: ""; position: absolute; inset: 0; background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 10'><path d='M1 8 L5 2 L9 8 L13 2 L17 8 L21 2' fill='none' stroke='%23d36d47' stroke-width='2.4' stroke-linejoin='round' stroke-linecap='round'/></svg>") center / contain no-repeat; }
+.veselka .bit.p0 { background: var(--teal-600); }
+.veselka .bit.p1 { background: var(--mustard-deep); }
+.veselka .bit.p2 { background: var(--terracotta); }
+.veselka .bit.p3 { background: var(--sky); }
+.veselka .bit.t.p0 { border-bottom-color: var(--teal-600); background: none; }
+.veselka .bit.t.p1 { border-bottom-color: var(--mustard-deep); background: none; }
+.veselka .bit.t.p2 { border-bottom-color: var(--terracotta); background: none; }
+.veselka .bit.t.p3 { border-bottom-color: var(--brick); background: none; }
+.veselka .bit.z { background: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .veselka .bit { animation: vFall 2.4s cubic-bezier(0.3, 0.2, 0.6, 1) forwards; }
+}
+@media (prefers-reduced-motion: reduce) { .veselka .confetti { display: none; } }
+@keyframes vFall {
+  0% { opacity: 1; transform: translateY(0) rotate(0deg); }
+  80% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(104vh) rotate(200deg); }
+}
+
+/* ——— 404 ——— */
+.veselka .d-arch {
+  position: static;
+  display: block;
+  width: min(100%, 480px);
+  margin: 40px auto 0;
+}
+.veselka .nfText {
+  margin: 20px 0 0;
+  font-family: "Lora", serif;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 28px;
+}
+.veselka.notfound .btn.plain { margin: 20px 0 calc(80px + env(safe-area-inset-bottom, 0px)); width: 100%; }
+
+/* ——— футер ——— */
+.veselka .foot {
+  position: relative;
+  z-index: 1;
+  margin-top: auto;
+  padding: 24px var(--gutter) calc(24px + env(safe-area-inset-bottom, 0px));
+  background: var(--wall-deep);
+  border-top: var(--lw) solid var(--ink);
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--ink-2);
+  text-align: center;
+}
+.veselka .foot p { margin: 0; }
+.veselka.result .col > :last-child,
+.veselka.intro .col > :last-child { margin-bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
+.veselka.intro .bed.divider { margin-bottom: 40px; }
+
+/* ——— рух: короткий, без пружин ——— */
+@media (prefers-reduced-motion: no-preference) {
+  .veselka .in { animation: vIn var(--t-base) var(--ease) both; }
+  .veselka .acard.withDeco { animation: vUp var(--t-base) var(--ease) both; }
+  .veselka .answersBlock .acard { animation: vIn var(--t-base) var(--ease) both; }
+  .veselka .d-onCard { animation: vFade 320ms 120ms var(--ease) both; }
+  .veselka .figure img { animation: vFade 320ms var(--ease) both; }
+  .veselka .score { animation: vScore 280ms 160ms var(--ease) both; }
+  .veselka.result .titlePane { animation: vStampT 320ms 300ms var(--ease) both; }
+  .veselka .verdict.sticker { animation: vStamp 300ms 200ms var(--ease) both; }
+  .veselka .qpane.in { animation: vPane 420ms var(--ease) both; }
+  .veselka .opts > li.in { animation: vPane 380ms var(--ease) both; }
+  .veselka .d-perch { animation: vDrift 9s ease-in-out infinite alternate; }
+  .veselka .d-onCard.bird { animation: vLand 520ms 160ms var(--ease) both; }
+  .veselka .gleam { animation: vGleam 900ms 320ms var(--ease) both; }
+  .veselka .opt.isRight::before { animation: vSweep 320ms var(--ease) both; }
+  .veselka .crack path { stroke-dasharray: 90; stroke-dashoffset: 90; animation: vCrack 420ms 120ms ease-out forwards; }
+}
+@keyframes vIn { from { opacity: 0; transform: translateY(6px); } }
+@keyframes vUp { from { opacity: 0; transform: translateY(8px); } }
+@keyframes vFade { from { opacity: 0; } }
+@keyframes vScore { from { opacity: 0; transform: scale(0.96); } }
+@keyframes vPane {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes vStamp {
+  from { opacity: 0; transform: translateY(-6px) rotate(calc(-2deg * var(--tilt))); }
+  to { opacity: 1; transform: translateY(0) rotate(calc(-2deg * var(--tilt))); }
+}
+@keyframes vStampT {
+  from { opacity: 0; transform: translateY(-6px) rotate(calc(-1deg * var(--tilt))); }
+  to { opacity: 1; transform: translateY(0) rotate(calc(-1deg * var(--tilt))); }
+}
+@keyframes vDrift {
+  from { transform: translate(0, -62%) rotate(-3deg); }
+  to { transform: translate(-6px, calc(-62% + 5px)) rotate(4deg); }
+}
+@keyframes vLand {
+  from { opacity: 0; transform: translate(14px, -76%) rotate(2deg); }
+  to { opacity: 1; transform: translateY(-60%) rotate(-4deg); }
+}
+@keyframes vSweep { from { transform: scaleX(0); } }
+@keyframes vGleam {
+  from { transform: translateX(0); }
+  to { transform: translateX(520%); }
+}
+@keyframes vCrack { to { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .veselka * { animation: none !important; transition: none !important; }
+  .veselka .gleam { display: none; }
+}
+
+/* сонячний відблиск по правильній панелі */
+.veselka .gleam {
+  position: absolute;
+  top: -40%;
+  left: -30%;
+  width: 26%;
+  height: 180%;
+  background: linear-gradient(100deg, transparent 0, rgba(251, 247, 236, 0) 30%, rgba(251, 247, 236, 0.6) 50%, rgba(251, 247, 236, 0) 70%, transparent 100%);
+  pointer-events: none;
+}
+/* тріщина на хибній: від верхньої оправи вздовж шва літери */
+.veselka .crack {
+  position: absolute;
+  left: 36px;
+  top: -2px;
+  width: 16px;
+  height: 44px;
+  z-index: 1;
+  overflow: visible;
+  pointer-events: none;
+}
+.veselka .crack path {
+  fill: none;
+  stroke: var(--brick);
+  stroke-width: 2;
+  stroke-linejoin: miter;
+  stroke-linecap: square;
+}
+
+/* супутник на куті панелі з назвою */
+.veselka .d-perch { top: 0; right: -14px; width: 72px; transform: translateY(-62%); }
+
+/* сплеск геометрії зі стікера «Правильно» */
+.veselka .burst { position: absolute; left: 50%; top: 50%; width: 0; height: 0; pointer-events: none; }
+.veselka .burst i {
+  position: absolute;
+  left: -5px;
+  top: -5px;
+  width: 10px;
+  height: 10px;
+  border: 1.5px solid var(--ink);
+  box-sizing: border-box;
+  opacity: 0;
+}
+.veselka .burst i:nth-child(odd) { border-radius: 50%; }
+.veselka .burst i:nth-child(3n) { width: 14px; height: 5px; border-radius: 0; }
+.veselka .burst .b0 { --dx: -73px; --dy: -42px; background: var(--teal-600); }
+.veselka .burst .b1 { --dx: -42px; --dy: -64px; background: var(--mustard-deep); }
+.veselka .burst .b2 { --dx: 8px; --dy: -73px; background: var(--terracotta); }
+.veselka .burst .b3 { --dx: 56px; --dy: -62px; background: var(--teal-300); }
+.veselka .burst .b4 { --dx: 81px; --dy: -25px; background: var(--brick); }
+.veselka .burst .b5 { --dx: 87px; --dy: 20px; background: var(--mustard-deep); }
+.veselka .burst .b6 { --dx: 50px; --dy: 48px; background: var(--teal-600); }
+.veselka .burst .b7 { --dx: -11px; --dy: 56px; background: var(--terracotta); }
+.veselka .burst .b8 { --dx: -62px; --dy: 42px; background: var(--teal-300); }
+.veselka .burst .b9 { --dx: -87px; --dy: 6px; background: var(--brick); }
+@media (prefers-reduced-motion: no-preference) {
+  .veselka .burst i { animation: vBurst 640ms 260ms cubic-bezier(0.2, 0.7, 0.3, 1) both; }
+}
+@keyframes vBurst {
+  0% { opacity: 1; transform: translate(0, 0) scale(0.6); }
+  70% { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--dx), var(--dy)) rotate(90deg) scale(1); }
+}
+
+/* ——— десктоп ——— */
+@media (min-width: 900px) {
+  .veselka { --gutter: 40px; }
+  .veselka .bar { height: 64px; }
+  .veselka .count { font-size: 15px; }
+  .veselka .windows { margin-top: 16px; gap: 6px; }
+  .veselka .win { height: 14px; }
+  .veselka .title { font-size: 56px; line-height: 60px; }
+  .veselka { --sh: 4px; }
+  .veselka .titlePane { padding: 12px 24px 18px; }
+  .veselka .lead { margin-top: 20px; font-size: 22px; line-height: 32px; }
+  .veselka .meta { margin-top: 24px; font-size: 15px; line-height: 20px; }
+  .veselka .btn { height: 52px; font-size: 17px; }
+  .veselka .btn.plain { height: 48px; font-size: 16px; }
+  .veselka .heroText { display: flex; flex-direction: column; align-items: flex-start; }
+  .veselka .hero .meta { text-align: left; }
+  .veselka .hero .btn { width: auto; min-width: 200px; margin-top: 16px; }
+
+  .veselka .hero {
+    display: grid;
+    grid-template-columns: 440px 1fr;
+    column-gap: 64px;
+    align-items: end;
+    padding: 56px 0 40px;
+  }
+  .veselka .bed.cover { order: 0; margin: 0; justify-self: end; width: 100%; max-width: 616px; }
+  .veselka .d-hero { display: block; width: 120px; height: 120px; right: -44px; bottom: 6px; }
+  .veselka.intro .share { margin-top: 0; max-width: 440px; }
+  .veselka.intro .share .shareLabel { text-align: left; }
+  .veselka .shareGrid { grid-template-columns: repeat(3, 1fr); }
+  .veselka .shareGrid.four { grid-template-columns: repeat(4, 1fr); }
+  .veselka .sbtn:nth-child(3):last-child { grid-column: auto; }
+  .veselka .bed.divider { margin: 64px auto; }
+  .veselka.intro .bed.divider { margin-bottom: 64px; }
+  .veselka .d-perch { width: 96px; right: -22px; }
+
+  .veselka .qpane { margin-top: 44px; padding: 30px 32px 30px; }
+  .veselka .topic { left: 20px; top: -16px; }
+  .veselka .chip { padding: 4px 12px; font-size: 14px; line-height: 20px; }
+  .veselka .meta > span { padding: 4px 12px; }
+  .veselka .prompt { font-size: 28px; line-height: 36px; }
+  .veselka .opts li { margin-top: 12px; }
+  .veselka .opt { grid-template-columns: 52px 1fr; font-size: 17px; line-height: 26px; }
+  .veselka .opt .k { font-size: 18px; line-height: 18px; }
+  .veselka .opt .t { padding: 15px 20px; }
+  .veselka .crack { left: 44px; }
+  .veselka .acard { margin-top: 48px; }
+  .veselka .acardIn { padding: 34px 32px 30px; }
+  .veselka .verdict.sticker { left: 20px; top: -18px; padding: 7px 14px; font-size: 18px; line-height: 22px; }
+  .veselka .lede { font-size: 20px; line-height: 28px; }
+  .veselka .explain { font-size: 17px; line-height: 27px; }
+  .veselka .d-onCard { right: 24px; }
+  .veselka .d-onCard.bird { width: 132px; right: 18px; }
+  .veselka .withDeco .lede { padding-right: 110px; }
+  .veselka .btn.next { display: flex; width: auto; min-width: 220px; margin-left: auto; margin-bottom: 96px; }
+
+  .veselka .figure { margin-top: 40px; height: 480px; }
+  .veselka .score { width: 112px; height: 112px; margin-top: 24px; }
+  .veselka.result .titlePane { margin-top: 24px; }
+  .veselka.result .title { font-size: 40px; line-height: 46px; letter-spacing: -0.01em; }
+  .veselka .scaleWrap { margin-top: 28px; }
+  .veselka .lvl { padding: 14px 16px 12px; }
+  .veselka.result .lead { margin-top: 32px; font-size: 17px; line-height: 27px; }
+  .veselka .actions { margin-top: 32px; align-items: center; }
+  .veselka .actions .share { width: 100%; }
+  .veselka .actions > .btn { min-width: 200px; }
+  .veselka .answersBlock { margin-top: 8px; }
+  .veselka .h2 { font-size: 26px; line-height: 32px; }
+  .veselka .tiles { margin-top: 16px; grid-template-columns: repeat(4, 1fr); }
+  .veselka.result .col > :last-child,
+  .veselka.intro .col > :last-child { margin-bottom: 96px; }
+  .veselka .d-arch { margin-top: 64px; }
+  .veselka .nfText { margin-top: 24px; font-size: 22px; line-height: 30px; letter-spacing: -0.005em; }
+  .veselka.notfound .btn.plain { width: auto; min-width: 200px; margin: 24px auto 96px; }
+  .veselka .foot { padding: 32px 40px calc(32px + env(safe-area-inset-bottom, 0px)); }
+}
+
+/* ——— 1x-екрани: контур рівно 1.5px ——— */
+@media (resolution < 1.5dppx) {
+  .veselka { --lw: 1.5px; }
+}
+
+/* ——— фокус (після всіх правил, що гасять outline) ——— */
+.veselka :focus-visible {
+  outline: 2px solid var(--focus) !important;
+  outline-offset: 3px !important;
+}
+.veselka [tabindex="-1"]:focus { outline: none !important; }
+.veselka .tile:focus-visible { position: relative; z-index: 1; }

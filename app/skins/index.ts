@@ -2,21 +2,22 @@
 // скін визначає лише вигляд: розмітку екранів і свій CSS.
 //
 // Як додати скін (наприклад, з варіантів на концепт-полотні):
-//   1. скопіювати app/skins/vitrazh → app/skins/<назва>, переписати розмітку і CSS;
-//      кореневий клас — .<назва> (див. vitrazh.css, де все під .vitrazh);
+//   1. скопіювати app/skins/veselka → app/skins/<назва>, переписати розмітку і CSS;
+//      кореневий клас — .<назва> (див. veselka.css, де все під .veselka);
 //   2. зареєструвати його в SKINS нижче;
 //   3. зібрати з NEXT_PUBLIC_SKIN=<назва> npm run build.
 import * as book from "./book";
 import * as memphis from "./memphis";
 import * as vitrazh from "./vitrazh";
+import * as veselka from "./veselka";
 
-const SKINS = { vitrazh, memphis, book } as const;
+const SKINS = { veselka, vitrazh, memphis, book } as const;
 
 export type SkinName = keyof typeof SKINS;
 
-const wanted = (process.env.NEXT_PUBLIC_SKIN ?? "vitrazh") as SkinName;
+const wanted = (process.env.NEXT_PUBLIC_SKIN ?? "veselka") as SkinName;
 
-export const skinName: SkinName = wanted in SKINS ? wanted : "vitrazh";
+export const skinName: SkinName = wanted in SKINS ? wanted : "veselka";
 const active = SKINS[skinName];
 export const { Skin, ResultPage } = active;
 /** Сторінка 404 — зі скіна, якщо він її має; інакше — з «Вітража». */
