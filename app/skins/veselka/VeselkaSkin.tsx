@@ -308,15 +308,11 @@ function Sheet({ quiz }: { quiz: QuizApi }) {
         </header>
         <Windows idx={idx} total={total} answered={answered} />
 
-        {q.context && (
-          <p className="contextNote in">
-            <span>{q.context}</span>
-          </p>
-        )}
-        <section className={`pane qpane in${q.context ? " afterNote" : ""}`}>
+        <section className="pane qpane in">
           <p className="topic">
             <span className="chip">{q.topic}</span>
           </p>
+          {q.context && <p className="qlead">{q.context}</p>}
           <h2 className="prompt" ref={promptRef} tabIndex={-1}>
             {q.prompt}
           </h2>

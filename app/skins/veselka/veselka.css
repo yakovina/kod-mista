@@ -1751,67 +1751,50 @@ body:has(.veselka.result) {
   .veselka.intro .heroText > :nth-child(n + 4) { animation-delay: 120ms; }
 }
 
-/* ═══ Вступна фраза — окреме «повідомлення» над питанням (без курсиву);
-   варіанти — картка з квадратною літерою всередині, колір з'являється
-   на наведенні й у стані відповіді, позначка ✓/✕ праворуч. ═══ */
-.veselka .contextNote {
-  position: relative;
-  margin: 28px 0 0;
-  max-width: 92%;
-  padding: 12px 16px 13px;
-  background: var(--sky);
-  border: var(--lw) solid var(--ink);
-  border-radius: var(--r);
+/* ═══ Вступна фраза — перший абзац у картці питання, звичайним шрифтом;
+   варіанти — яскраві: кожен у своєму кольорі (світла заливка картки +
+   насичена квадратна літера), тінь свого кольору на наведенні. ═══ */
+.veselka .qlead {
+  margin: 0 0 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--seam);
   font-family: "Open Sans", sans-serif;
   font-weight: 400;
   font-size: 15px;
-  line-height: 23px;
+  line-height: 24px;
   color: var(--ink);
   text-wrap: pretty;
 }
-/* хвостик повідомлення вниз, до питання */
-.veselka .contextNote::before,
-.veselka .contextNote::after {
-  content: "";
-  position: absolute;
-  left: 22px;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-color: transparent;
-}
-.veselka .contextNote::before { bottom: -10px; border-width: 10px 10px 0 0; border-top-color: var(--ink); }
-.veselka .contextNote::after { bottom: -7px; left: calc(22px + var(--lw)); border-width: 7.5px 7.5px 0 0; border-top-color: var(--sky); }
-.veselka .qpane.afterNote { margin-top: 30px; }
 
 /* варіанти */
-.veselka .opts li:nth-child(1) { --chip: var(--mustard); }
-.veselka .opts li:nth-child(2) { --chip: var(--sky); }
-.veselka .opts li:nth-child(3) { --chip: var(--peach); }
-.veselka .opts li:nth-child(4) { --chip: var(--teal-300); }
+.veselka .opts li:nth-child(1) { --chip: var(--mustard-deep); --chip-ink: var(--ink); --tint: #f8e7b4; }
+.veselka .opts li:nth-child(2) { --chip: var(--teal-300); --chip-ink: var(--ink); --tint: #d6e8eb; }
+.veselka .opts li:nth-child(3) { --chip: #e08a66; --chip-ink: var(--ink); --tint: #f6d9c7; }
+.veselka .opts li:nth-child(4) { --chip: var(--teal-600); --chip-ink: var(--card); --tint: #cfe1e3; }
 .veselka .opts li:nth-child(n) .opt {
-  grid-template-columns: 30px minmax(0, 1fr) auto;
+  grid-template-columns: 32px minmax(0, 1fr) auto;
   column-gap: 14px;
   align-items: center;
-  min-height: 56px;
-  padding: 12px 14px 12px 13px;
+  min-height: 58px;
+  padding: 12px 14px 12px 12px;
   overflow: hidden;
-  box-shadow: none;
+  background: var(--tint);
+  box-shadow: 2px 2px 0 var(--chip);
 }
 .veselka .opts li:nth-child(n) .opt .k {
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   border: var(--lw) solid var(--ink);
   border-radius: var(--r);
-  background: transparent;
+  background: var(--chip);
   font-family: "Lora", serif;
-  font-weight: 500;
-  font-size: 15px;
-  line-height: 15px;
-  color: var(--ink);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 16px;
+  color: var(--chip-ink);
   transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
 }
-.veselka .opts li:nth-child(n) .opt .t { padding: 0; }
+.veselka .opts li:nth-child(n) .opt .t { padding: 0; color: var(--ink); }
 .veselka .opt .mark {
   display: grid;
   place-items: center;
@@ -1821,37 +1804,33 @@ body:has(.veselka.result) {
 }
 .veselka .opt .mark svg { width: 14px; height: 14px; }
 @media (hover: hover) and (pointer: fine) {
-  .veselka .opts li:nth-child(n) .opt:not(:disabled):hover { transform: translate(-1px, -1px); box-shadow: 2px 2px 0 var(--teal-600); background: #fffcf3; }
-  .veselka .opts li:nth-child(n) .opt:not(:disabled):hover .k { background: var(--chip); }
+  .veselka .opts li:nth-child(n) .opt:not(:disabled):hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--chip); background: var(--tint); }
 }
-.veselka .opts li:nth-child(n) .opt:not(:disabled):active { transform: translate(1px, 1px); box-shadow: none; }
-.veselka .opts li:nth-child(n) .opt:focus-visible .k { background: var(--chip); }
+.veselka .opts li:nth-child(n) .opt:not(:disabled):active { transform: translate(1px, 1px); box-shadow: 0 0 0 var(--chip); }
 
 /* стани після відповіді */
-.veselka .opts li:nth-child(n) .opt.isRight { color: var(--card); box-shadow: 2px 2px 0 var(--mustard-deep); }
+.veselka .opts li:nth-child(n) .opt.isRight { background: var(--card); box-shadow: 3px 3px 0 var(--mustard-deep); }
+.veselka .opts li:nth-child(n) .opt.isRight .t { color: var(--card); }
 .veselka .opts li:nth-child(n) .opt.isRight .k { background: var(--mustard); border-color: var(--ink); color: var(--ink); }
 .veselka .opt.isRight .mark { color: var(--mustard); }
-.veselka .opts li:nth-child(n) .opt.isWrong { border-color: var(--brick); background: var(--card); box-shadow: none; }
+.veselka .opts li:nth-child(n) .opt.isWrong { border-color: var(--brick); background: var(--card); box-shadow: 2px 2px 0 var(--brick); }
 .veselka .opts li:nth-child(n) .opt.isWrong .k { background: var(--brick); border-color: var(--brick); color: var(--card); }
 .veselka .opts li:nth-child(n) .opt.isWrong .t { color: var(--ink-2); }
 .veselka .opt.isWrong .mark { color: var(--brick); }
-.veselka .opts li:nth-child(n) .opt.isRest { background: transparent; border-color: var(--seam); color: var(--ink-2); }
+.veselka .opts li:nth-child(n) .opt.isRest { background: transparent; border-color: var(--seam); box-shadow: none; }
+.veselka .opts li:nth-child(n) .opt.isRest .t { color: var(--ink-2); }
 .veselka .opts li:nth-child(n) .opt.isRest .k { background: transparent; border-color: var(--seam); color: var(--ink-2); }
 
 @media (min-width: 900px) {
-  .veselka .contextNote { margin-top: 36px; padding: 13px 18px 14px; font-size: 15.5px; line-height: 24px; }
-  .veselka .qpane.afterNote { margin-top: 34px; }
+  .veselka .qlead { margin-bottom: 16px; padding-bottom: 16px; font-size: 16px; line-height: 26px; }
   .veselka .opts li:nth-child(n) .opt {
-    grid-template-columns: 32px minmax(0, 1fr) auto;
+    grid-template-columns: 34px minmax(0, 1fr) auto;
     column-gap: 16px;
-    min-height: 60px;
-    padding: 13px 18px 13px 15px;
+    min-height: 62px;
+    padding: 13px 18px 13px 14px;
   }
-  .veselka .opts li:nth-child(n) .opt .k { width: 32px; height: 32px; font-size: 16px; line-height: 16px; }
-}
-@media (prefers-reduced-motion: no-preference) {
-  .veselka .contextNote.in { animation: vPane 380ms var(--ease) both; }
-  .veselka .qpane.afterNote.in { animation-delay: 60ms; }
+  .veselka .opts li:nth-child(n) .opt .k { width: 34px; height: 34px; font-size: 17px; line-height: 17px; }
+  .veselka .opts li { margin-top: 12px; }
 }
 
 /* ——— 1x-екрани: контур рівно 1.5px ——— */
