@@ -2094,6 +2094,33 @@ body:has(.veselka.result) {
   .veselka .resHead.lvl-keeper { --fh: 290px; }
 }
 
+/* ═══ Результат без шкали рівнів: більший персонаж поруч зі званням, стоїть
+   ногами на верхньому краї картки з описом. ═══ */
+.veselka .resHead { --fh: 236px; margin-top: 24px; }
+.veselka .resHead.lvl-keeper { --fh: 280px; }
+.veselka .resHead .resInfo { padding-bottom: 22px; }
+.veselka .resHead + .resCard { margin-top: 0; }
+.veselka .resHead .figure img { margin-bottom: -1px; }
+/* турист майже квадратний: на телефоні звання над ним, картинка на всю ширину */
+@media (max-width: 899px) {
+  .veselka .resHead.lvl-tourist { padding-right: 0; min-height: 0; }
+  .veselka .resHead.lvl-tourist .resInfo { min-height: 0; padding-bottom: 6px; }
+  .veselka .resHead.lvl-tourist .figure { position: static; height: auto; display: flex; justify-content: flex-end; }
+  .veselka .resHead.lvl-tourist .figure img { width: min(100%, 320px); height: auto; }
+}
+@media (min-width: 900px) {
+  .veselka .resHead { --fh: 400px; --gap: 32px; margin-top: 28px; }
+  .veselka .resHead.lvl-tourist { --fh: 300px; }
+  .veselka .resHead.lvl-keeper { --fh: 430px; }
+  .veselka .resHead .resInfo { gap: 18px; padding-bottom: 30px; }
+  .veselka.result .resHead .title { font-size: 34px; line-height: 40px; }
+}
+@media (min-width: 900px) and (max-height: 820px) {
+  .veselka .resHead { --fh: 340px; }
+  .veselka .resHead.lvl-tourist { --fh: 270px; }
+  .veselka .resHead.lvl-keeper { --fh: 370px; }
+}
+
 /* ——— 1x-екрани: контур рівно 1.5px ——— */
 @media (resolution < 1.5dppx) {
   .veselka { --lw: 1px; }

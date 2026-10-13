@@ -86,6 +86,10 @@ body.tourist { --fr: 1.029; --fh: 470px; } body.citizen { --fr: 0.711; } body.ke
 .solo { position: absolute; right: 56px; bottom: 0; height: var(--fh); }
 .solo img { display: block; height: 100%; width: auto; }
 body.level .text { left: 56px; right: calc(56px + var(--fh) * var(--fr) + 48px); max-width: 640px; }
+
+body.level .text h1 { font-size: 68px; }
+body.level .text .btn { margin-top: 44px; }
+body.level { --fh: 540px; } body.tourist { --fh: 470px; }
 </style>
 </head>
 <body>
@@ -110,12 +114,6 @@ body.level .text { left: 56px; right: calc(56px + var(--fh) * var(--fr) + 48px);
   <div class="text">
     <p class="kicker">Мій результат у тесті «Код міста»</p>
     <div class="plate"><h1 id="title"></h1></div>
-    <div class="scale" id="scale">
-      <span class="here" id="here">ви тут</span>
-      <div data-l="tourist">Турист<br>у&nbsp;своєму місті<small>0–2 бали</small></div>
-      <div data-l="citizen">Допитливий<br>містянин<small>3–5 балів</small></div>
-      <div data-l="keeper">Хранитель<br>коду міста<small>6–8 балів</small></div>
-    </div>
     <span class="btn">Пройти тест <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span>
   </div>
 </section>
@@ -132,9 +130,6 @@ body.level .text { left: 56px; right: calc(56px + var(--fh) * var(--fr) + 48px);
     document.getElementById("char").src = `../public/art/char-${slug}.webp`;
     const h = document.getElementById("title");
     lv.title.forEach((line, k) => { if (k) h.appendChild(document.createElement("br")); h.appendChild(document.createTextNode(line)); });
-    const order = ["tourist", "citizen", "keeper"];
-    document.querySelectorAll("#scale div").forEach((d) => d.classList.toggle("on", d.dataset.l === slug));
-    document.getElementById("here").style.left = `${(order.indexOf(slug) * 2 + 1) / 6 * 100}%`;
   }
 </script>
 </body>

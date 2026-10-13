@@ -8,7 +8,7 @@
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { QuizApi } from "../../useQuiz";
-import { intro, levels, questions, type Level, type Photo, type Question } from "../../../data/quiz";
+import { intro, questions, type Level, type Photo, type Question } from "../../../data/quiz";
 import { asset } from "../../bp";
 import { SITE_URL, TEST_SHARE_TEXT, resultShareUrl } from "../../share";
 import { COVER_ALT, buzz, glide, useKeys } from "../common";
@@ -398,26 +398,6 @@ function Sheet({ quiz }: { quiz: QuizApi }) {
 }
 
 // ——— результат ———
-function LevelScale({ current }: { current: Level }) {
-  const at = levels.findIndex((l) => l.slug === current.slug);
-  return (
-    <div className={`scaleWrap at-${at}`}>
-      <span className="here" aria-hidden>
-        <i />
-        ви тут
-      </span>
-      <ol className="scale" aria-label="Рівні результату">
-        {levels.map((l) => (
-          <li key={l.slug} className={`pane lvl ${l.slug === current.slug ? "on lit" : "off"}`} aria-current={l.slug === current.slug ? "true" : undefined}>
-            <span className="name">{l.title}</span>
-            <span className="range">{l.range}</span>
-          </li>
-        ))}
-      </ol>
-    </div>
-  );
-}
-
 
 function Figure({ level }: { level: Level }) {
   if (!level.character) return null;
@@ -463,7 +443,6 @@ function ResultBody({ level, score, onRestart }: { level: Level; score?: number;
           </div>
           <Figure level={level} />
         </div>
-        {score !== undefined && <LevelScale current={level} />}
         <section className="pane resCard">
           <p className="lead">{level.description}</p>
           {score !== undefined && <Share url={shareUrl} text={level.shareText} label={UI.shareResult} />}
