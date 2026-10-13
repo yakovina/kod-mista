@@ -877,48 +877,6 @@ body:has(.veselka.result) {
 .veselka.notfound .title { font-size: 24px; line-height: 30px; }
 .veselka.notfound .btn { margin-top: 28px; width: 100%; }
 
-/* ——— футер ——— */
-.veselka .foot {
-  position: relative;
-  z-index: 3;
-  margin-top: auto;
-  padding: 0 var(--gutter) calc(28px + env(safe-area-inset-bottom, 0px));
-  background: var(--wall-deep);
-  border-top: var(--lw) solid var(--ink);
-  font-size: 14px;
-  line-height: 20px;
-  color: var(--ink-2);
-  text-align: center;
-}
-/* та сама стрічка-веселка, що й під шапкою: футер — основа, на якій стоїть сайт */
-.veselka .foot::before {
-  content: "";
-  display: block;
-  height: 10px;
-  margin: 0 calc(-1 * var(--gutter)) 28px;
-  background: var(--band);
-  border-bottom: var(--lw) solid var(--ink);
-}
-.veselka .footIn {
-  max-width: 1120px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-}
-.veselka .footLogo { display: inline-flex; min-height: 44px; align-items: center; }
-.veselka .footLogo img { display: block; width: auto; height: 36px; }
-.veselka .foot p { margin: 0; }
-.veselka .footAbout { max-width: 34ch; color: var(--ink); }
-.veselka .footMeta { font-size: 13px; line-height: 18px; }
-.veselka .footMeta a {
-  color: var(--ink-2);
-  text-decoration: underline;
-  text-decoration-color: var(--teal-300);
-  text-underline-offset: 3px;
-}
-.veselka .footMeta a:hover { color: var(--teal-600); }
 .veselka.result .col > :last-child,
 .veselka.intro .col > :last-child { margin-bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
 .veselka.intro .bed.divider { margin-bottom: 40px; }
@@ -1076,10 +1034,6 @@ body:has(.veselka.result) {
   .veselka .resCard { margin-top: 32px; padding: 28px 32px 28px; }
   .veselka.result .resCard .lead { font-size: 19px; line-height: 31px; }
   .veselka .resNext { margin-top: 28px; }
-  .veselka .footIn { flex-direction: row; justify-content: space-between; gap: 32px; text-align: left; }
-  .veselka .footAbout { flex: 1 1 auto; max-width: none; }
-  .veselka .footMeta { flex: 0 0 auto; }
-  .veselka .foot::before { margin-bottom: 32px; }
   .veselka .bed.divider { margin: 64px auto; }
   .veselka.intro .bed.divider { margin-bottom: 64px; }
   .veselka .d-perch { width: 96px; right: -30px; }
@@ -1127,7 +1081,6 @@ body:has(.veselka.result) {
   .veselka.intro .col > :last-child { margin-bottom: 96px; }
   .veselka.notfound .title { font-size: 30px; line-height: 36px; }
   .veselka.notfound .btn { width: auto; min-width: 200px; margin-top: 32px; }
-  .veselka .foot { padding: 0 40px calc(32px + env(safe-area-inset-bottom, 0px)); }
 }
 
 /* ——— обкладинка по боках: на широкому екрані колонка лежить аркушем на ілюстрації ——— */
@@ -1316,13 +1269,8 @@ body:has(.veselka.result) {
 .veselka .burst i { width: 8px; height: 8px; border-width: 1px; }
 .veselka .burst i:nth-child(3n) { width: 11px; height: 4px; }
 
-/* 404 і футер */
+/* 404 */
 .veselka.notfound .title { font-size: 21px; line-height: 27px; }
-.veselka .foot { font-size: 13px; line-height: 19px; }
-.veselka .foot::before { height: 6px; margin-bottom: 24px; }
-.veselka .footIn { gap: 10px; }
-.veselka .footLogo img { height: 30px; }
-.veselka .footMeta { font-size: 12px; line-height: 17px; }
 
 @media (min-width: 900px) {
   /* обкладинка по боках лишається і на результаті (терраццо вище — лише для телефона) */
@@ -1384,8 +1332,6 @@ body:has(.veselka.result) {
   .veselka .resNext { margin-top: 24px; }
 
   .veselka.notfound .title { font-size: 26px; line-height: 32px; }
-  .veselka .foot::before { height: 8px; margin-bottom: 28px; }
-  .veselka .footLogo img { height: 30px; }
 
   .veselka.sheet .col,
   .veselka.result .col,
@@ -1426,7 +1372,6 @@ body:has(.veselka.result) {
 .veselka .here,
 .veselka .lvl .range,
 .veselka .srcs,
-.veselka .footMeta,
 .veselka .score small { font-size: 12px; }
 .veselka .verdict.sticker,
 .veselka .count,
@@ -1563,6 +1508,114 @@ body:has(.veselka.result) {
   .veselka .poster .arch { width: 60%; bottom: 44px; }
   .veselka .poster .score { top: 16px; left: 16px; }
   .veselka .poster.lvl-tourist .score { top: 16px; bottom: auto; left: auto; right: 16px; }
+}
+
+/* ═══ Шапка без футера: стрічка-веселка — верхній край аркуша, під нею
+   рядок із лого Хмарочоса, назвою тесту й посиланням на сайт; знизу —
+   волосяна лінія. Шкала рівнів — квадратні «вікна»; бал — в один рядок. ═══ */
+.veselka .bar {
+  height: auto;
+  min-height: 64px;
+  padding-top: 8px;
+  gap: 16px;
+  border-bottom: 1px solid var(--seam);
+}
+.veselka .bar::after { content: none; }
+.veselka .bar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: calc(-1 * var(--gutter));
+  right: calc(-1 * var(--gutter));
+  height: 6px;
+  background: linear-gradient(to right,
+    var(--teal-900) 0 25%, var(--teal-600) 25% 50%, var(--teal-300) 50% 75%, var(--mustard-deep) 75% 100%);
+}
+.veselka.intro .bar::before { left: calc(50% - 50vw); right: calc(50% - 50vw); }
+.veselka .brandRow { gap: 12px; }
+.veselka .brand img { height: 26px; }
+.veselka .brandRow .brandSub {
+  display: inline;
+  padding-left: 12px;
+  border-left: 1px solid var(--seam);
+  font-family: "Lora", serif;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 20px;
+  color: var(--ink);
+  letter-spacing: -0.005em;
+}
+.veselka .siteLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 44px;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--ink-2);
+  text-decoration: none;
+  transition: color var(--t-fast) var(--ease);
+}
+.veselka .siteLink svg { flex: 0 0 auto; transition: transform var(--t-fast) var(--ease); }
+@media (hover: hover) {
+  .veselka .siteLink:hover { color: var(--teal-600); }
+  .veselka .siteLink:hover svg { transform: translate(1px, -1px); }
+}
+.veselka .count {
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+.veselka .windows { margin-top: 16px; }
+.veselka .hero { padding-top: 64px; }
+@media (max-width: 899px) {
+  .veselka .siteLink { display: none; }
+  .veselka.sheet .brandRow .brandSub { display: none; }
+}
+@media (min-width: 900px) {
+  .veselka .bar { min-height: 76px; padding-top: 8px; }
+  .veselka .bar::before { height: 8px; }
+  .veselka .brand img { height: 30px; }
+  .veselka .brandRow { gap: 14px; }
+  .veselka .brandRow .brandSub { padding-left: 14px; font-size: 16px; }
+  .veselka .count, .veselka .siteLink { font-size: 13.5px; }
+  .veselka .windows { margin-top: 18px; }
+  .veselka .hero { padding-top: 72px; }
+}
+
+/* шкала рівнів: квадратні вікна, без заокруглень */
+.veselka .scale,
+.veselka .lvl { border-radius: 0; }
+
+/* бал в один рядок: «3 з 8» на темно-бірюзовій плашці */
+.veselka .score,
+.veselka .poster .score {
+  width: auto;
+  height: auto;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 6px 12px 7px;
+  border-radius: var(--r);
+  border-width: var(--lw);
+  background: var(--teal-900);
+  box-shadow: 2px 2px 0 var(--mustard-deep);
+  color: var(--card);
+  line-height: 1;
+}
+.veselka .score b { font-size: 26px; line-height: 26px; letter-spacing: -0.02em; }
+.veselka .score small { display: inline; margin: 0; font-weight: 500; font-size: 14px; line-height: 14px; opacity: 1; color: var(--sky); }
+@media (prefers-reduced-motion: no-preference) {
+  .veselka .score { animation: vIn 280ms 160ms var(--ease) both; }
+}
+@media (min-width: 900px) {
+  .veselka .score,
+  .veselka .poster .score { padding: 7px 14px 8px; box-shadow: 3px 3px 0 var(--mustard-deep); }
+  .veselka .score b { font-size: 30px; line-height: 30px; }
+  .veselka .score small { font-size: 15px; line-height: 15px; }
 }
 
 /* ——— 1x-екрани: контур рівно 1.5px ——— */

@@ -27,9 +27,8 @@ const UI = {
   copy: "Копіювати",
   copied: "Скопійовано",
   other: "Інше…",
-  footAbout: "«Код міста» — тест Хмарочоса про будівлі, назви вулиць і пам’ятники",
-  footCopy: "© Хмарочос, 2026",
-  footSite: "hmarochos.kiev.ua",
+  site: "hmarochos.kiev.ua",
+  qOf: (n: number, t: number) => `Питання ${n} з ${t}`,
   nf: "Такої сторінки на фасаді немає",
   home: "На початок",
 };
@@ -93,6 +92,18 @@ const Cross = () => (
   </svg>
 );
 
+/** Посилання на сайт Хмарочоса праворуч у шапці (старт, результат, 404). */
+function SiteLink() {
+  return (
+    <a className="siteLink" href="https://hmarochos.kiev.ua/" target="_blank" rel="noopener noreferrer">
+      {UI.site}
+      <svg viewBox="0 0 12 12" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+        <path d="M4 2.5h5.5V8M9.5 2.5 2.5 9.5" />
+      </svg>
+    </a>
+  );
+}
+
 function Wordmark() {
   return (
     <div className="brandRow">
@@ -102,28 +113,6 @@ function Wordmark() {
       </a>
       <span className="brandSub">Код міста</span>
     </div>
-  );
-}
-
-/** Футер усього сайту: стрічка-веселка, лого Хмарочоса, підпис і посилання. */
-function Foot() {
-  return (
-    <footer className="foot">
-      <div className="footIn">
-        <a className="footLogo" href="https://hmarochos.kiev.ua/" target="_blank" rel="noopener noreferrer" aria-label="Хмарочос — відкрити сайт">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={asset("/hmarochos_logo_new.svg")} alt="Хмарочос" width={109} height={40} loading="lazy" />
-        </a>
-        <p className="footAbout">{UI.footAbout}</p>
-        <p className="footMeta">
-          <span>{UI.footCopy}</span>
-          <i className="dot"> · </i>
-          <a href="https://hmarochos.kiev.ua/" target="_blank" rel="noopener noreferrer">
-            {UI.footSite}
-          </a>
-        </p>
-      </div>
-    </footer>
   );
 }
 
@@ -322,9 +311,7 @@ function Sheet({ quiz }: { quiz: QuizApi }) {
       <div className="col col-q">
         <header className="bar">
           <Wordmark />
-          <span className="count">
-            {idx + 1} з {total}
-          </span>
+          <span className="count">{UI.qOf(idx + 1, total)}</span>
         </header>
         <Windows idx={idx} total={total} answered={answered} />
 
@@ -380,7 +367,6 @@ function Sheet({ quiz }: { quiz: QuizApi }) {
           </button>
         )}
       </div>
-      <Foot />
     </main>
   );
 }
@@ -448,6 +434,7 @@ function ResultBody({ level, score, onRestart }: { level: Level; score?: number;
       <div className="col col-r">
         <header className="bar">
           <Wordmark />
+          <SiteLink />
         </header>
         <section className={`poster pane lvl-${level.slug}`}>
           <Arch />
@@ -491,7 +478,6 @@ function ResultBody({ level, score, onRestart }: { level: Level; score?: number;
           )}
         </div>
       </div>
-      <Foot />
     </main>
   );
 }
@@ -506,6 +492,7 @@ export function NotFound() {
       <div className="col col-r">
         <header className="bar">
           <Wordmark />
+          <SiteLink />
         </header>
         <div className="nfBody">
           <Deco name="arch" cls="d-arch" />
@@ -518,7 +505,6 @@ export function NotFound() {
           </a>
         </div>
       </div>
-      <Foot />
     </main>
   );
 }
@@ -533,6 +519,7 @@ export default function VeselkaSkin({ quiz }: { quiz: QuizApi }) {
         <div className="col col-start">
           <header className="bar">
             <Wordmark />
+            <SiteLink />
           </header>
           <section className="hero">
             <div className="heroText">
@@ -567,8 +554,7 @@ export default function VeselkaSkin({ quiz }: { quiz: QuizApi }) {
           </section>
           <Share url={`${SITE_URL}/`} text={TEST_SHARE_TEXT} label={UI.shareTest} />
         </div>
-        <Foot />
-      </main>
+        </main>
     );
   }
 
