@@ -95,15 +95,12 @@ body:has(.veselka.result) {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  font-family: "Lora", serif;
-  font-weight: 700;
-  font-size: 18px;
-  line-height: 24px;
-  color: var(--ink);
   text-decoration: none;
-  transition: color var(--t-fast) var(--ease);
+  transition: transform var(--t-fast) var(--ease);
 }
-.veselka .brand:hover { color: var(--teal-600); }
+.veselka .brand img { display: block; width: auto; height: 28px; }
+@media (hover: hover) { .veselka .brand:hover { transform: translateY(-1px); } }
+.veselka .brandRow .brandSub { padding-left: 12px; border-left: 1.5px solid var(--seam); }
 .veselka .brandSub {
   font-size: 15px;
   line-height: 24px;
@@ -355,6 +352,7 @@ body:has(.veselka.result) {
   padding: 0;
 }
 .veselka .opts li { margin-top: 10px; }
+.veselka .opts:not(.done) { margin-bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
 .veselka .opt {
   position: relative;
   box-sizing: border-box;
@@ -526,7 +524,7 @@ body:has(.veselka.result) {
 .veselka.result .col,
 .veselka.notfound .col { text-align: center; }
 .veselka .figure {
-  margin-top: 24px;
+  margin-top: 0;
   display: flex;
   justify-content: center;
   align-items: flex-end;
@@ -543,27 +541,72 @@ body:has(.veselka.result) {
   position: relative;
   z-index: 1;
 }
+/* постер результату: персонаж на гірчичному «небі» з аркою з обкладинки, стоїть на річці */
+.veselka .poster {
+  position: relative;
+  margin-top: 28px;
+  padding: 36px 0 0;
+  background: var(--mustard);
+  box-shadow: var(--sh) var(--sh) 0 var(--teal-600);
+  overflow: hidden;
+}
+.veselka .poster .arch {
+  position: absolute;
+  left: 50%;
+  bottom: 30px;
+  width: 92%;
+  height: auto;
+  aspect-ratio: 2 / 1;
+  transform: translateX(-50%);
+  z-index: 0;
+}
+.veselka .arch .a-ink { fill: var(--ink); }
+.veselka .arch .a-900 { fill: var(--teal-900); }
+.veselka .arch .a-600 { fill: var(--teal-600); }
+.veselka .arch .a-500 { fill: var(--teal-500); }
+.veselka .arch .a-300 { fill: var(--teal-300); }
+.veselka .arch .a-card { fill: var(--card); }
+.veselka .arch .a-hole { fill: var(--mustard); }
+.veselka .arch .a-crack { fill: none; stroke: var(--ink); stroke-width: 1.4; stroke-linejoin: miter; }
+.veselka .poster .figure { position: relative; z-index: 1; padding: 0 16px; }
+.veselka .poster .bed.riverGround {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  border: 0;
+  border-top: var(--lw) solid var(--ink);
+  border-radius: 0;
+}
 .veselka .bed.riverGround { width: 100%; }
+.veselka .poster .score {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 2;
+  margin: 0;
+}
+/* у туриста зліва вгорі риба, справа голова — на телефоні бал сідає на ліву ногу арки */
+.veselka .poster.lvl-tourist .score { top: auto; bottom: 58px; left: 14px; }
 .veselka .score {
   position: relative;
   box-sizing: border-box;
-  width: 96px;
-  height: 96px;
+  width: 84px;
+  height: 84px;
   margin: 20px auto 0;
   display: grid;
   place-content: center;
   border-radius: 999px;
   background: radial-gradient(circle closest-side, var(--teal-900) 0 64%, var(--teal-600) 64% 76%, var(--teal-500) 76% 88%, var(--teal-300) 88% 100%);
   border: var(--lw) solid var(--ink);
-  box-shadow: 3px 3px 0 var(--mustard-deep), 3px 3px 0 2px var(--ink);
+  box-shadow: 3px 3px 0 var(--ink);
   color: var(--card);
   line-height: 1;
 }
 .veselka .score b {
   font-family: "Lora", serif;
   font-weight: 700;
-  font-size: 40px;
-  line-height: 40px;
+  font-size: 34px;
+  line-height: 34px;
 }
 .veselka .score small {
   display: block;
@@ -572,7 +615,14 @@ body:has(.veselka.result) {
   font-size: 13px;
   line-height: 16px;
 }
-.veselka.result .titlePane { margin-top: 20px; transform: rotate(calc(-1deg * var(--tilt))); }
+.veselka.result .titlePane {
+  position: relative;
+  z-index: 2;
+  margin-top: -14px;
+  background: var(--card);
+  box-shadow: var(--sh) var(--sh) 0 var(--terracotta);
+  transform: rotate(calc(-1.5deg * var(--tilt)));
+}
 .veselka.result .title,
 .veselka.notfound .title {
   font-size: 30px;
@@ -708,11 +758,11 @@ body:has(.veselka.result) {
 .veselka .answersBlock { position: relative; margin-top: 28px; text-align: left; }
 .veselka .tiles {
   list-style: none;
-  margin: 12px 0 0;
-  padding: 0;
+  margin: 16px 0 0;
+  padding: 0 8px 0 0;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 14px;
 }
 .veselka .tiles > li { display: grid; }
 .veselka .tile {
@@ -720,10 +770,10 @@ body:has(.veselka.result) {
   width: 100%;
   height: 100%;
   min-height: 64px;
-  padding: 10px 10px 10px 12px;
+  position: relative;
+  padding: 11px 18px 11px 12px;
   display: grid;
-  grid-template-columns: 1fr 22px;
-  gap: 8px;
+  grid-template-columns: minmax(0, 1fr);
   align-items: center;
   background: var(--card);
   border: 1.5px solid var(--ink);
@@ -746,8 +796,11 @@ body:has(.veselka.result) {
   color: var(--ink);
 }
 .veselka .tile .mk {
-  width: 22px;
-  height: 22px;
+  position: absolute;
+  top: -9px;
+  right: -9px;
+  width: 24px;
+  height: 24px;
   display: grid;
   place-items: center;
   border-radius: 999px;
@@ -1011,10 +1064,18 @@ body:has(.veselka.result) {
   .veselka .withDeco .acardIn::before { content: ""; float: right; width: 110px; height: 30px; }
   .veselka .btn.next { display: flex; width: auto; min-width: 220px; margin-left: auto; margin-bottom: 96px; }
 
-  .veselka .figure { margin-top: 32px; height: 440px; }
+  .veselka .brand img { height: 32px; }
+  .veselka .poster { margin-top: 32px; padding-top: 40px; }
+  .veselka .poster .figure { height: 400px; }
   .veselka .figure img { height: 100%; max-height: none; }
-  .veselka .score { width: 112px; height: 112px; margin-top: 20px; }
-  .veselka.result .titlePane { margin-top: 24px; }
+  .veselka .poster .arch { bottom: 50px; width: 88%; }
+  .veselka .score { width: 104px; height: 104px; }
+  .veselka .score b { font-size: 40px; line-height: 40px; }
+  .veselka .poster .score { top: 20px; left: 20px; }
+  .veselka .poster .arch { width: 84%; }
+  .veselka.result .titlePane { margin-top: -18px; }
+  .veselka .poster.lvl-tourist .score { top: 20px; bottom: auto; left: auto; right: 20px; }
+  .veselka .opts:not(.done) { margin-bottom: 96px; }
   .veselka.result .title { font-size: 40px; line-height: 46px; letter-spacing: -0.01em; }
   .veselka .scaleWrap { margin-top: 28px; }
   .veselka .lvl { padding: 14px 16px 12px; }
@@ -1024,12 +1085,49 @@ body:has(.veselka.result) {
   .veselka .actions > .btn { min-width: 200px; }
   .veselka .answersBlock { margin-top: 44px; }
   .veselka .h2 { font-size: 26px; line-height: 32px; }
-  .veselka .tiles { margin-top: 16px; grid-template-columns: repeat(4, 1fr); }
+  .veselka .tiles { margin-top: 20px; grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .veselka.result .col > :last-child,
   .veselka.intro .col > :last-child { margin-bottom: 96px; }
   .veselka.notfound .title { font-size: 30px; line-height: 36px; }
   .veselka.notfound .btn { width: auto; min-width: 200px; margin-top: 32px; }
   .veselka .foot { padding: 32px 40px calc(32px + env(safe-area-inset-bottom, 0px)); }
+}
+
+/* ——— обкладинка по боках: на широкому екрані колонка лежить аркушем на ілюстрації ——— */
+@media (min-width: 900px) {
+  body:has(.veselka.sheet),
+  body:has(.veselka.result),
+  body:has(.veselka.notfound) {
+    background: #f1e8d3 url("/art/cover.jpg") center / cover no-repeat fixed;
+  }
+  .veselka.sheet .col,
+  .veselka.result .col,
+  .veselka.notfound .col {
+    max-width: none;
+    width: calc(var(--colw) + 2 * var(--gutter));
+    background-color: var(--wall);
+    background-image: radial-gradient(rgba(34, 106, 122, 0.17) 1.2px, transparent 1.7px);
+    background-size: 18px 18px;
+    border-left: var(--lw) solid var(--ink);
+    border-right: var(--lw) solid var(--ink);
+    box-shadow: 6px 0 0 var(--teal-600), -6px 0 0 var(--mustard-deep);
+  }
+  .veselka.sheet .col { --colw: 640px; }
+  .veselka.result .col { --colw: 640px; }
+  .veselka.notfound .col { --colw: 560px; }
+  .veselka.result .col {
+    background-image:
+      radial-gradient(rgba(34, 106, 122, 0.17) 1.4px, transparent 1.9px),
+      radial-gradient(rgba(233, 193, 80, 0.42) 2px, transparent 2.5px),
+      radial-gradient(rgba(211, 109, 71, 0.22) 1.6px, transparent 2.1px);
+    background-size: 56px 56px, 72px 72px, 44px 44px;
+    background-position: 0 0, 23px 31px, 9px 17px;
+  }
+  @media (max-width: 1023px) {
+    .veselka.sheet .col,
+    .veselka.result .col,
+    .veselka.notfound .col { box-shadow: none; }
+  }
 }
 
 /* ——— 1x-екрани: контур рівно 1.5px ——— */

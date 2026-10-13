@@ -28,7 +28,7 @@ const UI = {
   copied: "Скопійовано",
   other: "Інше…",
   answers: "Ваші відповіді",
-  foot: ["Хмарочос", "Код міста", "Джерела відповідей — у поясненнях до кожного питання"],
+  foot: ["Хмарочос", "Код міста"],
   nf: "Такої сторінки на фасаді немає",
   home: "На початок",
 };
@@ -89,8 +89,9 @@ const Cross = () => (
 function Wordmark() {
   return (
     <div className="brandRow">
-      <a className="brand" href="https://hmarochos.kiev.ua/" target="_blank" rel="noopener noreferrer">
-        Хмарочос
+      <a className="brand" href="https://hmarochos.kiev.ua/" target="_blank" rel="noopener noreferrer" aria-label="Хмарочос — відкрити сайт">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={asset("/hmarochos_logo_new.svg")} alt="Хмарочос" width={87} height={32} />
       </a>
       <span className="brandSub">Код міста</span>
     </div>
@@ -425,6 +426,28 @@ function Tiles({ history }: { history: boolean[] }) {
   );
 }
 
+/** Смугаста арка з тріщиною — цитата обкладинки, тло для персонажа результату. */
+function Arch() {
+  const rings: [number, string][] = [
+    [100, "a-ink"],
+    [98, "a-900"],
+    [90, "a-600"],
+    [81, "a-500"],
+    [72, "a-300"],
+    [63, "a-card"],
+    [56.5, "a-ink"],
+    [55, "a-hole"],
+  ];
+  return (
+    <svg className="arch" viewBox="0 0 200 100" preserveAspectRatio="xMidYMax meet" aria-hidden>
+      {rings.map(([r, c]) => (
+        <circle key={r} cx="100" cy="100" r={r} className={c} />
+      ))}
+      <path className="a-crack" d="M0 -99.5 L3.5 -91 L-2.5 -82 L3 -73 L-2 -64 L1 -56.5" transform="translate(100 100) rotate(-52)" />
+    </svg>
+  );
+}
+
 function Figure({ level }: { level: Level }) {
   if (!level.character) return null;
   const small = level.character.replace(".webp", "-560.webp");
@@ -446,16 +469,19 @@ function ResultBody({ level, score, onRestart, history }: { level: Level; score?
         <header className="bar">
           <Wordmark />
         </header>
-        <Figure level={level} />
-        <Bed src="/art/deco-river-h.webp" alt="" cls="riverGround flow" />
-        {score !== undefined && (
-          <div className="score" aria-label={`${score} з ${questions.length} правильних`}>
-            <b>
-              <CountUp to={score} />
-            </b>
-            <small>з {questions.length}</small>
-          </div>
-        )}
+        <section className={`poster pane lvl-${level.slug}`}>
+          <Arch />
+          <Figure level={level} />
+          <Bed src="/art/deco-river-h.webp" alt="" cls="riverGround flow" />
+          {score !== undefined && (
+            <div className="score" aria-label={`${score} з ${questions.length} правильних`}>
+              <b>
+                <CountUp to={score} />
+              </b>
+              <small>з {questions.length}</small>
+            </div>
+          )}
+        </section>
         <div className="titlePane pane mid">
           <h1 className="title">{level.title}</h1>
         </div>
