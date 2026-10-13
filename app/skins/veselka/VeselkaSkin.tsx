@@ -7,7 +7,7 @@
 // Мозаїка ілюстраторки лишається лише там, де вона сидить на контенті.
 
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import type { QuizApi } from "../../useQuiz";
+import { scrollToStart, type QuizApi } from "../../useQuiz";
 import { intro, questions, type Level, type Photo, type Question } from "../../../data/quiz";
 import { asset } from "../../bp";
 import { SITE_URL, TEST_SHARE_TEXT, resultShareUrl } from "../../share";
@@ -124,7 +124,7 @@ function Windows({ idx, total, answered }: { idx: number; total: number; answere
 /** Елемент ілюстраторки, прив'язаний до конкретного блоку. */
 function Deco({ name, cls }: { name: string; cls: string }) {
   // eslint-disable-next-line @next/next/no-img-element
-  return <img className={`deco ${cls} ${name}`} src={asset(`/art/deco-${name}.webp`)} alt="" aria-hidden loading="lazy" />;
+  return <img className={`deco ${cls} ${name}`} src={asset(`/art/deco-${name}.webp`)} alt="" aria-hidden decoding="async" />;
 }
 
 /** Мозаїка в ложі затирки. */
@@ -158,15 +158,54 @@ function CountUp({ to }: { to: number }) {
 }
 
 /** Фото до питання чи відповіді: 640px для телефона, 1280px для широкого й 2x-екрана. */
-function PhotoFig({ photo, cls }: { photo: Photo; cls: string }) {
+const PHOTO_SIZES = "(min-width: 900px) 640px, 100vw";
+const photoSet = (photo: Photo) => {
   const small = photo.src.replace(/\.webp$/, "-640.webp");
+  return { small, srcSet: `${asset(small)} 640w, ${asset(photo.src)} 1280w` };
+};
+
+/** Завантажує картинки заздалегідь, щоб на новому питанні вони з'являлись уже готовими
+ *  (у вбудованих браузерах Instagram/Facebook мережа повільна, і фото «моргали»). */
+const preloaded = new Set<string>();
+function preload(src: string, srcSet?: string) {
+  const key = srcSet ?? src;
+  if (preloaded.has(key) || typeof window === "undefined") return;
+  preloaded.add(key);
+  const img = new Image();
+  img.decoding = "async";
+  if (srcSet) {
+    img.sizes = PHOTO_SIZES;
+    img.srcset = srcSet;
+  }
+  img.src = src;
+}
+function preloadQuestion(q?: Question) {
+  if (!q) return;
+  for (const ph of [q.photo, q.answerPhoto]) {
+    if (!ph) continue;
+    const { small, srcSet } = photoSet(ph);
+    preload(asset(small), srcSet);
+  }
+}
+
+function PhotoFig({ photo, cls }: { photo: Photo; cls: string }) {
+  const { small, srcSet } = photoSet(photo);
+  const imgRef = useRef<HTMLImageElement>(null);
+  const [loaded, setLoaded] = useState(false);
+  // з кешу картинка може бути готова ще до гідратації — тоді onLoad не прийде
+  useLayoutEffect(() => {
+    const el = imgRef.current;
+    if (el && el.complete && el.naturalWidth > 0) setLoaded(true);
+  }, [photo.src]);
   return (
-    <figure className={`photo ${cls}`}>
+    <figure className={`photo ${cls}${loaded ? " isLoaded" : ""}`}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
+        ref={imgRef}
+        onLoad={() => setLoaded(true)}
         src={asset(small)}
-        srcSet={`${asset(small)} 640w, ${asset(photo.src)} 1280w`}
-        sizes="(min-width: 900px) 640px, 100vw"
+        srcSet={srcSet}
+        sizes={PHOTO_SIZES}
         alt={photo.alt}
         decoding="async"
         style={photo.focus ? { objectPosition: photo.focus } : undefined}
@@ -325,10 +364,17 @@ function Sheet({ quiz }: { quiz: QuizApi }) {
   const promptRef = useRef<HTMLHeadingElement>(null);
   const cardRef = useRef<HTMLElement>(null);
   const icons = useMemo(() => iconsFor(q.id), [q.id]);
+  // фото відповіді цього питання і фото наступного — завантажуємо, поки людина думає
+  useEffect(() => {
+    preloadQuestion(q);
+    preloadQuestion(questions[idx + 1]);
+  }, [q, idx]);
 
   // після відповіді — у тому ж кадрі гортаємо до картки так, щоб виступ декору лишився у вікні
   useLayoutEffect(() => {
     if (screen === "question") {
+      // ще до першого кадру ставимо екран на блок питання (на телефоні) — без стрибка згори
+      scrollToStart();
       promptRef.current?.focus({ preventScroll: true });
       return;
     }
@@ -350,7 +396,7 @@ function Sheet({ quiz }: { quiz: QuizApi }) {
         </header>
         <Windows idx={idx} total={total} answered={answered} />
 
-        <section className={`pane qpane withDeco in${q.photo ? " hasPhoto" : ""}`}>
+        <section className={`pane qpane withDeco in${q.photo ? " hasPhoto" : ""}`} data-scroll-anchor="(max-width: 899px)">
           <Deco name={icons.question} cls={`d-onCard ic-${icons.question}`} />
           <p className="topic">
             <span className="chip">{q.topic}</span>
@@ -523,6 +569,11 @@ export function NotFound() {
 export default function VeselkaSkin({ quiz }: { quiz: QuizApi }) {
   const { screen, score, level } = quiz;
   useKeys(quiz);
+  // ще на старті: усі іконки ілюстраторки, мозаїка і фото перших питань
+  useEffect(() => {
+    for (const n of [...ICONS, "river-v"]) preload(asset(`/art/deco-${n}.webp`));
+    questions.slice(0, 3).forEach(preloadQuestion);
+  }, []);
 
   if (screen === "intro") {
     return (

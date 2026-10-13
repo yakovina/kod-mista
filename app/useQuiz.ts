@@ -29,12 +29,24 @@ export interface QuizApi {
 
 // Подвійний rAF: чекаємо, поки новий екран відрендериться, інакше скрол
 // спрацює по старій розкладці.
-const toTop = () =>
-  requestAnimationFrame(() =>
-    requestAnimationFrame(() =>
-      window.scrollTo({ top: 0, behavior: "auto" }),
-    ),
-  );
+/** Куди ставити екран після переходу. Скін може позначити блок атрибутом
+ *  data-scroll-anchor="<media query>" — тоді, якщо умова виконується, екран
+ *  починається з цього блоку (з урахуванням його scroll-margin-top), інакше — згори. */
+export function scrollToStart() {
+  const a = document.querySelector<HTMLElement>("[data-scroll-anchor]");
+  const mq = a?.dataset.scrollAnchor;
+  if (a && (!mq || window.matchMedia(mq).matches)) {
+    const off = parseFloat(getComputedStyle(a).scrollMarginTop) || 0;
+    // offsetTop не враховує transform — анімація появи блоку не зсуває ціль
+    let top = 0;
+    for (let el: HTMLElement | null = a; el; el = el.offsetParent as HTMLElement | null) top += el.offsetTop;
+    window.scrollTo({ top: Math.max(0, top - off), behavior: "auto" });
+  } else {
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }
+}
+
+const toTop = () => requestAnimationFrame(() => requestAnimationFrame(scrollToStart));
 
 export function useQuiz(): QuizApi {
   const [screen, setScreen] = useState<Screen>("intro");

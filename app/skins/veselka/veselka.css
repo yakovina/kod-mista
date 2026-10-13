@@ -1869,7 +1869,7 @@ body:has(.veselka.result) {
   .veselka .photo figcaption { font-size: 12.5px; }
 }
 @media (prefers-reduced-motion: no-preference) {
-  .veselka .photo img { animation: vFade 360ms var(--ease) both; }
+  .veselka .photo img { transition: opacity 260ms var(--ease); }
 }
 
 /* ═══ «Ви тут»: наліпка-підказка з ромбиком, що вказує на поточний рівень;
@@ -2183,11 +2183,42 @@ body:has(.veselka.result) {
   .veselka .qpane.hasPhoto .qtext { min-height: 150px; }
 }
 @media (prefers-reduced-motion: no-preference) {
-  .veselka .qMosaic { animation: vMosaic 520ms 120ms var(--ease) both; }
+  .veselka .qMosaic { animation: vMosaicIn 420ms 100ms var(--ease) both; }
 }
 @keyframes vMosaic {
   from { opacity: 0; clip-path: inset(0 0 100% 0); }
   to { opacity: 1; clip-path: inset(0 0 0 0); }
+}
+
+/* ═══ Поява картинок без «моргання»: фото проявляється лише коли вже
+   завантажене (тло-плашка тримає місце), мозаїка — простим проявом без
+   clip-path (у WebKit і вбудованих браузерах clip-path на img мерехтить). ═══ */
+.veselka .photo img { opacity: 0; }
+.veselka .photo.isLoaded img { opacity: 1; }
+@keyframes vMosaicIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: none; }
+}
+.veselka .qMosaic,
+.veselka .deco { backface-visibility: hidden; }
+
+/* ═══ Новий екран питання на телефоні починається з блоку питання: над ним
+   лишається місце для іконки на куті й тонка смужка прогресу. ═══ */
+.veselka .qpane[data-scroll-anchor] { scroll-margin-top: 66px; }
+/* запас висоти, щоб і коротке питання можна було поставити на початок екрана */
+@media (max-width: 899px) {
+  .veselka.sheet { min-height: calc(100dvh + 160px); }
+}
+
+/* перший рядок питання обходить іконку на куті (на картках без фото) */
+.veselka .qpane:not(.hasPhoto) .qtext::before {
+  content: "";
+  float: right;
+  width: 62px;
+  height: 30px;
+}
+@media (min-width: 900px) {
+  .veselka .qpane:not(.hasPhoto) .qtext::before { width: 84px; height: 34px; }
 }
 
 /* ——— 1x-екрани: контур рівно 1.5px ——— */
