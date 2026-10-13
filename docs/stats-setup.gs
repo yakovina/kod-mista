@@ -131,6 +131,8 @@ function setupStats_(ss) {
   row('Покинули на півдорозі', '=MAX(0,' + B(rStart) + '-' + B(rFin) + ')', pct(B(rFin + 1), B(rStart)));
   pcts.push('C' + rFin + ':C' + (rFin + 1));
   row('Середній бал (з 8)', '=IFERROR(ROUND(AVERAGEIFS(' + R('score') + ',' + R('event') + ',"finish",' + H + '),1),"—")');
+  row('Перевірочні проходження (адреса з ?test) — у цифри вище не входять',
+    '=COUNTIFS(' + R('event') + ',"start",' + R('host') + ',"test")');
   row('');
 
   // ---------- 2. рівні ----------
