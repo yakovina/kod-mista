@@ -1573,7 +1573,9 @@ body:has(.veselka.result) {
 .veselka .hero { padding-top: 64px; }
 @media (max-width: 899px) {
   .veselka .siteLink { display: none; }
-  .veselka.sheet .brandRow .brandSub { display: none; }
+  .veselka .brandRow { gap: 10px; }
+  .veselka .brandRow .brandSub { padding-left: 10px; font-size: 14px; }
+  .veselka .count { font-size: 12.5px; }
 }
 @media (min-width: 900px) {
   .veselka .bar { min-height: 76px; padding-top: 8px; }

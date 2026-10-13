@@ -13,6 +13,8 @@ const DESC =
 export const metadata: Metadata = {
   title: TITLE,
   description: DESC,
+  applicationName: "Код міста",
+  appleWebApp: { title: "Код міста", capable: true, statusBarStyle: "default" },
   openGraph: {
     title: TEST_SHARE_TITLE,
     description: DESC,

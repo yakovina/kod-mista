@@ -3,87 +3,125 @@
 <head>
 <meta charset="utf-8">
 <title>OG</title>
-<!-- OG 1200×630 у стилі «Веселка» (Мемфіс на світлій стіні). Рендерить scripts/render-og.mjs:
-     og.html → public/og-test.png (обкладинка на весь кадр + гірчична плашка назви);
-     og.html?l=<slug> → public/og-<slug>.png (персонаж ліворуч, звання на плашці праворуч). -->
+<!-- OG 1200×630 у стилі «Веселка» (преміальний шар). Рендерить scripts/render-og.mjs:
+     og.html → public/og-test.png (старт: назва ліворуч, обкладинка праворуч);
+     og.html?l=<slug> → public/og-<slug>.png (постер з персонажем ліворуч, звання праворуч). -->
 <style>
-@font-face { font-family: "Open Sans"; src: url("../public/fonts/hm/open-sans-v29-latin_cyrillic-ext-700.woff2") format("woff2"); font-weight: 700; }
 @font-face { font-family: "Open Sans"; src: url("../public/fonts/hm/open-sans-v29-latin_cyrillic-ext-500.woff2") format("woff2"); font-weight: 500; }
+@font-face { font-family: "Open Sans"; src: url("../public/fonts/hm/open-sans-v29-latin_cyrillic-ext-700.woff2") format("woff2"); font-weight: 700; }
 @font-face { font-family: "Lora"; src: url("../public/fonts/hm/lora-v24-latin_cyrillic-ext-700.woff2") format("woff2"); font-weight: 700; }
+@font-face { font-family: "Lora"; src: url("../public/fonts/hm/lora-v24-latin_cyrillic-ext-italic.woff2") format("woff2"); font-weight: 400; font-style: italic; }
+:root {
+  --wall: #f1e8d3; --card: #fbf7ec; --ink: #2b2a27; --ink-2: #4a4c47; --seam: #cfc6b0;
+  --teal-900: #0e4758; --teal-600: #226a7a; --teal-500: #4a8c95; --teal-300: #72aab5; --sky: #c6dde1;
+  --mustard: #f2d98f; --mustard-deep: #e9c150; --terracotta: #d36d47;
+  --lw: 2px; --r: 6px; --sh: 5px;
+}
 * { box-sizing: border-box; }
 body {
-  margin: 0; width: 1200px; height: 630px; overflow: hidden; color: #2b2a27; font-family: "Open Sans", sans-serif;
-  background-color: #f1e8d3;
-  background-image: radial-gradient(rgba(34, 106, 122, 0.2) 2px, transparent 2.8px);
-  background-size: 30px 30px;
+  margin: 0; width: 1200px; height: 630px; overflow: hidden; position: relative;
+  color: var(--ink); font-family: "Open Sans", sans-serif;
+  background-color: var(--wall);
+  background-image: radial-gradient(rgba(34, 106, 122, 0.09) 1.4px, transparent 2px);
+  background-size: 28px 28px;
 }
-.band { position: absolute; left: 0; right: 0; top: 0; height: 14px; background: linear-gradient(to bottom, #0e4758 0 25%, #226a7a 25% 50%, #72aab5 50% 75%, #e9c150 75% 100%); }
-.coverWrap { position: relative; width: 1200px; height: 630px; }
-.cover { width: 1200px; height: 630px; object-fit: cover; object-position: 50% 18%; display: block; }
-.plate {
-  position: absolute; left: 56px; bottom: 60px; padding: 18px 30px 24px;
-  background: #f2d98f; border: 3px solid #2b2a27; border-radius: 8px; box-shadow: 8px 8px 0 #226a7a;
-  transform: rotate(-1.5deg); transform-origin: left bottom;
-}
-.plateTitle { font-family: "Lora", serif; font-weight: 700; font-size: 72px; line-height: 1; letter-spacing: -.01em; }
-.plateSub { margin-top: 12px; font-size: 24px; font-weight: 700; color: #2b2a27; }
-.lvl { display: none; position: relative; width: 1200px; height: 630px; }
-body.level .coverWrap { display: none; }
+.band { position: absolute; left: 0; right: 0; top: 0; height: 12px;
+  background: linear-gradient(to right, var(--teal-900) 0 25%, var(--teal-600) 25% 50%, var(--teal-300) 50% 75%, var(--mustard-deep) 75% 100%); }
+.head { position: absolute; left: 56px; right: 56px; top: 12px; height: 76px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1.5px solid var(--seam); }
+.brand { display: flex; align-items: center; gap: 18px; }
+.brand img { height: 38px; width: auto; display: block; }
+.brand b { padding-left: 18px; border-left: 1.5px solid var(--seam); font-family: "Lora", serif; font-weight: 700; font-size: 24px; }
+.site { font-weight: 500; font-size: 19px; color: var(--ink-2); }
+
+.plate { display: inline-block; background: var(--mustard); border: var(--lw) solid var(--ink); border-radius: var(--r); box-shadow: var(--sh) var(--sh) 0 var(--teal-600); }
+.btn { display: inline-flex; align-items: center; gap: 12px; height: 62px; padding: 0 30px; background: var(--teal-600); color: var(--card); border: var(--lw) solid var(--ink); border-radius: var(--r); box-shadow: 4px 4px 0 var(--mustard-deep); font-weight: 500; font-size: 23px; }
+.btn svg { width: 22px; height: 22px; }
+
+/* старт */
+.start { position: absolute; left: 56px; right: 56px; top: 88px; bottom: 0; display: grid; grid-template-columns: 470px 1fr; column-gap: 54px; align-items: center; }
+.start .plate { padding: 12px 28px 18px; transform: rotate(-0.6deg); }
+.start h1 { margin: 0; font-weight: 700; font-size: 78px; line-height: 1; letter-spacing: -0.02em; }
+.start .lead { margin: 30px 0 0; font-family: "Lora", serif; font-style: italic; font-size: 27px; line-height: 1.42; }
+.start .meta { margin: 22px 0 0; font-weight: 500; font-size: 19px; color: var(--ink-2); }
+.start .meta i { font-style: normal; color: var(--terracotta); font-weight: 700; margin: 0 10px; }
+.start .btn { margin-top: 26px; }
+.cover { position: relative; border: var(--lw) solid var(--ink); border-radius: var(--r); overflow: hidden; box-shadow: var(--sh) var(--sh) 0 var(--terracotta); }
+.cover img { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
+
+/* рівень */
+.lvl { display: none; }
+body.level .start { display: none; }
 body.level .lvl { display: block; }
-.fig { position: absolute; left: 40px; top: 14px; height: 560px; width: 520px; overflow: hidden; display: flex; align-items: flex-end; justify-content: center; }
-.fig img { display: block; width: auto; height: auto; }
-.fig.tourist img { width: 470px; }
-.fig.citizen img { width: 520px; align-self: flex-start; }
-.fig.keeper img { height: 1280px; margin-bottom: -710px; }
-.sill { position: absolute; left: 40px; top: 574px; width: 520px; height: 16px; border: 3px solid #2b2a27; border-radius: 4px; background: linear-gradient(to bottom, #0e4758 0 25%, #226a7a 25% 50%, #72aab5 50% 75%, #e9c150 75% 100%); }
-.text { position: absolute; left: 610px; top: 0; height: 630px; width: 540px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; }
-.tp { display: inline-block; padding: 14px 26px 20px; background: #f2d98f; border: 3px solid #2b2a27; border-radius: 8px; box-shadow: 8px 8px 0 #d36d47; transform: rotate(-1.5deg); transform-origin: left bottom; }
-.text h1 { margin: 0; font-family: "Lora", serif; font-weight: 700; font-size: 60px; line-height: 1.08; letter-spacing: -.01em; }
-.text .range { display: inline-block; margin-top: 34px; padding: 8px 20px; border: 3px solid #2b2a27; border-radius: 999px; background: #c6dde1; font-size: 26px; font-weight: 700; }
-.text .brand { position: absolute; left: 0; bottom: 48px; font-size: 24px; font-weight: 700; color: #2b2a27; }
-.text .brand i { font-style: normal; color: #d36d47; }
-.shapes { position: absolute; right: 36px; top: 40px; width: 150px; height: 150px; }
-.shapes .a { fill: #226a7a; stroke: #2b2a27; stroke-width: 3; }
-.shapes .b { fill: #e9c150; stroke: #2b2a27; stroke-width: 3; }
-.shapes .c { fill: none; stroke: #d36d47; stroke-width: 6; stroke-linejoin: round; stroke-linecap: round; }
-.shapes .d { fill: #92221b; stroke: #2b2a27; stroke-width: 3; }
+.poster { position: absolute; left: 56px; top: 116px; width: 520px; height: 470px; background: var(--mustard); border: var(--lw) solid var(--ink); border-radius: var(--r); box-shadow: var(--sh) var(--sh) 0 var(--teal-600); overflow: hidden; }
+.poster .arch { position: absolute; left: 50%; bottom: 52px; width: 80%; transform: translateX(-50%); }
+.poster .fig { position: absolute; left: 0; right: 0; bottom: 52px; height: 360px; display: flex; justify-content: center; align-items: flex-end; }
+.poster .fig img { display: block; height: 100%; width: auto; max-width: 92%; object-fit: contain; object-position: bottom; }
+.poster .river { position: absolute; left: 0; right: 0; bottom: 0; height: 54px; border-top: var(--lw) solid var(--ink); background: var(--card); }
+.poster .river img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.text { position: absolute; left: 632px; right: 56px; top: 88px; bottom: 0; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; }
+.text .kicker { margin: 0; font-family: "Lora", serif; font-style: italic; font-size: 26px; color: var(--ink-2); }
+.text .plate { margin-top: 18px; padding: 14px 26px 18px; background: var(--card); box-shadow: var(--sh) var(--sh) 0 var(--terracotta); }
+.text h1 { margin: 0; font-weight: 700; font-size: 56px; line-height: 1.08; letter-spacing: -0.02em; white-space: nowrap; }
+.range { display: inline-flex; align-items: baseline; gap: 10px; margin-top: 30px; padding: 10px 18px 12px; background: var(--teal-900); color: var(--card); border: var(--lw) solid var(--ink); border-radius: var(--r); box-shadow: 4px 4px 0 var(--mustard-deep); }
+.range b { font-family: "Lora", serif; font-weight: 700; font-size: 40px; line-height: 1; letter-spacing: -0.02em; }
+.range span { font-weight: 500; font-size: 22px; color: var(--sky); }
+.text .btn { margin-top: 30px; }
+.arch .a-ink { fill: var(--ink); } .arch .a-900 { fill: var(--teal-900); } .arch .a-600 { fill: var(--teal-600); }
+.arch .a-500 { fill: var(--teal-500); } .arch .a-300 { fill: var(--teal-300); } .arch .a-card { fill: var(--card); }
+.arch .a-hole { fill: var(--mustard); } .arch .a-crack { fill: none; stroke: var(--ink); stroke-width: 1.4; }
 </style>
 </head>
 <body>
-<div class="coverWrap">
-  <img class="cover" src="../public/art/cover.jpg" alt="">
-  <div class="plate"><div class="plateTitle">Код міста</div><div class="plateSub">Тест Хмарочоса · 8 питань про будівлі, вулиці й пам’ятники</div></div>
-</div>
-<div class="lvl">
-  <div class="band"></div>
-  <div class="fig" id="fig"><img id="char" src="" alt=""></div>
-  <div class="sill"></div>
-  <svg class="shapes" viewBox="0 0 120 120" aria-hidden>
-    <circle cx="22" cy="24" r="12" class="a" />
-    <path d="M70 8 L96 48 L44 48 Z" class="b" />
-    <path d="M8 78 l10 -12 l10 12 l10 -12 l10 12 l10 -12 l10 12" class="c" />
-    <rect x="84" y="80" width="22" height="22" class="d" transform="rotate(12 95 91)" />
-  </svg>
-  <div class="text">
-    <div class="tp"><h1 id="title"></h1></div>
-    <div class="range" id="range"></div>
-    <div class="brand">Код міста <i>·</i> Хмарочос</div>
+<div class="band"></div>
+<header class="head">
+  <div class="brand"><img src="../public/hmarochos_logo_new.svg" alt=""><b>Код міста</b></div>
+  <span class="site">hmarochos.kiev.ua</span>
+</header>
+
+<section class="start">
+  <div>
+    <div class="plate"><h1>Код міста</h1></div>
+    <p class="lead">Вісім питань про будівлі, назви вулиць і&nbsp;пам’ятники. Перевірте, як добре ви читаєте своє місто.</p>
+    <p class="meta">8 питань<i>·</i>близько 4 хвилин</p>
+    <span class="btn">Пройти тест <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span>
   </div>
-</div>
+  <figure class="cover" style="margin:0"><img src="../public/art/cover.jpg" alt=""></figure>
+</section>
+
+<section class="lvl">
+  <div class="poster">
+    <svg class="arch" viewBox="0 0 200 100">
+      <circle cx="100" cy="100" r="100" class="a-ink"/><circle cx="100" cy="100" r="98" class="a-900"/>
+      <circle cx="100" cy="100" r="90" class="a-600"/><circle cx="100" cy="100" r="81" class="a-500"/>
+      <circle cx="100" cy="100" r="72" class="a-300"/><circle cx="100" cy="100" r="63" class="a-card"/>
+      <circle cx="100" cy="100" r="56.5" class="a-ink"/><circle cx="100" cy="100" r="55" class="a-hole"/>
+      <path class="a-crack" d="M0 -99.5 L3.5 -91 L-2.5 -82 L3 -73 L-2 -64 L1 -56.5" transform="translate(100 100) rotate(-52)"/>
+    </svg>
+    <div class="fig"><img id="char" src="" alt=""></div>
+    <div class="river"><img src="../public/art/deco-river-h.webp" alt=""></div>
+  </div>
+  <div class="text">
+    <p class="kicker">Мій результат у тесті «Код міста»</p>
+    <div class="plate"><h1 id="title"></h1></div>
+    <div class="range"><b id="rangeN"></b><span id="rangeT"></span></div>
+    <span class="btn">Пройти тест <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span>
+  </div>
+</section>
 <script>
   const LV = {
-    tourist: { title: "Турист у своєму місті", range: "0–2 бали з 8" },
-    citizen: { title: "Допитливий містянин", range: "3–5 балів з 8" },
-    keeper: { title: "Хранитель коду міста", range: "6–8 балів з 8" },
+    tourist: { title: ["Турист", "у своєму місті"], n: "0–2", t: "бали з 8" },
+    citizen: { title: ["Допитливий", "містянин"], n: "3–5", t: "балів з 8" },
+    keeper: { title: ["Хранитель", "коду міста"], n: "6–8", t: "балів з 8" },
   };
   const slug = new URLSearchParams(location.search).get("l");
   const lv = LV[slug];
   if (lv) {
     document.body.classList.add("level");
-    document.getElementById("fig").classList.add(slug);
     document.getElementById("char").src = `../public/art/char-${slug}.webp`;
-    document.getElementById("title").textContent = lv.title.replace(/ у /g, " у ");
-    document.getElementById("range").textContent = lv.range;
+    const h = document.getElementById("title");
+    lv.title.forEach((line, k) => { if (k) h.appendChild(document.createElement("br")); h.appendChild(document.createTextNode(line)); });
+    document.getElementById("rangeN").textContent = lv.n;
+    document.getElementById("rangeT").textContent = lv.t;
   }
 </script>
 </body>
