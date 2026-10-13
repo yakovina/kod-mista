@@ -253,7 +253,7 @@ function Sources({ q }: { q: Question }) {
 /** Іконки ілюстраторки, що сідають на кут картки питання й картки відповіді.
  *  На одному екрані вони різні, сусідні питання не повторюються;
  *  з якої почати — випадково при кожному проходженні. */
-const ICONS = ["firebird", "sputnik", "atom", "astronaut", "arch"] as const;
+const ICONS = ["firebird", "sputnik", "atom", "astronaut"] as const;
 type Icon = (typeof ICONS)[number];
 let iconShift = -1;
 let lastQid = 0;

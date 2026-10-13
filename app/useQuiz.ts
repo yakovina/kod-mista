@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { type Level, type OptionKey, type Question, getLevel, questions } from "../data/quiz";
-import { sendStats, type AnswerStat } from "./stats";
+import { sendStats, trackStart, type AnswerStat } from "./stats";
 
 export type Screen = "intro" | "question" | "reveal" | "result";
 
@@ -60,6 +60,7 @@ export function useQuiz(): QuizApi {
   const score = history.filter(Boolean).length;
 
   const start = () => {
+    trackStart();
     answersRef.current = [];
     setHistory([]);
     setIdx(0);
