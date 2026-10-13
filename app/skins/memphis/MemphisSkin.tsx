@@ -345,15 +345,12 @@ function LevelScale({ current }: { current: Level }) {
 function ResultBody({ level, score, onRestart, history }: { level: Level; score?: number; onRestart?: () => void; history?: boolean[] }) {
   const shareUrl = resultShareUrl(level.slug);
   return (
-    <main className="memphis split result">
+    <main className="memphis centered result">
       <Decor variant="result" />
       {score !== undefined && <Confetti />}
-      <div className="splitInner">
-        <div className="left">
-          <CoverCard />
-        </div>
-        <div className="right">
-          <Logo />
+      <div className="centerCol">
+        <Logo />
+        <CoverCard />
           <div className="resultHead">
             <div className="scoreStar" aria-label={score !== undefined ? `${score} з ${questions.length}` : level.range}>
               <span className="scoreNum">
@@ -406,7 +403,6 @@ function ResultBody({ level, score, onRestart, history }: { level: Level; score?
               </a>
             )}
           </div>
-        </div>
       </div>
     </main>
   );

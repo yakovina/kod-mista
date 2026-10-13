@@ -979,3 +979,69 @@ body:has(.memphis) {
     margin-bottom: 56px;
   }
 }
+
+/* ——— результат: одна колонка по центру ——— */
+.memphis.centered .centerCol {
+  position: relative;
+  z-index: 1;
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 24px 20px 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.memphis.centered .logoChip {
+  align-self: center;
+}
+.memphis.centered .coverCard {
+  width: 100%;
+  margin-top: 20px;
+}
+.memphis.centered .resultHead {
+  margin-top: 30px;
+  justify-content: center;
+}
+.memphis.centered .resultHead .score {
+  text-align: left;
+}
+.memphis.centered .titleBlock {
+  align-self: center;
+}
+.memphis.centered .scale {
+  width: 100%;
+  text-align: left;
+}
+.memphis.centered .lead {
+  margin-left: auto;
+  margin-right: auto;
+}
+.memphis.centered .scorecard {
+  width: 100%;
+  text-align: left;
+}
+.memphis.centered .actions {
+  align-items: stretch;
+  width: min(420px, 100%);
+}
+.memphis.centered .shareLabel {
+  text-align: center;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .memphis.centered .centerCol > * {
+    animation: mRise 0.38s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .memphis.centered .centerCol > :nth-child(2) { animation-delay: 0.05s; }
+  .memphis.centered .centerCol > :nth-child(3) { animation-delay: 0.1s; }
+  .memphis.centered .centerCol > :nth-child(4) { animation-delay: 0.15s; }
+  .memphis.centered .centerCol > :nth-child(n + 5) { animation-delay: 0.2s; }
+}
+@media (min-width: 900px) {
+  .memphis.centered .centerCol {
+    padding-top: 48px;
+  }
+  .memphis.centered .shareGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
