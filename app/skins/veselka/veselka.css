@@ -2228,6 +2228,48 @@ body:has(.veselka.result) {
   to { transform: translate(-6px, calc(-98% + 4px)) rotate(4deg); }
 }
 
+/* ═══ Мозаїка — смуга на всю висоту картки питання, впритул до лівого краю,
+   без відступів. Текст і фото починаються одразу за смугою. ═══ */
+.veselka .qpane.withDeco { --mw: 46px; padding-left: calc(var(--mw) + 18px); }
+.veselka .qBand {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: var(--mw);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--sand);
+  border-right: var(--lw) solid var(--ink);
+  pointer-events: none;
+}
+/* ціла річка на всю ширину смуги; проміжки між зигзагами — колір її затирки */
+.veselka .qBand { background: #e2ddd0; }
+.veselka .qBand img {
+  display: block;
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: none;
+  height: auto;
+  margin: -2px 0 0;
+}
+.veselka .qBand img.flip { transform: scaleY(-1); }
+.veselka .qpane.withDeco .qtext { padding-left: 0; min-height: 0; }
+.veselka .qpane.withDeco .topic { left: calc(var(--mw) + 10px); }
+.veselka .qpane.withDeco .d-onCard { z-index: 3; }
+@media (min-width: 900px) {
+  .veselka .qpane.withDeco { --mw: 58px; padding-left: calc(var(--mw) + 30px); }
+  .veselka .qpane.withDeco .topic { left: calc(var(--mw) + 14px); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .veselka .qBand { animation: vBand 520ms 80ms var(--ease) both; }
+}
+@keyframes vBand {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 /* ——— 1x-екрани: контур рівно 1.5px ——— */
 @media (resolution < 1.5dppx) {
   .veselka { --lw: 1px; }

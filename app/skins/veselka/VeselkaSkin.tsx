@@ -398,13 +398,19 @@ function Sheet({ quiz }: { quiz: QuizApi }) {
 
         <section className={`pane qpane withDeco in${q.photo ? " hasPhoto" : ""}`} data-scroll-anchor="(max-width: 899px)">
           <Deco name={icons.question} cls={`d-onCard ic-${icons.question}`} />
+          {/* мозаїчна річка ілюстраторки — смуга на всю висоту картки; кожна друга копія
+              віддзеркалена, щоб кінці сходились і річка текла без розривів */}
+          <span className="qBand" aria-hidden>
+            {Array.from({ length: 6 }, (_, i) => (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img key={i} src={asset("/art/deco-river-v-hd.webp")} alt="" className={i % 2 ? "flip" : undefined} decoding="async" />
+            ))}
+          </span>
           <p className="topic">
             <span className="chip">{q.topic}</span>
           </p>
           {q.photo && <PhotoFig photo={q.photo} cls="inQuestion" />}
           <div className="qtext">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="qMosaic" src={asset("/art/deco-river-v.webp")} alt="" aria-hidden />
             {q.context && <p className="qlead">{q.context}</p>}
             <h2 className="prompt" ref={promptRef} tabIndex={-1}>
               {q.prompt}
@@ -571,7 +577,7 @@ export default function VeselkaSkin({ quiz }: { quiz: QuizApi }) {
   useKeys(quiz);
   // ще на старті: усі іконки ілюстраторки, мозаїка і фото перших питань
   useEffect(() => {
-    for (const n of [...ICONS, "river-v"]) preload(asset(`/art/deco-${n}.webp`));
+    for (const n of [...ICONS, "river-v-hd"]) preload(asset(`/art/deco-${n}.webp`));
     questions.slice(0, 3).forEach(preloadQuestion);
   }, []);
 
