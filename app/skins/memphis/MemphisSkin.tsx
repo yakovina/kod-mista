@@ -17,37 +17,10 @@ const Arrow = () => (
   </svg>
 );
 
-/** Мозаїчні елементи ілюстраторки, по кутах екрана; на кожному екрані свій набір. */
-const DECOR: Record<"intro" | "sheet" | "result", { src: string; cls: string }[]> = {
-  intro: [
-    { src: "/art/deco-sputnik.webp", cls: "d-sputnik" },
-    { src: "/art/deco-atom.webp", cls: "d-atom" },
-    { src: "/art/deco-arch.webp", cls: "d-arch" },
-    { src: "/art/deco-river-v.webp", cls: "d-river" },
-  ],
-  sheet: [
-    { src: "/art/deco-sputnik.webp", cls: "d-sputnik small" },
-    { src: "/art/deco-river-v.webp", cls: "d-river" },
-    { src: "/art/deco-firebird.webp", cls: "d-firebird" },
-    { src: "/art/deco-arch.webp", cls: "d-arch" },
-  ],
-  result: [
-    { src: "/art/deco-astronaut.webp", cls: "d-astro" },
-    { src: "/art/deco-atom.webp", cls: "d-atom top" },
-    { src: "/art/deco-sputnik.webp", cls: "d-sputnik low" },
-    { src: "/art/deco-arch.webp", cls: "d-arch" },
-  ],
-};
-
-function Decor({ variant }: { variant: "intro" | "sheet" | "result" }) {
-  return (
-    <div className={`decor ${variant}`} aria-hidden>
-      {DECOR[variant].map((d) => (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img key={d.cls} src={asset(d.src)} alt="" className={`d ${d.cls}`} />
-      ))}
-    </div>
-  );
+/** Вітражний елемент ілюстраторки, прив'язаний до блоку контенту (не до вікна). */
+function Deco({ name, cls }: { name: string; cls: string }) {
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img className={`deco ${cls}`} src={asset(`/art/deco-${name}.webp`)} alt="" aria-hidden />;
 }
 
 function Logo() {
@@ -152,14 +125,6 @@ function CountUp({ to }: { to: number }) {
   return <b>{n}</b>;
 }
 
-/** Зірка з галочкою — значок правильної відповіді. */
-const StarTick = () => (
-  <svg className="starTick" viewBox="0 0 60 60" aria-hidden>
-    <polygon points="30,3 37,22 57,22 41,34 47,54 30,42 13,54 19,34 3,22 23,22" />
-    <path d="M20 30 l 7 7 l 13 -15" />
-  </svg>
-);
-
 /** Перше речення пояснення — жирним як головна думка. */
 function Explanation({ text }: { text: string }) {
   const m = text.match(/^(.+?[.!?])\s+([\s\S]+)$/);
@@ -201,8 +166,8 @@ function Sheet({ quiz }: { quiz: QuizApi }) {
 
   return (
     <main className="memphis sheet" key={q.id}>
-      <Decor variant="sheet" />
       <div className="col">
+        <Deco name="river-v" cls="d-frame" />
         <header className="bar">
           <Logo />
           <span className="count">
@@ -228,7 +193,6 @@ function Sheet({ quiz }: { quiz: QuizApi }) {
                   {o.key}
                 </span>
                 <span className="t">{o.text}</span>
-                {state === "isRight" && <StarTick />}
               </>
             );
             return (
@@ -255,6 +219,7 @@ function Sheet({ quiz }: { quiz: QuizApi }) {
         {answered && (
           <section className={`acard ${ok ? "ok" : "miss"}`} ref={cardRef} tabIndex={-1} aria-live="polite">
             <span className="sticker">{ok ? "Так!" : "Ой, ні!"}</span>
+            {ok && <Deco name="firebird" cls="d-onCard" />}
             <div className="acardBody">
               <p className="akey">{ok ? `Ваша відповідь — ${q.correct}` : `Правильна відповідь — ${q.correct}`}</p>
               <Explanation text={q.explanation} />
@@ -346,70 +311,73 @@ function ResultBody({ level, score, onRestart, history }: { level: Level; score?
   const shareUrl = resultShareUrl(level.slug);
   return (
     <main className="memphis centered result">
-      <Decor variant="result" />
       {score !== undefined && <Confetti />}
       <div className="centerCol">
         <Logo />
-        {level.character ? (
-          <figure className="charCard">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={asset(level.character)} alt={`Ілюстрація: ${level.title}`} />
-          </figure>
-        ) : (
-          <CoverCard />
-        )}
-          <div className="resultHead">
-            <div className="scoreStar" aria-label={score !== undefined ? `${score} з ${questions.length}` : level.range}>
-              <span className="scoreNum">
-                {score !== undefined ? (
-                  <>
-                    <CountUp to={score} />
-                    <small>з {questions.length}</small>
-                  </>
-                ) : (
-                  <b className="rangeOnly">{level.range.split(" ")[0]}</b>
-                )}
-              </span>
-            </div>
-            <p className="score">{score !== undefined ? <>правильних<br />відповідей</> : <>результат<br />тесту</>}</p>
-          </div>
-          <h1 className="titleBlock mid">{level.title}</h1>
-          <LevelScale current={level} />
-          <p className="lead">{level.description}</p>
-          {history && history.length === questions.length && (
-            <section className="scorecard" aria-label="Ваші відповіді">
-              <h2>Ваші відповіді</h2>
-              <ol>
-                {questions.map((qq, i) => (
-                  <li key={qq.id} className={history[i] ? "ok" : "miss"}>
-                    <span className="n">{i + 1}</span>
-                    <span className="tp">{qq.topic}</span>
-                    <span className="mk" aria-label={history[i] ? "правильно" : "помилка"}>
-                      {history[i] ? "✓" : "✗"}
-                    </span>
-                  </li>
-                ))}
-              </ol>
-            </section>
+        <div className="hero">
+          {level.character ? (
+            <figure className="charCard">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={asset(level.character)} alt={`Ілюстрація: ${level.title}`} />
+            </figure>
+          ) : (
+            <CoverCard />
           )}
-          <div className="actions">
-            <Share url={shareUrl} text={level.shareText} label="Поділитися результатом" />
-            {onRestart ? (
-              <button
-                className="mbtn plain"
-                onClick={() => {
-                  buzz(8);
-                  onRestart();
-                }}
-              >
-                <span>Пройти ще раз</span>
-              </button>
-            ) : (
-              <a className="mbtn plain" href={`${SITE_URL}/`}>
-                <span>Пройти тест</span>
-              </a>
-            )}
+          <Deco name="river-h" cls="d-ground" />
+        </div>
+        <div className="resultHead">
+          <div className="scoreStar" aria-label={score !== undefined ? `${score} з ${questions.length}` : level.range}>
+            <span className="scoreNum">
+              {score !== undefined ? (
+                <>
+                  <CountUp to={score} />
+                  <small>з {questions.length}</small>
+                </>
+              ) : (
+                <b className="rangeOnly">{level.range.split(" ")[0]}</b>
+              )}
+            </span>
           </div>
+          <p className="score">{score !== undefined ? <>правильних<br />відповідей</> : <>результат<br />тесту</>}</p>
+        </div>
+        <h1 className="titleBlock mid">{level.title}</h1>
+        <LevelScale current={level} />
+        <p className="lead">{level.description}</p>
+        <div className="actions">
+          <Share url={shareUrl} text={level.shareText} label="Поділитися результатом" />
+          {onRestart ? (
+            <button
+              className="mbtn plain"
+              onClick={() => {
+                buzz(8);
+                onRestart();
+              }}
+            >
+              <span>Пройти ще раз</span>
+            </button>
+          ) : (
+            <a className="mbtn plain" href={`${SITE_URL}/`}>
+              <span>Пройти тест</span>
+            </a>
+          )}
+          <Deco name="arch" cls="d-gate" />
+        </div>
+        {history && history.length === questions.length && (
+          <section className="scorecard" aria-label="Ваші відповіді">
+            <h2>Ваші відповіді</h2>
+            <ol>
+              {questions.map((qq, i) => (
+                <li key={qq.id} className={history[i] ? "ok" : "miss"}>
+                  <span className="n">{i + 1}</span>
+                  <span className="tp">{qq.topic}</span>
+                  <span className="mk" aria-label={history[i] ? "правильно" : "помилка"}>
+                    {history[i] ? "✓" : "✗"}
+                  </span>
+                </li>
+              ))}
+            </ol>
+          </section>
+        )}
       </div>
     </main>
   );
@@ -426,10 +394,10 @@ export default function MemphisSkin({ quiz }: { quiz: QuizApi }) {
   if (screen === "intro") {
     return (
       <main className="memphis split intro">
-        <Decor variant="intro" />
         <div className="splitInner">
           <div className="left">
             <CoverCard />
+            <Deco name="firebird" cls="d-perch" />
           </div>
           <div className="right">
             <Logo />
@@ -451,6 +419,7 @@ export default function MemphisSkin({ quiz }: { quiz: QuizApi }) {
             </div>
           </div>
         </div>
+        <Deco name="river-h" cls="d-base" />
       </main>
     );
   }
