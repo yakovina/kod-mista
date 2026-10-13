@@ -1751,6 +1751,109 @@ body:has(.veselka.result) {
   .veselka.intro .heroText > :nth-child(n + 4) { animation-delay: 120ms; }
 }
 
+/* ═══ Вступна фраза — окреме «повідомлення» над питанням (без курсиву);
+   варіанти — картка з квадратною літерою всередині, колір з'являється
+   на наведенні й у стані відповіді, позначка ✓/✕ праворуч. ═══ */
+.veselka .contextNote {
+  position: relative;
+  margin: 28px 0 0;
+  max-width: 92%;
+  padding: 12px 16px 13px;
+  background: var(--sky);
+  border: var(--lw) solid var(--ink);
+  border-radius: var(--r);
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 23px;
+  color: var(--ink);
+  text-wrap: pretty;
+}
+/* хвостик повідомлення вниз, до питання */
+.veselka .contextNote::before,
+.veselka .contextNote::after {
+  content: "";
+  position: absolute;
+  left: 22px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-color: transparent;
+}
+.veselka .contextNote::before { bottom: -10px; border-width: 10px 10px 0 0; border-top-color: var(--ink); }
+.veselka .contextNote::after { bottom: -7px; left: calc(22px + var(--lw)); border-width: 7.5px 7.5px 0 0; border-top-color: var(--sky); }
+.veselka .qpane.afterNote { margin-top: 30px; }
+
+/* варіанти */
+.veselka .opts li:nth-child(1) { --chip: var(--mustard); }
+.veselka .opts li:nth-child(2) { --chip: var(--sky); }
+.veselka .opts li:nth-child(3) { --chip: var(--peach); }
+.veselka .opts li:nth-child(4) { --chip: var(--teal-300); }
+.veselka .opts li:nth-child(n) .opt {
+  grid-template-columns: 30px minmax(0, 1fr) auto;
+  column-gap: 14px;
+  align-items: center;
+  min-height: 56px;
+  padding: 12px 14px 12px 13px;
+  overflow: hidden;
+  box-shadow: none;
+}
+.veselka .opts li:nth-child(n) .opt .k {
+  width: 30px;
+  height: 30px;
+  border: var(--lw) solid var(--ink);
+  border-radius: var(--r);
+  background: transparent;
+  font-family: "Lora", serif;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 15px;
+  color: var(--ink);
+  transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+.veselka .opts li:nth-child(n) .opt .t { padding: 0; }
+.veselka .opt .mark {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  margin-left: 4px;
+}
+.veselka .opt .mark svg { width: 14px; height: 14px; }
+@media (hover: hover) and (pointer: fine) {
+  .veselka .opts li:nth-child(n) .opt:not(:disabled):hover { transform: translate(-1px, -1px); box-shadow: 2px 2px 0 var(--teal-600); background: #fffcf3; }
+  .veselka .opts li:nth-child(n) .opt:not(:disabled):hover .k { background: var(--chip); }
+}
+.veselka .opts li:nth-child(n) .opt:not(:disabled):active { transform: translate(1px, 1px); box-shadow: none; }
+.veselka .opts li:nth-child(n) .opt:focus-visible .k { background: var(--chip); }
+
+/* стани після відповіді */
+.veselka .opts li:nth-child(n) .opt.isRight { color: var(--card); box-shadow: 2px 2px 0 var(--mustard-deep); }
+.veselka .opts li:nth-child(n) .opt.isRight .k { background: var(--mustard); border-color: var(--ink); color: var(--ink); }
+.veselka .opt.isRight .mark { color: var(--mustard); }
+.veselka .opts li:nth-child(n) .opt.isWrong { border-color: var(--brick); background: var(--card); box-shadow: none; }
+.veselka .opts li:nth-child(n) .opt.isWrong .k { background: var(--brick); border-color: var(--brick); color: var(--card); }
+.veselka .opts li:nth-child(n) .opt.isWrong .t { color: var(--ink-2); }
+.veselka .opt.isWrong .mark { color: var(--brick); }
+.veselka .opts li:nth-child(n) .opt.isRest { background: transparent; border-color: var(--seam); color: var(--ink-2); }
+.veselka .opts li:nth-child(n) .opt.isRest .k { background: transparent; border-color: var(--seam); color: var(--ink-2); }
+
+@media (min-width: 900px) {
+  .veselka .contextNote { margin-top: 36px; padding: 13px 18px 14px; font-size: 15.5px; line-height: 24px; }
+  .veselka .qpane.afterNote { margin-top: 34px; }
+  .veselka .opts li:nth-child(n) .opt {
+    grid-template-columns: 32px minmax(0, 1fr) auto;
+    column-gap: 16px;
+    min-height: 60px;
+    padding: 13px 18px 13px 15px;
+  }
+  .veselka .opts li:nth-child(n) .opt .k { width: 32px; height: 32px; font-size: 16px; line-height: 16px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .veselka .contextNote.in { animation: vPane 380ms var(--ease) both; }
+  .veselka .qpane.afterNote.in { animation-delay: 60ms; }
+}
+
 /* ——— 1x-екрани: контур рівно 1.5px ——— */
 @media (resolution < 1.5dppx) {
   .veselka { --lw: 1px; }

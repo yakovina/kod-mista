@@ -33,13 +33,6 @@ const UI = {
   home: "На початок",
 };
 
-/** Тріщина на оправі хибної відповіді — як на арці з обкладинки. */
-const Crack = () => (
-  <svg className="crack" viewBox="0 0 24 60" aria-hidden>
-    <path d="M12 0 L9 14 L15 22 L8 36 L14 46 L10 60" />
-  </svg>
-);
-
 const Arrow = () => (
   <svg className="arrow" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
     <path d="M4 12h15M13 6l6 6-6 6" />
@@ -315,11 +308,15 @@ function Sheet({ quiz }: { quiz: QuizApi }) {
         </header>
         <Windows idx={idx} total={total} answered={answered} />
 
-        <section className="pane qpane in">
+        {q.context && (
+          <p className="contextNote in">
+            <span>{q.context}</span>
+          </p>
+        )}
+        <section className={`pane qpane in${q.context ? " afterNote" : ""}`}>
           <p className="topic">
             <span className="chip">{q.topic}</span>
           </p>
-          {q.context && <p className="context">{q.context}</p>}
           <h2 className="prompt" ref={promptRef} tabIndex={-1}>
             {q.prompt}
           </h2>
@@ -339,13 +336,19 @@ function Sheet({ quiz }: { quiz: QuizApi }) {
                   }}
                   aria-keyshortcuts={String(i + 1)}
                 >
-                  <span className="k">
-                    {o.key}
-                    {state === " isRight" ? <Check /> : state === " isWrong" ? <Cross /> : null}
-                  </span>
-                  {state === " isWrong" && <Crack />}
+                  <span className="k">{o.key}</span>
                   {state === " isRight" && <i className="gleam" aria-hidden />}
                   <span className="t">{o.text}</span>
+                  {state === " isRight" && (
+                    <span className="mark ok" aria-label="правильна відповідь">
+                      <Check />
+                    </span>
+                  )}
+                  {state === " isWrong" && (
+                    <span className="mark miss" aria-label="ваша відповідь, хибна">
+                      <Cross />
+                    </span>
+                  )}
                 </button>
               </li>
             );
