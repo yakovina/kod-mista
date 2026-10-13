@@ -46,8 +46,9 @@ var LEVELS = [
 ];
 
 var TITLE = 'Код міста — статистика';
-// Таблиця статистики (заповнюється після першого запуску setup, щоб повторний запуск не наплодив копій).
-var STATS_SS_ID = '';
+// Таблиця статистики (створена setup 13.10.2026). Порожньо — лише для першого запуску setup.
+// https://docs.google.com/spreadsheets/d/1z0D91bmRZWIe_-fM4-uwVLYakP7HARa7CwDk6-Z8k6Y/edit
+var STATS_SS_ID = '1z0D91bmRZWIe_-fM4-uwVLYakP7HARa7CwDk6-Z8k6Y';
 
 function setup() {
   if (PropertiesService.getScriptProperties().getProperty('SS_ID') || STATS_SS_ID) {
@@ -102,7 +103,8 @@ function setupStats_(ss) {
   FIELDS.forEach(function (f, i) { col[f] = String.fromCharCode(66 + i); });
   var R = function (f) { return src + col[f] + '2:' + col[f]; };
   var HOST = '$B$3'; // фільтр за сайтом — клітинка B3 на аркуші stats
-  var H = R('host') + ',' + HOST;
+  // + записи з host=test (перевірки підключення) у зведення не потрапляють
+  var H = R('host') + ',' + HOST + ',' + R('host') + ',"<>test"';
   var cnt = function (f, v) { return 'COUNTIFS(' + R(f) + ',"' + v + '",' + H + ')'; };
   var cnt2 = function (f, v, f2, v2) { return 'COUNTIFS(' + R(f) + ',"' + v + '",' + R(f2) + ',"' + v2 + '",' + H + ')'; };
   var pct = function (a, b) { return '=IFERROR(' + a + '/' + b + ',"")'; };
