@@ -50,15 +50,16 @@ body {
 
 /* рівень */
 .lvl { display: none; }
+body.tourist { --pw: 470px; } body.citizen { --pw: 400px; } body.keeper { --pw: 330px; }
 body.level .start { display: none; }
 body.level .lvl { display: block; }
-.poster { position: absolute; left: 56px; top: 116px; width: 520px; height: 470px; background: var(--mustard); border: var(--lw) solid var(--ink); border-radius: var(--r); box-shadow: var(--sh) var(--sh) 0 var(--teal-600); overflow: hidden; }
-.poster .arch { position: absolute; left: 50%; bottom: 52px; width: 80%; transform: translateX(-50%); }
-.poster .fig { position: absolute; left: 0; right: 0; bottom: 52px; height: 360px; display: flex; justify-content: center; align-items: flex-end; }
+.poster { position: absolute; left: 56px; top: 116px; width: var(--pw, 420px); height: 470px; background: var(--mustard); border: var(--lw) solid var(--ink); border-radius: var(--r); box-shadow: var(--sh) var(--sh) 0 var(--teal-600); overflow: hidden; }
+.poster .arch { position: absolute; left: 50%; bottom: 52px; width: 96%; transform: translateX(-50%); }
+.poster .fig { position: absolute; left: 0; right: 0; bottom: 52px; height: 380px; display: flex; justify-content: center; align-items: flex-end; }
 .poster .fig img { display: block; height: 100%; width: auto; max-width: 92%; object-fit: contain; object-position: bottom; }
 .poster .river { position: absolute; left: 0; right: 0; bottom: 0; height: 54px; border-top: var(--lw) solid var(--ink); background: var(--card); }
 .poster .river img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.text { position: absolute; left: 632px; right: 56px; top: 88px; bottom: 0; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; }
+.text { position: absolute; left: calc(56px + var(--pw, 420px) + 56px); right: 56px; top: 88px; bottom: 0; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; }
 .text .kicker { margin: 0; font-family: "Lora", serif; font-style: italic; font-size: 26px; color: var(--ink-2); }
 .text .plate { margin-top: 18px; padding: 14px 26px 18px; background: var(--card); box-shadow: var(--sh) var(--sh) 0 var(--terracotta); }
 .text h1 { margin: 0; font-weight: 700; font-size: 56px; line-height: 1.08; letter-spacing: -0.02em; white-space: nowrap; }
@@ -130,7 +131,7 @@ body.level .lvl { display: block; }
   const slug = new URLSearchParams(location.search).get("l");
   const lv = LV[slug];
   if (lv) {
-    document.body.classList.add("level");
+    document.body.classList.add("level", slug);
     document.getElementById("char").src = `../public/art/char-${slug}.webp`;
     const h = document.getElementById("title");
     lv.title.forEach((line, k) => { if (k) h.appendChild(document.createElement("br")); h.appendChild(document.createTextNode(line)); });

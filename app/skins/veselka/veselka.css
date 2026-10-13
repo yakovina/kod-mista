@@ -1919,6 +1919,83 @@ body:has(.veselka.result) {
   .veselka .here { font-size: 12.5px; padding: 3px 12px 4px; }
 }
 
+/* ═══ Результат: персонаж вертикальний — постер збоку, поруч бал і звання,
+   під ними шкала рівнів. Ширина постера — під пропорції кожного персонажа. ═══ */
+.veselka .resHead {
+  --pw: 136px;
+  --ph: 178px;
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: var(--pw) minmax(0, 1fr);
+  grid-template-areas: "poster info" "scale scale";
+  column-gap: 16px;
+  align-items: center;
+  text-align: left;
+}
+.veselka .resHead.lvl-tourist { --pw: 150px; }
+.veselka .resHead.lvl-keeper { --pw: 112px; }
+.veselka .resHead .poster {
+  grid-area: poster;
+  margin: 0;
+  padding: 14px 0 0;
+  display: flex;
+  flex-direction: column;
+}
+.veselka .resHead .poster .figure {
+  height: var(--ph);
+  padding: 0 8px;
+  margin: 0;
+}
+.veselka .resHead .poster .figure img {
+  height: 100%;
+  max-height: none;
+  width: 100%;
+  object-fit: contain;
+  object-position: bottom center;
+}
+.veselka .resHead .poster .bed.riverGround img { height: 22px; object-fit: cover; }
+.veselka .resHead .poster .arch { width: 100%; bottom: 22px; }
+.veselka .resHead .resInfo {
+  grid-area: info;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  min-width: 0;
+}
+.veselka .resHead .resInfo .score { margin: 0; }
+.veselka.result .resHead .titlePane { margin: 0; transform: none; padding: 8px 14px 11px; }
+.veselka.result .resHead .title { font-size: 22px; line-height: 27px; }
+.veselka .resHead .scaleWrap { grid-area: scale; margin-top: 26px; }
+@media (min-width: 900px) {
+  .veselka .resHead {
+    --pw: 250px;
+    --ph: 316px;
+    margin-top: 28px;
+    column-gap: 28px;
+    grid-template-rows: 1fr auto;
+    grid-template-areas: "poster info" "poster scale";
+    align-items: end;
+  }
+  .veselka .resHead.lvl-tourist { --pw: 290px; --ph: 300px; }
+  .veselka .resHead.lvl-keeper { --pw: 200px; }
+  .veselka .resHead .poster { padding-top: 18px; }
+  .veselka .resHead .poster .figure { padding: 0 12px; }
+  .veselka .resHead .poster .bed.riverGround img { height: 30px; }
+  .veselka .resHead .poster .arch { bottom: 30px; }
+  .veselka .resHead .resInfo { gap: 16px; align-self: end; }
+  .veselka.result .resHead .titlePane { padding: 10px 18px 13px; }
+  .veselka.result .resHead .title { font-size: 30px; line-height: 36px; }
+  .veselka .resHead .scaleWrap { margin-top: 30px; align-self: end; }
+}
+@media (min-width: 900px) and (max-height: 820px) {
+  .veselka .resHead { --ph: 270px; }
+  .veselka .resHead.lvl-tourist { --ph: 260px; }
+}
+/* на сторінці поширення шкали немає — інфо стоїть по центру висоти постера */
+.veselka .resHead.noScore { grid-template-areas: "poster info"; grid-template-rows: auto; align-items: center; }
+.veselka .resHead.noScore .resInfo { align-self: center; }
+
 /* ——— 1x-екрани: контур рівно 1.5px ——— */
 @media (resolution < 1.5dppx) {
   .veselka { --lw: 1px; }

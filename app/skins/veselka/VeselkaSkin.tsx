@@ -462,23 +462,34 @@ function ResultBody({ level, score, onRestart }: { level: Level; score?: number;
           <Wordmark />
           <SiteLink />
         </header>
-        <section className={`poster pane lvl-${level.slug}`}>
-          <Arch />
-          <Figure level={level} />
-          <Bed src="/art/deco-river-h.webp" alt="" cls="riverGround flow" />
-          {score !== undefined && (
-            <div className="score" aria-label={`${score} з ${questions.length} правильних`}>
-              <b>
-                <CountUp to={score} />
-              </b>
-              <small>з {questions.length}</small>
+        <div className={`resHead lvl-${level.slug}${score === undefined ? " noScore" : ""}`}>
+          <section className="poster pane">
+            <Arch />
+            <Figure level={level} />
+            <Bed src="/art/deco-river-h.webp" alt="" cls="riverGround flow" />
+          </section>
+          <div className="resInfo">
+            {score !== undefined ? (
+              <div className="score" aria-label={`${score} з ${questions.length} правильних`}>
+                <b>
+                  <CountUp to={score} />
+                </b>
+                <small>з {questions.length}</small>
+              </div>
+            ) : (
+              <div className="score" aria-label={`${level.range} з ${questions.length}`}>
+                <b>
+                  {level.min}–{level.max}
+                </b>
+                <small>з {questions.length}</small>
+              </div>
+            )}
+            <div className="titlePane pane mid">
+              <h1 className="title">{level.title.replace(/ у /g, " у\u00a0")}</h1>
             </div>
-          )}
-        </section>
-        <div className="titlePane pane mid">
-          <h1 className="title">{level.title}</h1>
+          </div>
+          {score !== undefined && <LevelScale current={level} />}
         </div>
-        {score !== undefined && <LevelScale current={level} />}
         <section className="pane resCard">
           <p className="lead">{level.description}</p>
           {score !== undefined && <Share url={shareUrl} text={level.shareText} label={UI.shareResult} />}
