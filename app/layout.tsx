@@ -5,6 +5,7 @@ import "./skins/memphis/memphis.css";
 import "./skins/vitrazh/vitrazh.css";
 import "./skins/veselka/veselka.css";
 import { SITE_URL, TEST_SHARE_TITLE } from "./share";
+import { asset } from "./bp";
 
 const TITLE = "Код міста · Тест Хмарочоса";
 const DESC =
@@ -14,6 +15,14 @@ export const metadata: Metadata = {
   title: TITLE,
   description: DESC,
   applicationName: "Код міста",
+  icons: {
+    icon: [
+      { url: asset("/favicon.ico"), sizes: "48x48" },
+      { url: asset("/icon.svg"), type: "image/svg+xml" },
+      { url: asset("/icon-192.png"), sizes: "192x192", type: "image/png" },
+    ],
+    apple: [{ url: asset("/apple-icon.png"), sizes: "180x180" }],
+  },
   appleWebApp: { title: "Код міста", capable: true, statusBarStyle: "default" },
   openGraph: {
     title: TEST_SHARE_TITLE,
