@@ -10,7 +10,9 @@ REMOTE=$(git remote get-url origin)
 SITE="https://yakovina.github.io/kod-mista/"
 npm run build
 touch out/.nojekyll
-CSS=$(grep -o '_next/static/chunks/[a-z0-9]*\.css' out/index.html | head -1)
+# мітка збірки: buildId (папка в out/_next/static) міняється щоразу, навіть коли стилі ті самі
+CSS=$(ls out/_next/static | grep -v '^chunks$' | head -1)
+grep -q "$CSS" out/index.html || CSS=$(grep -o '_next/static/chunks/[a-z0-9]*\.css' out/index.html | head -1)
 
 TMP=$(mktemp -d)
 cp -R out/. "$TMP"
