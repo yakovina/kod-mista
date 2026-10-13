@@ -38,6 +38,8 @@ export interface Level {
   range: string;
   description: string;
   shareText: string;
+  /** Ілюстрація-персонаж рівня (прозоре тло). */
+  character?: string;
 }
 
 export const TOTAL = 8;
@@ -243,6 +245,7 @@ export const questions: Question[] = [
 export const levels: Level[] = [
   {
     slug: "tourist",
+    character: "/art/char-tourist.webp",
     title: "Турист у своєму місті",
     min: 0,
     max: 2,
@@ -253,6 +256,7 @@ export const levels: Level[] = [
   },
   {
     slug: "citizen",
+    character: "/art/char-citizen.webp",
     title: "Допитливий містянин",
     min: 3,
     max: 5,
@@ -263,6 +267,7 @@ export const levels: Level[] = [
   },
   {
     slug: "keeper",
+    character: "/art/char-keeper.webp",
     title: "Хранитель коду міста",
     min: 6,
     max: 8,

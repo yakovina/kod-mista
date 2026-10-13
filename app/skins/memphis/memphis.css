@@ -28,7 +28,7 @@ body:has(.memphis) {
   overflow-x: hidden;
 }
 
-/* ——— декор із мотивів обкладинки ——— */
+/* ——— декор: мозаїчні елементи ілюстраторки ——— */
 .memphis .decor {
   position: fixed;
   inset: 0;
@@ -38,31 +38,53 @@ body:has(.memphis) {
 }
 .memphis .decor .d {
   position: absolute;
-  overflow: visible;
+  height: auto;
+  filter: drop-shadow(3px 3px 0 rgba(46, 46, 43, 0.18));
 }
-.memphis .decor .d * {
-  stroke: var(--ink);
-  stroke-width: 2.4;
-}
-.memphis .d-sputnik { top: 28px; right: 28px; width: 150px; }
-.memphis .d-star1 { top: 70px; left: 4%; width: 64px; }
-.memphis .d-star2 { top: 58%; right: 5%; width: 40px; }
-.memphis .d-arch { right: -6px; bottom: -6px; width: 170px; }
-.memphis .d-windows { left: 3%; bottom: -60px; width: 120px; }
-.memphis .f-teal { fill: var(--teal); }
-.memphis .f-mid { fill: var(--mid); }
-.memphis .f-light { fill: var(--light); }
-.memphis .f-stone { fill: var(--stone); }
-.memphis .f-brick { fill: var(--brick); }
-.memphis .f-ink { fill: var(--ink); }
+.memphis .d-sputnik { top: 22px; right: 22px; width: 170px; }
+.memphis .d-sputnik.small { width: 120px; }
+.memphis .d-sputnik.low { top: auto; bottom: 34%; right: 18px; width: 120px; }
+.memphis .d-atom { left: 3%; bottom: 40px; width: 120px; }
+.memphis .d-atom.top { top: 30px; bottom: auto; left: 3%; width: 110px; }
+.memphis .d-arch { right: -30px; bottom: -40px; width: 240px; }
+.memphis .d-river { left: 2.5%; top: 50%; transform: translateY(-50%); width: 46px; }
+.memphis .d-firebird { left: 3%; bottom: 36px; width: 150px; }
+.memphis .d-astro { top: 36%; left: 2%; width: 170px; }
 @media (max-width: 899px) {
-  .memphis .d-windows,
-  .memphis .d-sputnik,
-  .memphis .d-star1 {
+  .memphis .d-river,
+  .memphis .d-astro,
+  .memphis .d-atom,
+  .memphis .d-firebird,
+  .memphis .decor.sheet .d-sputnik,
+  .memphis .decor.result .d-sputnik {
     display: none;
   }
-  .memphis .d-arch { width: 96px; opacity: 0.9; }
-  .memphis .d-star2 { display: none; }
+  .memphis .d-sputnik { width: 92px; top: 10px; right: 8px; }
+  .memphis .d-arch { width: 130px; right: -24px; bottom: -26px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .memphis .decor .d-atom { animation: mSpin 60s linear infinite; }
+}
+@keyframes mSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* персонаж результату */
+.memphis .charCard {
+  margin: 18px 0 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.memphis .charCard img {
+  max-width: 100%;
+  max-height: 340px;
+  width: auto;
+  height: auto;
+  filter: drop-shadow(5px 5px 0 rgba(46, 46, 43, 0.15));
+}
+@media (min-width: 900px) {
+  .memphis .charCard img { max-height: 400px; }
 }
 
 /* ——— спільні елементи ——— */
@@ -566,11 +588,8 @@ body:has(.memphis) {
   .memphis .d-sputnik {
     animation: mFloat 7s ease-in-out infinite alternate;
   }
-  .memphis .d-star1 {
-    animation: mTwinkle 5s ease-in-out infinite;
-  }
-  .memphis .d-star2 {
-    animation: mTwinkle 6s 1.5s ease-in-out infinite;
+  .memphis .d-firebird {
+    animation: mTwinkle 7s ease-in-out infinite;
   }
 }
 @keyframes mRise {
@@ -598,8 +617,8 @@ body:has(.memphis) {
   to { transform: translate(-10px, 8px) rotate(4deg); }
 }
 @keyframes mTwinkle {
-  0%, 100% { transform: rotate(0deg) scale(1); }
-  50% { transform: rotate(14deg) scale(0.9); }
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(5deg); }
 }
 
 /* ——— десктоп ——— */

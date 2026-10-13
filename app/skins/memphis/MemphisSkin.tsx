@@ -17,35 +17,35 @@ const Arrow = () => (
   </svg>
 );
 
-const STAR = "30,3 37,22 57,22 41,34 47,54 30,42 13,54 19,34 3,22 23,22";
+/** Мозаїчні елементи ілюстраторки, по кутах екрана; на кожному екрані свій набір. */
+const DECOR: Record<"intro" | "sheet" | "result", { src: string; cls: string }[]> = {
+  intro: [
+    { src: "/art/deco-sputnik.webp", cls: "d-sputnik" },
+    { src: "/art/deco-atom.webp", cls: "d-atom" },
+    { src: "/art/deco-arch.webp", cls: "d-arch" },
+    { src: "/art/deco-river-v.webp", cls: "d-river" },
+  ],
+  sheet: [
+    { src: "/art/deco-sputnik.webp", cls: "d-sputnik small" },
+    { src: "/art/deco-river-v.webp", cls: "d-river" },
+    { src: "/art/deco-firebird.webp", cls: "d-firebird" },
+    { src: "/art/deco-arch.webp", cls: "d-arch" },
+  ],
+  result: [
+    { src: "/art/deco-astronaut.webp", cls: "d-astro" },
+    { src: "/art/deco-atom.webp", cls: "d-atom top" },
+    { src: "/art/deco-sputnik.webp", cls: "d-sputnik low" },
+    { src: "/art/deco-arch.webp", cls: "d-arch" },
+  ],
+};
 
-/** Фігури з обкладинки, прив'язані до кутів екрана. */
 function Decor({ variant }: { variant: "intro" | "sheet" | "result" }) {
   return (
     <div className={`decor ${variant}`} aria-hidden>
-      <svg className="d d-sputnik" viewBox="0 0 160 120">
-        <line x1="96" y1="58" x2="10" y2="12" />
-        <line x1="96" y1="58" x2="22" y2="104" />
-        <circle cx="120" cy="52" r="32" className="f-teal" />
-        <circle cx="110" cy="40" r="8" className="f-light" />
-      </svg>
-      <svg className="d d-star1" viewBox="0 0 60 60">
-        <polygon points={STAR} className="f-brick" />
-      </svg>
-      <svg className="d d-star2" viewBox="0 0 60 60">
-        <polygon points={STAR} className="f-ink" />
-      </svg>
-      <svg className="d d-arch" viewBox="0 0 200 200">
-        <path className="f-teal" d="M200 0 A 200 200 0 0 0 0 200 L 28 200 A 172 172 0 0 1 200 28 Z" />
-        <path className="f-mid" d="M200 28 A 172 172 0 0 0 28 200 L 52 200 A 148 148 0 0 1 200 52 Z" />
-        <path className="f-light" d="M200 52 A 148 148 0 0 0 52 200 L 74 200 A 126 126 0 0 1 200 74 Z" />
-      </svg>
-      <svg className="d d-windows" viewBox="0 0 150 200">
-        <rect x="2" y="2" width="146" height="220" className="f-stone" />
-        {[0, 1, 2, 3].map((r) =>
-          [0, 1, 2].map((c) => <rect key={`${r}${c}`} x={18 + c * 44} y={20 + r * 44} width="26" height="30" className="f-teal" />),
-        )}
-      </svg>
+      {DECOR[variant].map((d) => (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img key={d.cls} src={asset(d.src)} alt="" className={`d ${d.cls}`} />
+      ))}
     </div>
   );
 }
@@ -350,7 +350,14 @@ function ResultBody({ level, score, onRestart, history }: { level: Level; score?
       {score !== undefined && <Confetti />}
       <div className="centerCol">
         <Logo />
-        <CoverCard />
+        {level.character ? (
+          <figure className="charCard">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={asset(level.character)} alt={`Ілюстрація: ${level.title}`} />
+          </figure>
+        ) : (
+          <CoverCard />
+        )}
           <div className="resultHead">
             <div className="scoreStar" aria-label={score !== undefined ? `${score} з ${questions.length}` : level.range}>
               <span className="scoreNum">
