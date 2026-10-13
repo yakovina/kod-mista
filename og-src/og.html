@@ -15,7 +15,7 @@
   --wall: #f1e8d3; --card: #fbf7ec; --ink: #2b2a27; --ink-2: #4a4c47; --seam: #cfc6b0;
   --teal-900: #0e4758; --teal-600: #226a7a; --teal-500: #4a8c95; --teal-300: #72aab5; --sky: #c6dde1;
   --mustard: #f2d98f; --mustard-deep: #e9c150; --terracotta: #d36d47;
-  --lw: 2px; --r: 6px; --sh: 5px;
+  --lw: 2px; --r: 0px; --sh: 5px;
 }
 * { box-sizing: border-box; }
 body {
@@ -79,6 +79,13 @@ body.level .lvl { display: block; }
 .scale div.on small { font-weight: 500; color: var(--sky); }
 .here { position: absolute; top: -42px; transform: translateX(-50%); padding: 4px 14px 6px; background: var(--mustard); border: var(--lw) solid var(--ink); border-radius: var(--r); box-shadow: 3px 3px 0 var(--teal-600); font-weight: 700; font-size: 18px; line-height: 22px; white-space: nowrap; }
 .here::after { content: ""; position: absolute; left: 50%; bottom: -7px; width: 11px; height: 11px; margin-left: -6px; background: var(--mustard); border-right: var(--lw) solid var(--ink); border-bottom: var(--lw) solid var(--ink); transform: rotate(45deg); }
+
+/* рівень: одна картинка персонажа в правому куті, стоїть на нижньому краї */
+body.level { --fh: 520px; }
+body.tourist { --fr: 1.029; --fh: 470px; } body.citizen { --fr: 0.711; } body.keeper { --fr: 0.373; }
+.solo { position: absolute; right: 56px; bottom: 0; height: var(--fh); }
+.solo img { display: block; height: 100%; width: auto; }
+body.level .text { left: 56px; right: calc(56px + var(--fh) * var(--fr) + 48px); max-width: 640px; }
 </style>
 </head>
 <body>
@@ -99,17 +106,7 @@ body.level .lvl { display: block; }
 </section>
 
 <section class="lvl">
-  <div class="poster">
-    <svg class="arch" viewBox="0 0 200 100">
-      <circle cx="100" cy="100" r="100" class="a-ink"/><circle cx="100" cy="100" r="98" class="a-900"/>
-      <circle cx="100" cy="100" r="90" class="a-600"/><circle cx="100" cy="100" r="81" class="a-500"/>
-      <circle cx="100" cy="100" r="72" class="a-300"/><circle cx="100" cy="100" r="63" class="a-card"/>
-      <circle cx="100" cy="100" r="56.5" class="a-ink"/><circle cx="100" cy="100" r="55" class="a-hole"/>
-      <path class="a-crack" d="M0 -99.5 L3.5 -91 L-2.5 -82 L3 -73 L-2 -64 L1 -56.5" transform="translate(100 100) rotate(-52)"/>
-    </svg>
-    <div class="fig"><img id="char" src="" alt=""></div>
-    <div class="river"><img src="../public/art/deco-river-h.webp" alt=""></div>
-  </div>
+  <div class="solo"><img id="char" src="" alt=""></div>
   <div class="text">
     <p class="kicker">Мій результат у тесті «Код міста»</p>
     <div class="plate"><h1 id="title"></h1></div>

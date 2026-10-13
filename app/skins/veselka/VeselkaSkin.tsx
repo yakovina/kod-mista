@@ -419,28 +419,6 @@ function LevelScale({ current }: { current: Level }) {
 }
 
 
-/** Смугаста арка з тріщиною — цитата обкладинки, тло для персонажа результату. */
-function Arch() {
-  const rings: [number, string][] = [
-    [100, "a-ink"],
-    [98, "a-900"],
-    [90, "a-600"],
-    [81, "a-500"],
-    [72, "a-300"],
-    [63, "a-card"],
-    [56.5, "a-ink"],
-    [55, "a-hole"],
-  ];
-  return (
-    <svg className="arch" viewBox="0 0 200 100" preserveAspectRatio="xMidYMax meet" aria-hidden>
-      {rings.map(([r, c]) => (
-        <circle key={r} cx="100" cy="100" r={r} className={c} />
-      ))}
-      <path className="a-crack" d="M0 -99.5 L3.5 -91 L-2.5 -82 L3 -73 L-2 -64 L1 -56.5" transform="translate(100 100) rotate(-52)" />
-    </svg>
-  );
-}
-
 function Figure({ level }: { level: Level }) {
   if (!level.character) return null;
   const small = level.character.replace(".webp", "-560.webp");
@@ -463,11 +441,6 @@ function ResultBody({ level, score, onRestart }: { level: Level; score?: number;
           <SiteLink />
         </header>
         <div className={`resHead lvl-${level.slug}${score === undefined ? " noScore" : ""}`}>
-          <section className="poster pane">
-            <Arch />
-            <Figure level={level} />
-            <Bed src="/art/deco-river-h.webp" alt="" cls="riverGround flow" />
-          </section>
           <div className="resInfo">
             {score !== undefined ? (
               <div className="score" aria-label={`${score} з ${questions.length} правильних`}>
@@ -488,8 +461,9 @@ function ResultBody({ level, score, onRestart }: { level: Level; score?: number;
               <h1 className="title">{level.title.replace(/ у /g, " у\u00a0")}</h1>
             </div>
           </div>
-          {score !== undefined && <LevelScale current={level} />}
+          <Figure level={level} />
         </div>
+        {score !== undefined && <LevelScale current={level} />}
         <section className="pane resCard">
           <p className="lead">{level.description}</p>
           {score !== undefined && <Share url={shareUrl} text={level.shareText} label={UI.shareResult} />}
