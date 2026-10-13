@@ -33,6 +33,13 @@ const UI = {
   home: "На початок",
 };
 
+/** Тріщина на оправі хибної відповіді — як на арці з обкладинки. */
+const Crack = () => (
+  <svg className="crack" viewBox="0 0 24 60" aria-hidden>
+    <path d="M12 0 L9 14 L15 22 L8 36 L14 46 L10 60" />
+  </svg>
+);
+
 const Check = () => (
   <svg viewBox="0 0 14 14" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
     <path d="M2.5 7.5l3 3 6-6.5" />
@@ -150,7 +157,7 @@ function Sources({ q }: { q: Question }) {
 function AnswerCard({ q, ok, idx, deco, cardRef, id }: { q: Question; ok: boolean | null; idx: number; deco?: boolean; cardRef?: React.Ref<HTMLElement>; id?: string }) {
   return (
     <section className={`pane acard${deco ? " withDeco" : ""}${ok === false ? " miss" : ""}`} ref={cardRef} tabIndex={-1} aria-live="polite" id={id}>
-      {deco && <Deco name={idx % 2 === 0 ? "sputnik" : "atom"} cls="d-onCard" />}
+      {deco && <Deco name={ok ? "firebird" : idx % 2 === 0 ? "sputnik" : "atom"} cls={`d-onCard${ok ? " bird" : ""}`} />}
       <div className="acardIn">
         <p className={`verdict ${ok === false ? "miss" : "ok"}`}>
           <i className={`win ${ok === false ? "miss" : "ok"}`} />
@@ -290,7 +297,11 @@ function Sheet({ quiz }: { quiz: QuizApi }) {
                   }}
                   aria-keyshortcuts={String(i + 1)}
                 >
-                  <span className="k">{state === " isRight" ? <Check /> : state === " isWrong" ? <Cross /> : o.key}</span>
+                  <span className="k">
+                    {state === " isRight" ? <Check /> : state === " isWrong" ? <Cross /> : o.key}
+                  </span>
+                  {state === " isWrong" && <Crack />}
+                  {state === " isRight" && <i className="gleam" aria-hidden />}
                   <span className="t">{o.text}</span>
                 </button>
               </li>
@@ -394,7 +405,7 @@ function ResultBody({ level, score, onRestart, history }: { level: Level; score?
           <Wordmark />
         </header>
         <Figure level={level} />
-        <Bed src="/art/deco-river-h.webp" alt="" cls="riverGround" />
+        <Bed src="/art/deco-river-h.webp" alt="" cls="riverGround flow" />
         {score !== undefined && (
           <div className="score" aria-label={`${score} з ${questions.length} правильних`}>
             <b>

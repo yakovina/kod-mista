@@ -841,3 +841,126 @@ body:has(.vitrazh) {
 @media (max-width: 899px) {
   .vitrazh .hero .titlePane { order: 1; align-self: flex-start; }
 }
+
+
+/* ═══ Гра світла: вікна, відблиск, тріщина, течія ═══ */
+
+/* літера варіанта як вікно фасаду: під курсором у ньому засвічується світло */
+.vitrazh .opt { position: relative; }
+.vitrazh .opt.isRight { overflow: hidden; }
+.vitrazh .opt .k {
+  background: var(--glass);
+  transition: background-color 260ms var(--ease), border-color 260ms var(--ease), color 260ms var(--ease), box-shadow 260ms var(--ease);
+}
+@media (hover: hover) and (pointer: fine) {
+  .vitrazh .opt:not(:disabled):hover .k {
+    background: var(--glass-mustard);
+    border-color: var(--teal-900);
+    box-shadow: 0 0 0 6px rgba(242, 217, 143, 0.45);
+  }
+  .vitrazh .opt:not(:disabled):hover { background: #fdfbf2; }
+}
+
+/* сонячний відблиск пробігає по правильній панелі */
+.vitrazh .gleam {
+  position: absolute;
+  top: -40%;
+  left: -30%;
+  width: 26%;
+  height: 180%;
+  background: linear-gradient(100deg, transparent 0, rgba(251, 247, 236, 0) 30%, rgba(251, 247, 236, 0.75) 50%, rgba(251, 247, 236, 0) 70%, transparent 100%);
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .vitrazh .gleam { animation: vGleam 900ms 180ms var(--ease) both; }
+}
+@media (prefers-reduced-motion: reduce) { .vitrazh .gleam { display: none; } }
+@keyframes vGleam {
+  from { transform: translateX(0); }
+  to { transform: translateX(520%); }
+}
+
+/* тріщина на оправі хибної відповіді */
+.vitrazh .crack {
+  position: absolute;
+  left: 34px;
+  top: -14px;
+  width: 16px;
+  height: 44px;
+  z-index: 1;
+  overflow: visible;
+  pointer-events: none;
+}
+.vitrazh .crack path {
+  fill: none;
+  stroke: var(--brick);
+  stroke-width: 2;
+  stroke-linejoin: miter;
+  stroke-linecap: square;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .vitrazh .crack path {
+    stroke-dasharray: 90;
+    stroke-dashoffset: 90;
+    animation: vCrack 420ms 120ms ease-out forwards;
+  }
+}
+@keyframes vCrack { to { stroke-dashoffset: 0; } }
+
+/* панель назви «вмикається», супутник на її куті пливе */
+@media (prefers-reduced-motion: no-preference) {
+  .vitrazh .titlePane { animation: vLight 900ms var(--ease) both; }
+  .vitrazh .d-perch { animation: vDrift 9s ease-in-out infinite alternate; }
+  .vitrazh.result .titlePane { animation-delay: 300ms; }
+}
+@keyframes vLight {
+  0%, 55% { background-color: var(--glass); }
+  100% { background-color: var(--glass-mustard); }
+}
+@keyframes vDrift {
+  from { transform: translate(0, -62%) rotate(-3deg); }
+  to { transform: translate(-6px, calc(-62% + 5px)) rotate(4deg); }
+}
+
+/* вікна прогресу засвічуються м'яко, як фасад увечері */
+.vitrazh .win { transition: background-color 420ms var(--ease), border-color 420ms var(--ease); }
+
+/* річка під персонажем «тече»: по склу пробігає світло */
+.vitrazh .bed.flow { position: relative; overflow: hidden; }
+.vitrazh .bed.flow::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  background: linear-gradient(100deg, transparent 0 35%, rgba(251, 247, 236, 0.28) 50%, transparent 65% 100%);
+  background-size: 300% 100%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .vitrazh .bed.flow::after { animation: vFlow 7s linear infinite; }
+}
+@keyframes vFlow {
+  from { background-position: 100% 0; }
+  to { background-position: -100% 0; }
+}
+
+/* нове питання: панелі «вставляються» у вікно одна за одною */
+@media (prefers-reduced-motion: no-preference) {
+  .vitrazh .qpane.in { animation: vPane 420ms var(--ease) both; }
+  .vitrazh .opts > li.in { animation: vPane 380ms var(--ease) both; }
+}
+@keyframes vPane {
+  from { opacity: 0; transform: translateY(10px) scale(0.985); }
+  to { opacity: 1; transform: none; }
+}
+
+/* жар-птиця сідає на кут правильної картки */
+.vitrazh .d-onCard.bird { width: 92px; right: 10px; transform: translateY(-54%) rotate(-4deg); }
+@media (min-width: 900px) { .vitrazh .d-onCard.bird { width: 132px; right: 18px; } }
+@media (prefers-reduced-motion: no-preference) {
+  .vitrazh .d-onCard.bird { animation: vLand 520ms 160ms var(--ease) both; }
+}
+@keyframes vLand {
+  from { opacity: 0; transform: translate(14px, -70%) rotate(2deg); }
+  to { opacity: 1; transform: translateY(-54%) rotate(-4deg); }
+}
