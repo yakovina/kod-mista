@@ -2221,6 +2221,13 @@ body:has(.veselka.result) {
   .veselka .qpane:not(.hasPhoto) .qtext::before { width: 84px; height: 34px; }
 }
 
+/* супутник на плашці назви — вище, щоб вусики не торкались літер */
+.veselka .d-perch { transform: translateY(-98%); }
+@keyframes vDrift {
+  from { transform: translate(0, -98%) rotate(-3deg); }
+  to { transform: translate(-6px, calc(-98% + 4px)) rotate(4deg); }
+}
+
 /* ——— 1x-екрани: контур рівно 1.5px ——— */
 @media (resolution < 1.5dppx) {
   .veselka { --lw: 1px; }
