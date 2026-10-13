@@ -737,84 +737,92 @@ body:has(.veselka.result) {
   color: var(--ink-2);
   text-align: center;
 }
+/* поширення — кольорові пігулки, кожна мережа свого кольору */
 .veselka .shareGrid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 10px;
 }
-.veselka .sbtn { width: 100%; font-size: 15px; }
-.veselka .sbtn:nth-child(1) { --sb: var(--teal-600); }
-.veselka .sbtn:nth-child(2) { --sb: var(--teal-300); }
-.veselka .sbtn:nth-child(3) { --sb: var(--mustard-deep); }
-.veselka .sbtn:nth-child(4) { --sb: var(--terracotta); }
-.veselka .sbtn, .veselka .sbtn:hover { box-shadow: 2px 2px 0 var(--sb, var(--ink)); }
-.veselka .sbtn:hover { box-shadow: 3px 3px 0 var(--sb, var(--ink)); }
-.veselka .sbtn:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--sb, var(--ink)); }
-.veselka .sbtn:nth-child(3):last-child { grid-column: 1 / -1; }
-.veselka .sbtn.isCopied,
-.veselka .sbtn.isCopied:hover { background: var(--mustard); }
-
-/* плитки відповідей */
-.veselka .answersBlock { position: relative; margin-top: 28px; text-align: left; }
-.veselka .tiles {
-  list-style: none;
-  margin: 16px 0 0;
-  padding: 0 8px 0 0;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px 14px;
-}
-.veselka .tiles > li { display: grid; }
-.veselka .tile {
+.veselka .sbtn {
   box-sizing: border-box;
-  width: 100%;
-  height: 100%;
-  min-height: 64px;
-  position: relative;
-  padding: 11px 18px 11px 12px;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
+  display: inline-flex;
   align-items: center;
-  background: var(--card);
-  border: 1.5px solid var(--ink);
-  border-radius: 4px;
-  color: var(--ink);
-  text-align: left;
-  cursor: pointer;
-  transition: background-color var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
-}
-.veselka .tile .tp {
-  font-weight: 700;
-  font-size: 14px;
-  line-height: 20px;
-}
-.veselka .tile .tp small {
-  display: block;
-  font-weight: 400;
-  font-size: 13px;
-  line-height: 17px;
-  color: var(--ink);
-}
-.veselka .tile .mk {
-  position: absolute;
-  top: -9px;
-  right: -9px;
-  width: 24px;
-  height: 24px;
-  display: grid;
-  place-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 18px 0 14px;
+  border: var(--lw) solid var(--ink);
   border-radius: 999px;
-  border: 1.5px solid var(--ink);
-  color: var(--card);
+  box-shadow: 2px 2px 0 var(--ink);
+  font-family: "Open Sans", sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1;
+  color: var(--ink);
+  cursor: pointer;
+  transition: transform var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease), background-color var(--t-fast) var(--ease);
 }
-.veselka .tile .mk.ok { background: var(--teal-600); }
-.veselka .tile .mk.miss { background: var(--brick); }
-.veselka .tiles li:has(.mk.ok) .tile { background: var(--sky); }
-.veselka .tiles li:has(.mk.miss) .tile { background: var(--peach); }
-@media (hover: hover) { .veselka .tile:hover { box-shadow: 2px 2px 0 var(--ink); transform: translate(-1px, -1px); } }
-.veselka .tiles li .tile.isOpen { background: var(--mustard); box-shadow: 2px 2px 0 var(--ink); }
-.veselka .answersBlock .acard { margin-top: 20px; }
-.veselka .d-gate { display: none; }
+.veselka .sbtn svg { width: 18px; height: 18px; flex: 0 0 auto; }
+.veselka .sbtn.fb { background: var(--teal-600); color: var(--card); }
+.veselka .sbtn.tg { background: var(--sky); }
+.veselka .sbtn.copy { background: var(--mustard); }
+.veselka .sbtn.more { background: var(--peach); }
+.veselka .sbtn.isCopied { background: var(--card); }
+@media (hover: hover) and (pointer: fine) {
+  .veselka .sbtn:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 var(--ink); }
+}
+.veselka .sbtn:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--ink); }
+
+/* результат: опис і поширення в одній картці, «пройти ще раз» — тиха дія під нею */
+.veselka .resCard {
+  margin-top: 28px;
+  padding: 22px 20px 22px;
+  text-align: left;
+  box-shadow: var(--sh) var(--sh) 0 var(--teal-600);
+}
+.veselka.result .resCard .lead {
+  margin: 0;
+  max-width: none;
+  font-family: "Lora", serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 29px;
+  text-align: left;
+}
+.veselka .resCard .share {
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1.5px dashed var(--seam);
+}
+.veselka .resCard .shareLabel { text-align: left; margin-bottom: 12px; }
+.veselka .resCard .shareGrid { justify-content: flex-start; }
+.veselka .resNext { margin-top: 24px; text-align: center; }
+.veselka .again {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 6px;
+  background: none;
+  border: 0;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--teal-900);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--mustard-deep);
+  text-underline-offset: 6px;
+  cursor: pointer;
+  transition: color var(--t-fast) var(--ease);
+}
+.veselka .again .redo { transition: transform var(--t-base) var(--ease); }
+@media (hover: hover) {
+  .veselka .again:hover { color: var(--teal-600); }
+  .veselka .again:hover .redo { transform: rotate(-40deg); }
+}
 
 /* конфеті на результаті: геометрія Мемфіса сиплеться один раз */
 .veselka .confetti {
@@ -872,17 +880,45 @@ body:has(.veselka.result) {
 /* ——— футер ——— */
 .veselka .foot {
   position: relative;
-  z-index: 1;
+  z-index: 3;
   margin-top: auto;
-  padding: 24px var(--gutter) calc(24px + env(safe-area-inset-bottom, 0px));
+  padding: 0 var(--gutter) calc(28px + env(safe-area-inset-bottom, 0px));
   background: var(--wall-deep);
   border-top: var(--lw) solid var(--ink);
-  font-size: 13px;
-  line-height: 18px;
+  font-size: 14px;
+  line-height: 20px;
   color: var(--ink-2);
   text-align: center;
 }
+/* та сама стрічка-веселка, що й під шапкою: футер — основа, на якій стоїть сайт */
+.veselka .foot::before {
+  content: "";
+  display: block;
+  height: 10px;
+  margin: 0 calc(-1 * var(--gutter)) 28px;
+  background: var(--band);
+  border-bottom: var(--lw) solid var(--ink);
+}
+.veselka .footIn {
+  max-width: 1120px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.veselka .footLogo { display: inline-flex; min-height: 44px; align-items: center; }
+.veselka .footLogo img { display: block; width: auto; height: 36px; }
 .veselka .foot p { margin: 0; }
+.veselka .footAbout { max-width: 34ch; color: var(--ink); }
+.veselka .footMeta { font-size: 13px; line-height: 18px; }
+.veselka .footMeta a {
+  color: var(--ink-2);
+  text-decoration: underline;
+  text-decoration-color: var(--teal-300);
+  text-underline-offset: 3px;
+}
+.veselka .footMeta a:hover { color: var(--teal-600); }
 .veselka.result .col > :last-child,
 .veselka.intro .col > :last-child { margin-bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
 .veselka.intro .bed.divider { margin-bottom: 40px; }
@@ -891,7 +927,6 @@ body:has(.veselka.result) {
 @media (prefers-reduced-motion: no-preference) {
   .veselka .in { animation: vIn var(--t-base) var(--ease) both; }
   .veselka .acard.withDeco { animation: vUp var(--t-base) var(--ease) both; }
-  .veselka .answersBlock .acard { animation: vIn var(--t-base) var(--ease) both; }
   .veselka .d-onCard { animation: vFade 320ms 120ms var(--ease) both; }
   .veselka .figure img { animation: vFade 320ms var(--ease) both; }
   .veselka .score { animation: vScore 280ms 160ms var(--ease) both; }
@@ -1035,11 +1070,16 @@ body:has(.veselka.result) {
   .veselka .coverWrap { order: 0; margin: 0; justify-self: end; width: 100%; max-width: 616px; }
   .veselka .d-hero { width: 112px; height: 112px; right: -52px; bottom: -36px; }
   .veselka.intro .share { margin-top: 0; }
-  .veselka.intro .shareGrid { max-width: 440px; }
   .veselka.intro .share .shareLabel { text-align: left; }
-  .veselka .shareGrid { grid-template-columns: repeat(3, 1fr); }
-  .veselka .shareGrid.four { grid-template-columns: repeat(4, 1fr); }
-  .veselka .sbtn:nth-child(3):last-child { grid-column: auto; }
+  .veselka.intro .shareGrid { justify-content: flex-start; }
+  .veselka .sbtn { height: 46px; font-size: 16px; padding: 0 20px 0 16px; }
+  .veselka .resCard { margin-top: 32px; padding: 28px 32px 28px; }
+  .veselka.result .resCard .lead { font-size: 19px; line-height: 31px; }
+  .veselka .resNext { margin-top: 28px; }
+  .veselka .footIn { flex-direction: row; justify-content: space-between; gap: 32px; text-align: left; }
+  .veselka .footAbout { flex: 1 1 auto; max-width: none; }
+  .veselka .footMeta { flex: 0 0 auto; }
+  .veselka .foot::before { margin-bottom: 32px; }
   .veselka .bed.divider { margin: 64px auto; }
   .veselka.intro .bed.divider { margin-bottom: 64px; }
   .veselka .d-perch { width: 96px; right: -30px; }
@@ -1083,14 +1123,11 @@ body:has(.veselka.result) {
   .veselka .actions { margin-top: 32px; align-items: center; }
   .veselka .actions .share { width: 100%; }
   .veselka .actions > .btn { min-width: 200px; }
-  .veselka .answersBlock { margin-top: 44px; }
-  .veselka .h2 { font-size: 26px; line-height: 32px; }
-  .veselka .tiles { margin-top: 20px; grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .veselka.result .col > :last-child,
   .veselka.intro .col > :last-child { margin-bottom: 96px; }
   .veselka.notfound .title { font-size: 30px; line-height: 36px; }
   .veselka.notfound .btn { width: auto; min-width: 200px; margin-top: 32px; }
-  .veselka .foot { padding: 32px 40px calc(32px + env(safe-area-inset-bottom, 0px)); }
+  .veselka .foot { padding: 0 40px calc(32px + env(safe-area-inset-bottom, 0px)); }
 }
 
 /* ——— обкладинка по боках: на широкому екрані колонка лежить аркушем на ілюстрації ——— */
@@ -1141,4 +1178,3 @@ body:has(.veselka.result) {
   outline-offset: 3px !important;
 }
 .veselka [tabindex="-1"]:focus { outline: none !important; }
-.veselka .tile:focus-visible { position: relative; z-index: 1; }

@@ -27,8 +27,9 @@ const UI = {
   copy: "Копіювати",
   copied: "Скопійовано",
   other: "Інше…",
-  answers: "Ваші відповіді",
-  foot: ["Хмарочос", "Код міста"],
+  footAbout: "«Код міста» — тест Хмарочоса про будівлі, назви вулиць і пам’ятники",
+  footCopy: "© Хмарочос, 2026",
+  footSite: "hmarochos.kiev.ua",
   nf: "Такої сторінки на фасаді немає",
   home: "На початок",
 };
@@ -75,6 +76,12 @@ function Shapes({ cls }: { cls: string }) {
   );
 }
 
+const Redo = () => (
+  <svg className="redo" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <path d="M20 12a8 8 0 1 1-2.6-5.9M20 4v5h-5" />
+  </svg>
+);
+
 const Check = () => (
   <svg viewBox="0 0 14 14" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
     <path d="M2.5 7.5l3 3 6-6.5" />
@@ -98,17 +105,24 @@ function Wordmark() {
   );
 }
 
+/** Футер усього сайту: стрічка-веселка, лого Хмарочоса, підпис і посилання. */
 function Foot() {
   return (
     <footer className="foot">
-      <p>
-        {UI.foot.map((t, i) => (
-          <span key={t}>
-            {i > 0 && <i className="dot"> · </i>}
-            {t}
-          </span>
-        ))}
-      </p>
+      <div className="footIn">
+        <a className="footLogo" href="https://hmarochos.kiev.ua/" target="_blank" rel="noopener noreferrer" aria-label="Хмарочос — відкрити сайт">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={asset("/hmarochos_logo_new.svg")} alt="Хмарочос" width={109} height={40} loading="lazy" />
+        </a>
+        <p className="footAbout">{UI.footAbout}</p>
+        <p className="footMeta">
+          <span>{UI.footCopy}</span>
+          <i className="dot"> · </i>
+          <a href="https://hmarochos.kiev.ua/" target="_blank" rel="noopener noreferrer">
+            {UI.footSite}
+          </a>
+        </p>
+      </div>
     </footer>
   );
 }
@@ -249,15 +263,15 @@ function Share({ url, text, label }: { url: string; text: string; label: string 
     <div className="share">
       <p className="shareLabel">{label}</p>
       <div className={`shareGrid${native ? " four" : ""}`}>
-        <button type="button" className="btn plain sbtn" onClick={() => popup(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`)}>
+        <button type="button" className="sbtn fb" onClick={() => popup(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`)}>
           <svg viewBox="0 0 24 24" aria-hidden><path d={FB} fill="currentColor" /></svg>
           <span>Facebook</span>
         </button>
-        <button type="button" className="btn plain sbtn" onClick={() => popup(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`)}>
+        <button type="button" className="sbtn tg" onClick={() => popup(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`)}>
           <svg viewBox="0 0 24 24" aria-hidden><path d={TG} fill="currentColor" /></svg>
           <span>Telegram</span>
         </button>
-        <button type="button" className={`btn plain sbtn${copied ? " isCopied" : ""}`} onClick={copy}>
+        <button type="button" className={`sbtn copy${copied ? " isCopied" : ""}`} onClick={copy}>
           {copied ? (
             <Check />
           ) : (
@@ -268,7 +282,7 @@ function Share({ url, text, label }: { url: string; text: string; label: string 
           <span>{copied ? UI.copied : UI.copy}</span>
         </button>
         {native && (
-          <button type="button" className="btn plain sbtn" onClick={more}>
+          <button type="button" className="sbtn more" onClick={more}>
             <svg viewBox="0 0 24 24" aria-hidden fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round">
               <path d="M12 3v12M7 8l5-5 5 5M5 14v7h14v-7" />
             </svg>
@@ -392,39 +406,6 @@ function LevelScale({ current }: { current: Level }) {
   );
 }
 
-function Tiles({ history }: { history: boolean[] }) {
-  const [open, setOpen] = useState<number | null>(null);
-  return (
-    <section className="answersBlock" aria-label={UI.answers}>
-      <Deco name="arch" cls="d-gate" />
-      <h2 className="h2">{UI.answers}</h2>
-      <ol className="tiles">
-        {questions.map((qq, i) => (
-          <li key={qq.id} className="in" style={{ animationDelay: `${30 * i}ms` }}>
-            <button
-              type="button"
-              className={`tile${open === i ? " isOpen" : ""}`}
-              aria-label={`Питання ${i + 1}, ${qq.topic}, ${history[i] ? "правильно" : "хибно"}`}
-              aria-expanded={open === i}
-              aria-controls="tileCard"
-              onClick={() => {
-                buzz(8);
-                setOpen(open === i ? null : i);
-              }}
-            >
-              <span className="tp">
-                {qq.topic}
-                <small>{qq.short}</small>
-              </span>
-              <span className={`mk ${history[i] ? "ok" : "miss"}`}>{history[i] ? <Check /> : <Cross />}</span>
-            </button>
-          </li>
-        ))}
-      </ol>
-      {open !== null && <AnswerCard key={open} q={questions[open]} ok={history[open] ? true : null} id="tileCard" />}
-    </section>
-  );
-}
 
 /** Смугаста арка з тріщиною — цитата обкладинки, тло для персонажа результату. */
 function Arch() {
@@ -459,9 +440,8 @@ function Figure({ level }: { level: Level }) {
   );
 }
 
-function ResultBody({ level, score, onRestart, history }: { level: Level; score?: number; onRestart?: () => void; history?: boolean[] }) {
+function ResultBody({ level, score, onRestart }: { level: Level; score?: number; onRestart?: () => void }) {
   const shareUrl = resultShareUrl(level.slug);
-  const full = history && history.length === questions.length;
   return (
     <main className="veselka result">
       {score !== undefined && <Confetti />}
@@ -486,26 +466,30 @@ function ResultBody({ level, score, onRestart, history }: { level: Level; score?
           <h1 className="title">{level.title}</h1>
         </div>
         {score !== undefined && <LevelScale current={level} />}
-        <p className="lead">{level.description}</p>
-        <div className="actions">
+        <section className="pane resCard">
+          <p className="lead">{level.description}</p>
           {score !== undefined && <Share url={shareUrl} text={level.shareText} label={UI.shareResult} />}
+        </section>
+        <div className="resNext">
           {onRestart ? (
             <button
-              className="btn"
+              type="button"
+              className="again"
               onClick={() => {
                 buzz(8);
                 onRestart();
               }}
             >
+              <Redo />
               {UI.again}
             </button>
           ) : (
             <a className="btn" href={`${SITE_URL}/`}>
               {UI.take}
+              <Arrow />
             </a>
           )}
         </div>
-        {full && <Tiles history={history} />}
       </div>
       <Foot />
     </main>
@@ -540,7 +524,7 @@ export function NotFound() {
 }
 
 export default function VeselkaSkin({ quiz }: { quiz: QuizApi }) {
-  const { screen, history, score, level } = quiz;
+  const { screen, score, level } = quiz;
   useKeys(quiz);
 
   if (screen === "intro") {
@@ -590,5 +574,5 @@ export default function VeselkaSkin({ quiz }: { quiz: QuizApi }) {
 
   if (screen === "question" || screen === "reveal") return <Sheet quiz={quiz} />;
 
-  return <ResultBody level={level} score={score} onRestart={quiz.restart} history={history} />;
+  return <ResultBody level={level} score={score} onRestart={quiz.restart} />;
 }
