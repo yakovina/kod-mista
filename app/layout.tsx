@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import "./skins/book/book.css";
 import "./skins/memphis/memphis.css";
+import "./skins/vitrazh/vitrazh.css";
 import { SITE_URL, TEST_SHARE_TITLE } from "./share";
 
 const TITLE = "Код міста · Тест Хмарочоса";
@@ -28,7 +29,7 @@ export const metadata: Metadata = {
   },
 };
 
-export const viewport: Viewport = { themeColor: "#F3E6C4" };
+export const viewport: Viewport = { themeColor: "#E5E2D9" };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (

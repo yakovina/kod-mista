@@ -3,82 +3,56 @@
 <head>
 <meta charset="utf-8">
 <title>OG</title>
-<!-- OG-картинки 1200×630 у стилі «Мемфіс з ілюстрації». Рендерить scripts/render-og.mjs:
-     og.html → public/og-test.png;  og.html?l=<slug> → public/og-<slug>.png -->
+<!-- OG 1200×630 у стилі «Вітраж на світлій стіні». Рендерить scripts/render-og.mjs:
+     og.html → public/og-test.png (обкладинка на весь кадр);
+     og.html?l=<slug> → public/og-<slug>.png (персонаж ліворуч, звання праворуч). -->
 <style>
-@font-face { font-family: "Open Sans"; src: url("../public/fonts/hm/open-sans-v29-latin_cyrillic-ext-700.woff2") format("woff2"); font-weight: 700; }
 @font-face { font-family: "Open Sans"; src: url("../public/fonts/hm/open-sans-v29-latin_cyrillic-ext-500.woff2") format("woff2"); font-weight: 500; }
-@font-face { font-family: "Lora"; src: url("../public/fonts/hm/lora-v24-latin_cyrillic-ext-regular.woff2") format("woff2"); font-weight: 400; }
+@font-face { font-family: "Lora"; src: url("../public/fonts/hm/lora-v24-latin_cyrillic-ext-700.woff2") format("woff2"); font-weight: 700; }
 * { box-sizing: border-box; }
-body { margin: 0; width: 1200px; height: 630px; overflow: hidden; color: #2E2E2B; font-family: "Open Sans", sans-serif;
-  background-color: #F3E6C4; background-image: radial-gradient(rgba(30,88,102,.2) 1.8px, transparent 2.2px); background-size: 26px 26px; }
-.wrap { position: relative; width: 1200px; height: 630px; }
-.d { position: absolute; overflow: visible; }
-.d { filter: drop-shadow(3px 3px 0 rgba(46,46,43,.18)); }
-.card { position: absolute; left: 64px; top: 92px; width: 540px; border: 3px solid #2E2E2B; box-shadow: 12px 12px 0 #D66C46; background: #FBF6EA; }
-.card img { display: block; width: 100%; aspect-ratio: 3/2; object-fit: cover; }
-.right { position: absolute; left: 664px; top: 64px; width: 480px; display: flex; flex-direction: column; align-items: flex-start; }
-.logo { height: 58px; padding: 8px 12px; border: 3px solid #2E2E2B; background: #FBF6EA; }
-.logo img { height: 100%; display: block; }
-.kicker { margin-top: 26px; font-size: 26px; font-weight: 700; color: #55574F; }
-h1 { margin: 12px 0 0; padding: 10px 22px 14px; background: #E9C150; border: 3px solid #2E2E2B; box-shadow: 9px 9px 0 #1E5866; font-size: 76px; font-weight: 700; line-height: 1; white-space: nowrap; }
-p.lead { margin: 30px 0 0; max-width: 420px; font-family: "Lora", serif; font-size: 25px; line-height: 1.4; }
-.cta { margin-top: 30px; display: inline-flex; align-items: center; gap: 18px; padding: 14px 24px; background: #D66C46; border: 3px solid #2E2E2B; box-shadow: 6px 6px 0 #2E2E2B; font-size: 26px; font-weight: 700; }
-.lvlHead { margin-top: 24px; display: flex; align-items: center; gap: 18px; }
-.badge { width: 118px; height: 118px; border-radius: 50%; border: 3px solid #2E2E2B; background: #1E5866; box-shadow: 6px 6px 0 #E9C150; color: #FBF6EA; display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1; }
-.badge b { font-size: 40px; }
-.badge small { margin-top: 6px; font-size: 18px; color: #79ABB7; }
-.lvlCaption { font-size: 26px; font-weight: 700; color: #55574F; line-height: 1.25; }
-h1.lvl { font-size: 56px; line-height: 1.06; box-shadow: 9px 9px 0 #D66C46; white-space: normal; }
-.scale { margin-top: 30px; display: flex; border: 3px solid #2E2E2B; background: #FBF6EA; }
-.scale span { position: relative; padding: 12px 16px; font-size: 18px; font-weight: 700; color: #55574F; border-right: 3px solid #2E2E2B; }
-.scale span:last-child { border-right: 0; }
-.scale span.on { background: #1E5866; color: #FBF6EA; }
-.scale span.on::after { content: "ви тут"; position: absolute; top: -18px; right: 10px; padding: 2px 8px; background: #E9C150; color: #2E2E2B; border: 2px solid #2E2E2B; font-size: 14px; }
-.charWrap { position: absolute; left: 60px; top: 40px; width: 560px; height: 550px; align-items: center; justify-content: center; }
-.charWrap img { max-width: 100%; max-height: 100%; filter: drop-shadow(8px 8px 0 rgba(46,46,43,.15)); }
-.lvlOnly { display: none !important; }
-body.level .testOnly { display: none !important; }
-body.level .lvlOnly { display: flex !important; }
+body { margin: 0; width: 1200px; height: 630px; overflow: hidden; background: #e5e2d9; color: #30302e; font-family: "Open Sans", sans-serif; }
+.cover { width: 1200px; height: 630px; object-fit: cover; object-position: 50% 18%; display: block; }
+.lvl { display: none; position: relative; width: 1200px; height: 630px; }
+body.level .cover { display: none; }
+body.level .lvl { display: block; }
+.fig { position: absolute; left: 40px; top: 0; height: 574px; width: 520px; overflow: hidden; display: flex; align-items: flex-end; justify-content: center; }
+.fig img { display: block; width: auto; height: auto; }
+.fig.tourist img { width: 470px; }
+.fig.citizen img { height: 960px; margin-bottom: -400px; }
+.fig.keeper img { height: 1280px; margin-bottom: -710px; }
+.sill { position: absolute; left: 40px; top: 574px; width: 520px; height: 2px; background: #30302e; }
+.text { position: absolute; left: 610px; top: 0; height: 630px; width: 540px; display: flex; flex-direction: column; justify-content: center; }
+.text h1 { margin: 0; font-family: "Lora", serif; font-weight: 700; font-size: 72px; line-height: 1.08; letter-spacing: -.01em; }
+.text .range { margin-top: 20px; font-size: 28px; font-weight: 500; color: #414a4b; }
+.text .brand { position: absolute; right: 0; bottom: 56px; font-size: 24px; font-weight: 500; color: #414a4b; }
+.text .brand i { font-style: normal; color: #b0a295; }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <img class="d" src="../public/art/deco-sputnik.webp" style="right: 26px; top: 18px; width: 170px" alt="">
-  <img class="d" src="../public/art/deco-atom.webp" style="left: 22px; top: 18px; width: 86px" alt="">
-  <img class="d" src="../public/art/deco-arch.webp" style="right: -40px; bottom: -40px; width: 230px" alt="">
-  <div class="card testOnly"><img src="../public/art/cover.jpg" alt=""></div>
-  <div class="charWrap lvlOnly"><img id="char" src="" alt=""></div>
-
-  <div class="right">
-    <div class="logo"><img src="../public/hmarochos_logo_new.svg" alt=""></div>
-    <div class="kicker testOnly">Тест · 8 питань</div>
-    <h1 class="testOnly">Код міста</h1>
-    <p class="lead testOnly">Будівлі, назви вулиць і пам’ятники. Наскільки добре ви читаєте своє місто?</p>
-    <div class="cta testOnly">Пройти тест <span>→</span></div>
-    <div class="lvlHead lvlOnly">
-      <div class="badge"><b id="range">6–8</b><small id="unit">балів</small></div>
-      <div class="lvlCaption">Мій результат<br>у тесті «Код міста»</div>
-    </div>
-    <h1 class="lvl lvlOnly" id="title" style="margin-top: 26px">Хранитель коду міста</h1>
-    <div class="scale lvlOnly" id="scale"></div>
+<img class="cover" src="../public/art/cover.jpg" alt="">
+<div class="lvl">
+  <div class="fig" id="fig"><img id="char" src="" alt=""></div>
+  <div class="sill"></div>
+  <div class="text">
+    <h1 id="title"></h1>
+    <div class="range" id="range"></div>
+    <div class="brand">Код міста <i>·</i> Хмарочос</div>
   </div>
 </div>
 <script>
-  const LV = [
-    { slug: "tourist", title: "Турист у своєму місті", short: "Турист", range: "0–2", unit: "бали" },
-    { slug: "citizen", title: "Допитливий містянин", short: "Містянин", range: "3–5", unit: "балів" },
-    { slug: "keeper", title: "Хранитель коду міста", short: "Хранитель", range: "6–8", unit: "балів" },
-  ];
+  const LV = {
+    tourist: { title: "Турист у своєму місті", range: "0–2 бали з 8" },
+    citizen: { title: "Допитливий містянин", range: "3–5 балів з 8" },
+    keeper: { title: "Хранитель коду міста", range: "6–8 балів з 8" },
+  };
   const slug = new URLSearchParams(location.search).get("l");
-  const lv = LV.find((l) => l.slug === slug);
+  const lv = LV[slug];
   if (lv) {
     document.body.classList.add("level");
+    document.getElementById("fig").classList.add(slug);
     document.getElementById("char").src = `../public/art/char-${slug}.webp`;
     document.getElementById("title").textContent = lv.title;
     document.getElementById("range").textContent = lv.range;
-    document.getElementById("unit").textContent = lv.unit;
-    document.getElementById("scale").innerHTML = LV.map((l) => `<span class="${l.slug === slug ? "on" : ""}">${l.short}</span>`).join("");
   }
 </script>
 </body>

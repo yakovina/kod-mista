@@ -1,0 +1,758 @@
+/* Скін «Вітраж на світлій стіні». Токени — у .vitrazh, не в :root, щоб не
+   зачіпати інші скіни. Жодних box-shadow, text-shadow, filter, fixed. */
+
+body:has(.vitrazh) {
+  background: #e5e2d9;
+}
+
+.vitrazh {
+  --wall: #e5e2d9;
+  --wall-deep: #d7d6cf;
+  --glass: #f7f6ec;
+  --teal-900: #0e4758;
+  --teal-600: #226a7a;
+  --teal-500: #4a8c95;
+  --teal-300: #72aab5;
+  --terracotta: #d36d47;
+  --brick: #92221b;
+  --burnt: #461713;
+  --ink: #30302e;
+  --ink-2: #414a4b;
+  --grout: #a9adaa;
+  --grout-light: #bcc1ba;
+  --grout-warm: #b0a295;
+  --highlight: #eef4f3;
+  --focus: #0e4758;
+  --lead-w: 1.5px;
+  --r-pane: 4px;
+  --gutter: 16px;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --t-fast: 120ms;
+  --t-base: 240ms;
+
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  color: var(--ink);
+  font-family: "Open Sans", sans-serif;
+}
+.vitrazh .grain {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.06;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='256' height='256'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  background-size: 256px 256px;
+}
+
+/* ——— колонка ——— */
+.vitrazh .col {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  flex: 1 0 auto;
+}
+.vitrazh .col-start { max-width: 1120px; }
+.vitrazh .col-q { max-width: 720px; }
+.vitrazh .col-r { max-width: 640px; }
+
+/* ——— верхня смуга ——— */
+.vitrazh .bar {
+  height: 56px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--grout);
+}
+.vitrazh .brandRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.vitrazh .brand {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-family: "Lora", serif;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 24px;
+  color: var(--ink);
+  text-decoration: none;
+  transition: color var(--t-fast) var(--ease);
+}
+.vitrazh .brand:hover { color: var(--teal-900); }
+.vitrazh .brandSub {
+  font-size: 15px;
+  line-height: 24px;
+  color: var(--teal-900);
+}
+@media (max-width: 899px) { .vitrazh.sheet .brandSub { display: none; } }
+
+/* ——— вікна прогресу ——— */
+.vitrazh .windows {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.vitrazh .win {
+  box-sizing: border-box;
+  display: inline-block;
+  width: 12px;
+  height: 16px;
+  transition: background-color var(--t-base) var(--ease), border-color var(--t-base) var(--ease);
+}
+.vitrazh .windows .w6 { margin-right: 10px; }
+.vitrazh .win.next { background: var(--wall-deep); border: 1px solid var(--ink-2); }
+.vitrazh .win.now { background: var(--glass); border: var(--lead-w) solid var(--ink); }
+.vitrazh .win.done,
+.vitrazh .win.ok { background: var(--teal-600); border: var(--lead-w) solid var(--teal-600); }
+.vitrazh .win.miss { background: var(--brick); border: var(--lead-w) solid var(--brick); }
+.vitrazh .topic .win,
+.vitrazh .verdict .win { width: 8px; height: 11px; border: 0; flex: 0 0 auto; }
+.vitrazh .verdict .win { margin-top: 7px; }
+
+/* ——— базова панель ——— */
+.vitrazh .pane {
+  background: var(--glass);
+  border: var(--lead-w) solid var(--ink);
+  border-radius: var(--r-pane);
+}
+.vitrazh .pane.lit {
+  outline: 1px solid var(--glass);
+  outline-offset: -2.5px;
+}
+.vitrazh .pane.off {
+  background: transparent;
+  border-color: var(--grout);
+  color: var(--ink-2);
+}
+.vitrazh .bed {
+  display: block;
+  margin: 0;
+  padding: 4px;
+  background: var(--grout-light);
+  border-radius: var(--r-pane);
+}
+.vitrazh .bed img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* ——— типографіка ——— */
+.vitrazh .title {
+  margin: 0;
+  font-family: "Lora", serif;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 40px;
+  letter-spacing: -0.01em;
+}
+.vitrazh .lead {
+  margin: 12px 0 0;
+  font-family: "Lora", serif;
+  font-style: italic;
+  font-size: 18px;
+  line-height: 27px;
+  max-width: 440px;
+}
+.vitrazh .meta {
+  margin: 20px 0 0;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--ink-2);
+}
+.vitrazh .dot {
+  font-style: normal;
+  color: var(--grout-warm);
+}
+.vitrazh .h2 {
+  margin: 0;
+  font-family: "Lora", serif;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 28px;
+  letter-spacing: -0.005em;
+}
+
+/* ——— кнопки ——— */
+.vitrazh .btn {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 48px;
+  padding: 0 24px;
+  min-width: 160px;
+  background: var(--teal-600);
+  color: var(--glass);
+  border: var(--lead-w) solid var(--teal-900);
+  outline: 1px solid var(--teal-300);
+  outline-offset: -2.5px;
+  border-radius: var(--r-pane);
+  font-family: "Open Sans", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+.vitrazh .btn:hover { background: var(--teal-900); }
+.vitrazh .btn:active { background: var(--teal-900); border-top-color: var(--teal-500); }
+.vitrazh .btn.plain {
+  height: 44px;
+  padding: 0 20px;
+  min-width: 0;
+  background: var(--glass);
+  color: var(--ink);
+  border-color: var(--ink);
+  outline: 0;
+}
+.vitrazh .btn.plain:hover { background: var(--glass); border-color: var(--teal-900); color: var(--teal-900); }
+.vitrazh .btn.plain:active { background: var(--teal-300); border-color: var(--teal-900); }
+.vitrazh .btn svg { width: 18px; height: 18px; flex: 0 0 auto; }
+
+/* ——— старт ——— */
+.vitrazh .hero {
+  display: flex;
+  flex-direction: column;
+  padding-top: 24px;
+}
+.vitrazh .heroText { display: contents; }
+.vitrazh .hero .title { order: 1; }
+.vitrazh .hero .lead { order: 2; }
+.vitrazh .bed.cover { order: 3; margin: 20px 0 0; }
+.vitrazh .hero .meta { order: 4; margin: 20px 0 0; text-align: center; }
+.vitrazh .hero .btn { order: 5; margin-top: 8px; width: 100%; }
+.vitrazh.intro .share { margin-top: 24px; }
+.vitrazh .bed.divider {
+  width: 100%;
+  max-width: 560px;
+  margin: 40px auto 40px;
+}
+@media (max-width: 359px) { .vitrazh .bed.divider { display: none; } }
+
+/* ——— питання ——— */
+.vitrazh .qpane {
+  margin-top: 20px;
+  padding: 20px 20px 24px;
+}
+.vitrazh .topic {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+}
+.vitrazh .topic .n { font-weight: 400; color: var(--ink-2); margin-left: -6px; }
+.vitrazh .context {
+  margin: 12px 0 0;
+  font-family: "Lora", serif;
+  font-style: italic;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--ink-2);
+}
+.vitrazh .prompt {
+  margin: 12px 0 0;
+  font-family: "Lora", serif;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 30px;
+  letter-spacing: -0.005em;
+  max-width: 28ch;
+}
+.vitrazh .opts {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.vitrazh .opts li { margin-top: 6px; }
+.vitrazh .opt {
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  column-gap: 12px;
+  align-items: start;
+  width: 100%;
+  min-height: 56px;
+  padding: 14px 16px;
+  color: var(--ink);
+  font-family: "Open Sans", sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+.vitrazh .opt .k {
+  box-sizing: border-box;
+  width: 28px;
+  height: 28px;
+  margin-top: -2px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: var(--lead-w) solid var(--ink);
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 14px;
+  transition: background-color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+@media (hover: hover) and (pointer: fine) {
+  .vitrazh .opt:not(:disabled):hover { border-color: var(--teal-900); }
+  .vitrazh .opt:not(:disabled):hover .k { background: var(--teal-300); border-color: var(--teal-900); }
+}
+.vitrazh .opt:not(:disabled):active { background: var(--teal-300); }
+.vitrazh .opt:disabled { cursor: default; opacity: 1; }
+.vitrazh .opt.isRight {
+  background: var(--teal-300);
+  border-color: var(--teal-900);
+  outline: 1px solid var(--glass);
+  outline-offset: -2.5px;
+}
+.vitrazh .opt.isRight .k { background: var(--teal-900); border-color: var(--teal-900); color: var(--glass); }
+.vitrazh .opt.isWrong { border-color: var(--brick); }
+.vitrazh .opt.isWrong .k { background: var(--brick); border-color: var(--brick); color: var(--glass); }
+.vitrazh .opt.isRest { background: transparent; border-color: var(--grout); color: var(--ink-2); }
+.vitrazh .opt.isRest .k { border-color: var(--grout); color: var(--ink-2); }
+
+/* ——— картка пояснення ——— */
+.vitrazh .acard {
+  position: relative;
+  margin-top: 16px;
+  padding: 20px 20px 24px;
+  border-color: var(--teal-900);
+}
+.vitrazh .acard.withDeco { margin-top: 40px; padding-top: 36px; }
+.vitrazh .verdict {
+  margin: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-family: "Lora", serif;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+  color: var(--teal-900);
+}
+.vitrazh .withDeco .verdict { padding-right: 100px; }
+.vitrazh .lede {
+  margin: 12px 0 0;
+  font-family: "Lora", serif;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 26px;
+}
+.vitrazh .explain {
+  margin: 10px 0 0;
+  font-size: 16px;
+  line-height: 25px;
+}
+.vitrazh .srcs {
+  margin: 16px 0 0;
+  padding-top: 10px;
+  border-top: 1px solid var(--grout-light);
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--ink-2);
+}
+.vitrazh .srcs a {
+  display: inline-block;
+  padding: 13px 0;
+  margin: -13px 0;
+  color: var(--ink-2);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--grout);
+  text-underline-offset: 3px;
+  transition: color var(--t-fast) var(--ease), text-decoration-color var(--t-fast) var(--ease);
+}
+.vitrazh .srcs a:hover { color: var(--teal-600); text-decoration-color: var(--teal-600); }
+.vitrazh .btn.next {
+  margin-top: 24px;
+  margin-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+  width: 100%;
+}
+
+/* декор на верхній оправі картки */
+.vitrazh .deco {
+  position: absolute;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+}
+.vitrazh .d-onCard {
+  top: 0;
+  right: 16px;
+  transform: translateY(-46%);
+}
+.vitrazh .d-onCard.sputnik { width: 72px; }
+.vitrazh .d-onCard.atom { width: 64px; }
+
+/* ——— результат ——— */
+.vitrazh.result .col,
+.vitrazh.notfound .col { text-align: center; }
+.vitrazh .figure {
+  margin-top: 24px;
+  height: min(50vh, 380px);
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+.vitrazh .figure img {
+  display: block;
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  object-position: bottom center;
+}
+.vitrazh .ground {
+  height: var(--lead-w);
+  margin: 0;
+  border: 0;
+  background: var(--ink);
+  transform-origin: left center;
+}
+.vitrazh .score {
+  position: relative;
+  box-sizing: border-box;
+  width: 96px;
+  height: 96px;
+  margin: 16px auto 0;
+  display: grid;
+  place-content: center;
+  border-radius: 999px;
+  background: var(--teal-900);
+  border: var(--lead-w) solid var(--ink);
+  color: var(--glass);
+  line-height: 1;
+}
+.vitrazh .score::before {
+  content: "";
+  position: absolute;
+  left: 15%;
+  top: 11%;
+  width: 20px;
+  height: 11px;
+  border-radius: 999px;
+  background: var(--highlight);
+  transform: rotate(-25deg);
+}
+.vitrazh .score b {
+  font-family: "Lora", serif;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 40px;
+}
+.vitrazh .score small {
+  display: block;
+  margin-top: 2px;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 16px;
+}
+.vitrazh.result .title,
+.vitrazh.notfound .title {
+  margin-top: 12px;
+  font-size: 30px;
+  line-height: 34px;
+  letter-spacing: -0.005em;
+}
+.vitrazh.result .lead {
+  margin: 24px auto 0;
+  max-width: 56ch;
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  font-size: 16px;
+  line-height: 25px;
+  text-align: left;
+}
+
+/* шкала рівнів */
+.vitrazh .scaleWrap {
+  position: relative;
+  margin-top: 20px;
+  padding-top: 24px;
+}
+.vitrazh .scale {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+.vitrazh .lvl {
+  padding: 12px 8px 10px;
+  text-align: center;
+}
+.vitrazh .lvl .name {
+  display: block;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+}
+.vitrazh .lvl .range {
+  display: block;
+  margin-top: 2px;
+  font-size: 13px;
+  line-height: 18px;
+}
+.vitrazh .lvl.on { background: var(--teal-300); border-color: var(--teal-900); color: var(--ink); }
+.vitrazh .here {
+  position: absolute;
+  top: 0;
+  left: 16.67%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--teal-900);
+  transition: left 400ms var(--ease);
+}
+.vitrazh .here i {
+  box-sizing: border-box;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--terracotta);
+  border: var(--lead-w) solid var(--ink);
+}
+.vitrazh .scaleWrap.at-0 .here { left: 16.67%; }
+.vitrazh .scaleWrap.at-1 .here { left: 50%; }
+.vitrazh .scaleWrap.at-2 .here { left: 83.33%; }
+
+/* дії */
+.vitrazh .actions {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+}
+.vitrazh .share { display: flex; flex-direction: column; }
+.vitrazh .shareLabel {
+  margin: 0 0 8px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--ink-2);
+  text-align: center;
+}
+.vitrazh .shareGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+.vitrazh .sbtn { width: 100%; font-size: 15px; }
+.vitrazh .sbtn:nth-child(3):last-child { grid-column: 1 / -1; }
+.vitrazh .sbtn.isCopied,
+.vitrazh .sbtn.isCopied:hover { background: var(--teal-300); border-color: var(--teal-900); color: var(--ink); }
+.vitrazh .btn.plain:active,
+.vitrazh .sbtn:active,
+.vitrazh .sbtn.isCopied,
+.vitrazh .sbtn.isCopied:hover,
+.vitrazh .lvl.on,
+.vitrazh .lvl.on * { color: var(--ink); }
+
+/* плитки відповідей */
+.vitrazh .answersBlock { margin-top: 24px; text-align: left; }
+.vitrazh .tiles {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 3px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3px;
+  background: var(--grout);
+  border-radius: var(--r-pane);
+}
+.vitrazh .tile {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 64px;
+  padding: 12px 12px 12px 14px;
+  display: grid;
+  grid-template-columns: 1fr 22px;
+  gap: 8px;
+  align-items: center;
+  background: var(--glass);
+  border: 0;
+  border-radius: 2px;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--t-fast) var(--ease);
+}
+.vitrazh .tile .tp {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  transition: color var(--t-fast) var(--ease);
+}
+.vitrazh .tile .mk {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  color: var(--glass);
+}
+.vitrazh .tile .mk.ok { background: var(--teal-600); }
+.vitrazh .tile .mk.miss { background: var(--brick); }
+@media (hover: hover) { .vitrazh .tile:hover .tp { color: var(--teal-900); } }
+.vitrazh .tile.isOpen { background: var(--teal-300); }
+.vitrazh .tile.isOpen .tp,
+.vitrazh .tile.isOpen:hover .tp { color: var(--ink); }
+.vitrazh .answersBlock .acard { margin-top: 16px; }
+
+/* ——— 404 ——— */
+.vitrazh .d-arch {
+  position: static;
+  display: block;
+  width: min(100%, 480px);
+  margin: 40px auto 0;
+}
+.vitrazh .nfText {
+  margin: 20px 0 0;
+  font-family: "Lora", serif;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 28px;
+}
+.vitrazh.notfound .btn.plain { margin: 20px 0 calc(80px + env(safe-area-inset-bottom, 0px)); width: 100%; }
+
+/* ——— футер ——— */
+.vitrazh .foot {
+  position: relative;
+  z-index: 1;
+  margin-top: auto;
+  padding: 24px var(--gutter) calc(24px + env(safe-area-inset-bottom, 0px));
+  background: var(--wall-deep);
+  border-top: var(--lead-w) solid var(--burnt);
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--ink-2);
+  text-align: center;
+}
+.vitrazh .foot p { margin: 0; }
+.vitrazh.result .col > :last-child,
+.vitrazh.intro .col > :last-child { margin-bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
+.vitrazh.intro .bed.divider { margin-bottom: 40px; }
+
+/* ——— рух ——— */
+@media (prefers-reduced-motion: no-preference) {
+  .vitrazh .in { animation: vIn var(--t-base) var(--ease) both; }
+  .vitrazh .acard.withDeco { animation: vUp var(--t-base) var(--ease) both; }
+  .vitrazh .answersBlock .acard { animation: vIn var(--t-base) var(--ease) both; }
+  .vitrazh .d-onCard { animation: vFade 320ms 120ms var(--ease) both; }
+  .vitrazh .figure img { animation: vFade 320ms var(--ease) both; }
+  .vitrazh .ground { animation: vGround 400ms var(--ease) both; }
+  .vitrazh .score { animation: vScore 280ms 160ms var(--ease) both; }
+  .vitrazh.result .title { animation: vFade var(--t-base) 240ms var(--ease) both; }
+}
+@keyframes vIn { from { opacity: 0; transform: translateY(6px); } }
+@keyframes vUp { from { opacity: 0; transform: translateY(8px); } }
+@keyframes vFade { from { opacity: 0; } }
+@keyframes vGround { from { transform: scaleX(0); } }
+@keyframes vScore { from { opacity: 0; transform: scale(0.96); } }
+@media (prefers-reduced-motion: reduce) {
+  .vitrazh * { animation: none !important; transition: none !important; }
+}
+
+/* ——— десктоп ——— */
+@media (min-width: 900px) {
+  .vitrazh { --gutter: 40px; }
+  .vitrazh .bar { height: 64px; }
+  .vitrazh .win { width: 14px; height: 18px; }
+  .vitrazh .title { font-size: 56px; line-height: 60px; }
+  .vitrazh .lead { margin-top: 16px; font-size: 22px; line-height: 32px; }
+  .vitrazh .meta { margin-top: 24px; font-size: 14px; line-height: 20px; }
+  .vitrazh .btn { height: 52px; font-size: 17px; }
+  .vitrazh .btn.plain { height: 48px; font-size: 16px; }
+  .vitrazh .heroText { display: flex; flex-direction: column; align-items: flex-start; }
+  .vitrazh .hero .meta { text-align: left; }
+  .vitrazh .hero .btn { width: auto; min-width: 200px; margin-top: 16px; }
+
+  .vitrazh .hero {
+    display: grid;
+    grid-template-columns: 440px 1fr;
+    column-gap: 64px;
+    align-items: end;
+    padding: 48px 0 40px;
+  }
+  .vitrazh .bed.cover { order: 0; margin: 0; justify-self: end; width: 100%; max-width: 616px; }
+  .vitrazh.intro .share { margin-top: 0; max-width: 440px; }
+  .vitrazh.intro .share .shareLabel { text-align: left; }
+  .vitrazh .shareGrid { grid-template-columns: repeat(3, 1fr); }
+  .vitrazh .shareGrid.four { grid-template-columns: repeat(4, 1fr); }
+  .vitrazh .sbtn:nth-child(3):last-child { grid-column: auto; }
+  .vitrazh .bed.divider { margin: 64px auto; }
+  .vitrazh.intro .bed.divider { margin-bottom: 64px; }
+
+  .vitrazh .qpane { margin-top: 32px; padding: 28px 32px 32px; }
+  .vitrazh .prompt { font-size: 28px; line-height: 36px; }
+  .vitrazh .opt { padding: 16px 20px; font-size: 17px; line-height: 26px; }
+  .vitrazh .acard { padding: 28px 32px 32px; }
+  .vitrazh .acard.withDeco { margin-top: 56px; padding-top: 36px; }
+  .vitrazh .withDeco .verdict { padding-right: 148px; }
+  .vitrazh .verdict { font-size: 20px; line-height: 26px; }
+  .vitrazh .lede { font-size: 20px; line-height: 28px; }
+  .vitrazh .explain { font-size: 17px; line-height: 27px; }
+  .vitrazh .d-onCard { right: 24px; }
+  .vitrazh .d-onCard.sputnik { width: 112px; }
+  .vitrazh .d-onCard.atom { width: 88px; }
+  .vitrazh .btn.next { width: auto; min-width: 200px; margin-bottom: 96px; }
+
+  .vitrazh .figure { margin-top: 40px; height: 480px; }
+  .vitrazh .score { width: 112px; height: 112px; margin-top: 20px; }
+  .vitrazh .score::before { width: 24px; height: 13px; }
+  .vitrazh.result .title { margin-top: 16px; font-size: 44px; line-height: 48px; letter-spacing: -0.01em; }
+  .vitrazh .scaleWrap { margin-top: 24px; }
+  .vitrazh .lvl { padding: 14px 16px 12px; }
+  .vitrazh.result .lead { margin-top: 32px; font-size: 17px; line-height: 27px; }
+  .vitrazh .actions { margin-top: 32px; align-items: center; }
+  .vitrazh .actions .share { width: 100%; }
+  .vitrazh .actions > .btn { min-width: 200px; }
+  .vitrazh .answersBlock { margin-top: 0; }
+  .vitrazh .h2 { font-size: 26px; line-height: 32px; }
+  .vitrazh .tiles { margin-top: 16px; grid-template-columns: repeat(4, 1fr); }
+  .vitrazh.result .col > :last-child,
+  .vitrazh.intro .col > :last-child { margin-bottom: 96px; }
+  .vitrazh .d-arch { margin-top: 64px; }
+  .vitrazh .nfText { margin-top: 24px; font-size: 22px; line-height: 30px; letter-spacing: -0.005em; }
+  .vitrazh.notfound .btn.plain { width: auto; min-width: 200px; margin: 24px auto 96px; }
+  .vitrazh .foot { padding: 32px 40px calc(32px + env(safe-area-inset-bottom, 0px)); }
+}
+
+/* ——— 1x-екрани: оправа рівно 1px, шов зникає ——— */
+@media (resolution < 1.5dppx) {
+  .vitrazh { --lead-w: 1px; }
+  .vitrazh .lit,
+  .vitrazh .opt.isRight,
+  .vitrazh .btn { outline: 0; }
+}
+
+/* ——— фокус (після всіх правил, що гасять outline) ——— */
+.vitrazh :focus-visible {
+  outline: 2px solid var(--focus) !important;
+  outline-offset: 3px !important;
+}
+.vitrazh [tabindex="-1"]:focus { outline: none !important; }
+.vitrazh .tile:focus-visible { position: relative; z-index: 1; }
