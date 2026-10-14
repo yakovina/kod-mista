@@ -2354,6 +2354,28 @@ body:has(.veselka.result) {
   .veselka .resCard.withFig.lvl-citizen .figure { float: none; right: auto; left: calc(-1 * (var(--fw) + var(--fg))); margin: 0; }
 }
 
+/* ═══ Десктоп теж: персонаж усередині вікна з текстом, у верхньому куті,
+   текст обтікає (містянин ліворуч, турист і хранителька праворуч). ═══ */
+@media (min-width: 900px) {
+  .veselka .resCard.withFig,
+  .veselka .resCard.withFig.lvl-citizen { margin-left: 0; margin-right: 0; padding: 26px 28px 26px; }
+  .veselka .resCard.withFig { --fw: 190px; }
+  .veselka .resCard.withFig.lvl-keeper { --fw: 124px; }
+  .veselka .resCard.withFig.lvl-tourist { --fw: 214px; }
+  .veselka .resCard.withFig .figure {
+    position: static;
+    float: right;
+    left: auto;
+    right: auto;
+    margin: -4px -6px 12px 20px;
+  }
+  .veselka .resCard.withFig.lvl-citizen .figure { float: left; margin: -4px 20px 12px -6px; }
+  .veselka .resCard.withFig .figure img { margin-bottom: 0; }
+  .veselka.result .resCard.withFig .lead { font-size: 17px; line-height: 29px; }
+  /* поширення теж стоїть поруч із персонажем — без порожнечі під коротким текстом */
+  .veselka .resCard.withFig .share { clear: none; overflow: hidden; }
+}
+
 /* ——— 1x-екрани: контур рівно 1.5px ——— */
 @media (resolution < 1.5dppx) {
   .veselka { --lw: 1px; }

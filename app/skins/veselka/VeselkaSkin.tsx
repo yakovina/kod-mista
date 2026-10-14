@@ -513,9 +513,8 @@ function ResultBody({ level, score, onRestart }: { level: Level; score?: number;
             <h1 className="title">{level.title.replace(/ у /g, " у\u00a0")}</h1>
           </div>
         </div>
-        {/* персонажі вертикальні: на десктопі стоять збоку від вікна з текстом (на одній лінії
-            з його низом), на телефоні — у верхньому куті вікна, текст обтікає; кожен обличчям
-            до тексту — містянин ліворуч, турист і хранителька праворуч */}
+        {/* персонажі вертикальні: стоять у верхньому куті вікна з текстом, текст обтікає;
+            кожен обличчям до тексту — містянин ліворуч, турист і хранителька праворуч */}
         <section className={`pane resCard withFig lvl-${level.slug}`}>
           <Figure level={level} />
           <p className="lead">{level.description}</p>
