@@ -2270,6 +2270,82 @@ body:has(.veselka.result) {
   to { opacity: 1; }
 }
 
+/* ═══ Результат: бал і звання зверху, нижче — картка з текстом і поруч,
+   збоку, вертикальний персонаж, що стоїть на одній лінії з низом картки.
+   Ширина колонки персонажа своя для кожного рівня (пропорції картинок). ═══ */
+.veselka .resTop {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  text-align: left;
+}
+.veselka .resTop .score { margin: 0; }
+.veselka.result .resTop .titlePane { margin: 0; transform: none; padding: 8px 14px 11px; }
+.veselka.result .resTop .title { font-size: 24px; line-height: 30px; }
+.veselka .resCard.withFig {
+  --fw: 112px;
+  position: relative;
+  margin-top: 22px;
+  padding: 18px 16px 18px;
+  text-align: left;
+}
+.veselka .resCard.withFig.lvl-keeper { --fw: 78px; }
+.veselka .resCard.withFig.lvl-tourist { --fw: 128px; }
+.veselka .resCard.withFig::after { content: ""; display: block; clear: both; }
+/* телефон: персонаж у правому верхньому куті вікна, текст обтікає зліва */
+.veselka .resCard.withFig .figure {
+  float: right;
+  width: var(--fw);
+  height: auto;
+  margin: 0 -4px 10px 12px;
+  padding: 0;
+  display: block;
+  pointer-events: none;
+}
+.veselka .resCard.withFig .figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  object-fit: contain;
+}
+.veselka.result .resCard.withFig .lead { margin: 0; font-size: 16px; line-height: 27px; }
+.veselka .resCard.withFig .share { clear: both; margin-top: 18px; padding-top: 16px; }
+@media (prefers-reduced-motion: no-preference) {
+  .veselka .resCard.withFig .figure img { animation: vFig 420ms 160ms var(--ease) both; }
+}
+/* десктоп: персонаж стоїть збоку від вікна, ноги — на лінії його низу */
+@media (min-width: 900px) {
+  .veselka .resTop { margin-top: 30px; gap: 16px; }
+  .veselka.result .resTop .titlePane { padding: 10px 18px 13px; }
+  .veselka.result .resTop .title { font-size: 34px; line-height: 40px; }
+  .veselka .resCard.withFig {
+    --fw: 236px;
+    --fg: 24px;
+    margin-top: 26px;
+    margin-right: calc(var(--fw) + var(--fg));
+    padding: 24px 26px 24px;
+  }
+  .veselka .resCard.withFig.lvl-keeper { --fw: 150px; }
+  .veselka .resCard.withFig.lvl-tourist { --fw: 262px; }
+  .veselka .resCard.withFig .figure {
+    float: none;
+    position: absolute;
+    right: calc(-1 * (var(--fw) + var(--fg)));
+    bottom: 0;
+    margin: 0;
+  }
+  .veselka .resCard.withFig .figure img { margin-bottom: -1px; }
+  .veselka.result .resCard.withFig .lead { font-size: 16.5px; line-height: 28px; }
+  .veselka .resCard.withFig .shareGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .veselka .resCard.withFig .shareGrid > .sbtn:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .veselka .resCard.withFig .sbtn { width: 100%; }
+}
+
 /* ——— 1x-екрани: контур рівно 1.5px ——— */
 @media (resolution < 1.5dppx) {
   .veselka { --lw: 1px; }

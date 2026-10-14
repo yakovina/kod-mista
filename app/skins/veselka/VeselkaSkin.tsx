@@ -493,30 +493,30 @@ function ResultBody({ level, score, onRestart }: { level: Level; score?: number;
           <Wordmark />
           <SiteLink />
         </header>
-        <div className={`resHead lvl-${level.slug}${score === undefined ? " noScore" : ""}`}>
-          <div className="resInfo">
-            {score !== undefined ? (
-              <div className="score" aria-label={`${score} з ${questions.length} правильних`}>
-                <b>
-                  <CountUp to={score} />
-                </b>
-                <small>з {questions.length}</small>
-              </div>
-            ) : (
-              <div className="score" aria-label={`${level.range} з ${questions.length}`}>
-                <b>
-                  {level.min}–{level.max}
-                </b>
-                <small>з {questions.length}</small>
-              </div>
-            )}
-            <div className="titlePane pane mid">
-              <h1 className="title">{level.title.replace(/ у /g, " у\u00a0")}</h1>
+        <div className="resTop">
+          {score !== undefined ? (
+            <div className="score" aria-label={`${score} з ${questions.length} правильних`}>
+              <b>
+                <CountUp to={score} />
+              </b>
+              <small>з {questions.length}</small>
             </div>
+          ) : (
+            <div className="score" aria-label={`${level.range} з ${questions.length}`}>
+              <b>
+                {level.min}–{level.max}
+              </b>
+              <small>з {questions.length}</small>
+            </div>
+          )}
+          <div className="titlePane pane mid">
+            <h1 className="title">{level.title.replace(/ у /g, " у\u00a0")}</h1>
           </div>
-          <Figure level={level} />
         </div>
-        <section className="pane resCard">
+        {/* персонажі вертикальні: на десктопі стоять збоку від вікна з текстом (на одній лінії
+            з його низом), на телефоні — у правому верхньому куті вікна, текст обтікає */}
+        <section className={`pane resCard withFig lvl-${level.slug}`}>
+          <Figure level={level} />
           <p className="lead">{level.description}</p>
           {score !== undefined && <Share url={shareUrl} text={level.shareText} label={UI.shareResult} />}
         </section>
