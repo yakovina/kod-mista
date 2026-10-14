@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack && node scripts/fix-basepath.mjs",
-    "build:partner": "NEXT_PUBLIC_BASE_PATH=/partner/kod-mista NEXT_PUBLIC_SITE_URL=https://hmarochos.kiev.ua/partner/kod-mista npm run build",
+    "build:partner": "NEXT_PUBLIC_BASE_PATH=/partner/decomuni NEXT_PUBLIC_SITE_URL=https://hmarochos.kiev.ua/partner/decomuni npm run build",
     "deploy": "bash scripts/deploy.sh",
     "og": "node scripts/render-og.mjs",
     "lint": "eslint"

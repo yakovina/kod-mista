@@ -11,7 +11,7 @@
 ```bash
 npm run dev            # локально, http://localhost:3000
 npm run build          # статична збірка в out/ під /kod-mista
-npm run build:partner  # збірка під hmarochos.kiev.ua/partner/kod-mista
+npm run build:partner  # збірка під hmarochos.kiev.ua/partner/decomuni
 npm run deploy         # збірка + публікація в гілку gh-pages
 
 npm run og             # перегенерувати OG-картинки (потрібен Google Chrome)

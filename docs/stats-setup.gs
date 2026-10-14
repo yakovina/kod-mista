@@ -211,3 +211,29 @@ function setupStats_(ss) {
   ss.setActiveSheet(sh);
   ss.moveActiveSheet(1);
 }
+
+/**
+ * Перед запуском на сайті Хмарочоса: видаляє всі тестові записи (з github.io, ?test,
+ * локальних збірок) з аркуша відповідей і з самої форми, а зведення перемикає на
+ * рахунок лише з hmarochos.kiev.ua. Якщо вже є записи з hmarochos.kiev.ua — нічого не чіпає.
+ */
+function clearTestData() {
+  var ss = SpreadsheetApp.openById(STATS_SS_ID);
+  var sh = responsesSheet_(ss);
+  var last = sh.getLastRow();
+  var hostCol = FIELDS.indexOf('host') + 2;
+  var hosts = last > 1 ? sh.getRange(2, hostCol, last - 1, 1).getValues().map(function (r) { return String(r[0]); }) : [];
+  var real = hosts.filter(function (h) { return /hmarochos\.kiev\.ua$/.test(h); });
+  Logger.log('Записів: ' + hosts.length + ', з hmarochos.kiev.ua: ' + real.length);
+  if (real.length) throw new Error('Є справжні записи з hmarochos.kiev.ua — автоматично не чищу.');
+  if (last > 1) {
+    try { sh.deleteRows(2, last - 1); }
+    catch (e) { // аркуш-таблиця не дає видалити всі рядки — лишаємо один порожній
+      if (last > 2) sh.deleteRows(3, last - 2);
+      sh.getRange(2, 1, 1, sh.getLastColumn()).clearContent();
+    }
+  }
+  FormApp.openByUrl(sh.getFormUrl()).deleteAllResponses();
+  ss.getSheetByName('stats').getRange('B3').setValue('*hmarochos.kiev.ua');
+  Logger.log('Видалено тестових записів: ' + hosts.length + '. Фільтр зведення: *hmarochos.kiev.ua');
+}
