@@ -2294,7 +2294,8 @@ body:has(.veselka.result) {
 .veselka .resCard.withFig.lvl-keeper { --fw: 78px; }
 .veselka .resCard.withFig.lvl-tourist { --fw: 128px; }
 .veselka .resCard.withFig::after { content: ""; display: block; clear: both; }
-/* телефон: персонаж у правому верхньому куті вікна, текст обтікає зліва */
+/* телефон: персонаж у верхньому куті вікна, текст обтікає. Кожен стоїть обличчям
+   до тексту: турист і хранителька праворуч, містянин (тягне руку праворуч) — ліворуч */
 .veselka .resCard.withFig .figure {
   float: right;
   width: var(--fw);
@@ -2344,6 +2345,13 @@ body:has(.veselka.result) {
   .veselka .resCard.withFig .shareGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
   .veselka .resCard.withFig .shareGrid > .sbtn:last-child:nth-child(odd) { grid-column: 1 / -1; }
   .veselka .resCard.withFig .sbtn { width: 100%; }
+}
+
+/* містянин — ліворуч від тексту (дивиться й тягне руку праворуч, до тексту) */
+.veselka .resCard.withFig.lvl-citizen .figure { float: left; margin: 0 12px 10px -4px; }
+@media (min-width: 900px) {
+  .veselka .resCard.withFig.lvl-citizen { margin-right: 0; margin-left: calc(var(--fw) + var(--fg)); }
+  .veselka .resCard.withFig.lvl-citizen .figure { float: none; right: auto; left: calc(-1 * (var(--fw) + var(--fg))); margin: 0; }
 }
 
 /* ——— 1x-екрани: контур рівно 1.5px ——— */

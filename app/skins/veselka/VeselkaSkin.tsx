@@ -514,7 +514,8 @@ function ResultBody({ level, score, onRestart }: { level: Level; score?: number;
           </div>
         </div>
         {/* персонажі вертикальні: на десктопі стоять збоку від вікна з текстом (на одній лінії
-            з його низом), на телефоні — у правому верхньому куті вікна, текст обтікає */}
+            з його низом), на телефоні — у верхньому куті вікна, текст обтікає; кожен обличчям
+            до тексту — містянин ліворуч, турист і хранителька праворуч */}
         <section className={`pane resCard withFig lvl-${level.slug}`}>
           <Figure level={level} />
           <p className="lead">{level.description}</p>
